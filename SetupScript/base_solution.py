@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import functions as f
 
 GR_COLS = ["user_id", "session_id", "timestamp", "step"]
 
@@ -28,6 +29,46 @@ def get_popularity(df):
     )
 
     return df_item_clicks
+
+def get_popularity_by_nation(df, df_expl, df_popular, w_nation, w_all):
+    # Generate most popular per nation table
+    mask = df["action_type"] == "clickout item"
+    df_clicks = df[mask]
+    df_item_clicks = (
+    df_clicks
+        .groupby(["reference", "platform"])
+        .size()
+        .reset_index(name="n_clicks_nation")
+    )
+    df_item_clicks['n_clicks_nation'] = df_item_clicks['n_clicks_nation'].astype(int)
+    df_item_clicks['reference'] = df_item_clicks['reference'].astype(int)
+    print("First elements of click per nation")
+    print(df_item_clicks.head())
+    # Join most popular per nation and exploded 
+    df_expl_clicks_nations = (
+    df_expl[GR_COLS + ["impressions"] + ["platform"]]
+    .merge(df_item_clicks,
+           left_on=["impressions", "platform"],
+           right_on=["reference", "platform"],
+           how="left")
+    )
+    df_expl_clicks_nations = df_expl_clicks_nations.fillna(0)
+    print("First elements of click per nation joined with exploded df")
+    print(df_expl_clicks_nations.head())
+    #Sum of the two colums tot_click + click_nation
+    df_click_weighted = (
+    df_expl_clicks_nations[GR_COLS + ["impressions"] + ["n_clicks_nation"] + ["platform"]]
+    .merge(df_popular,
+           left_on="impressions",
+           right_on="reference",
+           how="left")
+    )
+
+    df_click_weighted = df_click_weighted.fillna(0)
+    df_click_weighted['n_clicks'] = w_nation * df_click_weighted['n_clicks_nation'] + w_all * df_click_weighted['n_clicks']
+    print("First elements of click per nation joined with most popular")
+    print(df_click_weighted.head())
+    return df_click_weighted
 
 
 def string_to_array(s):
@@ -91,7 +132,9 @@ def calc_recommendation(df_expl, df_pop):
                right_on="reference",
                how="left")
     )
-
+    
+    print("DEBUG: campi che ci servono")
+    print(df_expl_clicks.head())
     df_out = (
         df_expl_clicks
         .assign(impressions=lambda x: x["impressions"].apply(str))
@@ -103,7 +146,35 @@ def calc_recommendation(df_expl, df_pop):
     df_out.rename(columns={'impressions': 'item_recommendations'}, inplace=True)
 
     return df_out
+    
 
+def get_rec_nation(base_dir, df_train, df_test, w_nation, w_base):
+
+    f.send_telegram_message("Starting base solution by nation with w_nation = " + str(w_nation) + " and w_base: " + str(w_base))
+
+    subm_csv = base_dir +"submission_popular.csv"
+
+    print("Get popular items...")
+    df_popular = get_popularity(df_train)
+    print("Dataset of popular starts with:")
+    print(df_popular.head())
+
+    print("Identify target rows...")
+    df_target = get_submission_target(df_test)
+    print("Dataset of target starts with:")
+    print(df_target.head())
+
+    print("Get recommendations...")
+    df_expl = explode(df_target, "impressions")
+    df_expl_nation = get_popularity_by_nation(df_train, df_expl, df_popular, w_nation, w_base)
+    df_out = calc_recommendation(df_expl_nation, df_popular)
+
+    print(f"Writing {subm_csv}...")
+    df_out.to_csv(subm_csv, index=False)
+
+    print("Finished calculating recommendations.")
+
+    return df_out
 
 def get_rec_base(base_dir, df_train, df_test):
 
