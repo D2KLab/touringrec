@@ -66,6 +66,7 @@ def get_popularity_by_nation(df, df_expl, df_popular, w_nation, w_all):
 
     df_click_weighted = df_click_weighted.fillna(0)
     df_click_weighted['n_clicks'] = w_nation * df_click_weighted['n_clicks_nation'] + w_all * df_click_weighted['n_clicks']
+    del df_click_weighted['n_clicks_nation']
     print("First elements of click per nation joined with most popular")
     print(df_click_weighted.head())
     return df_click_weighted
@@ -114,6 +115,21 @@ def group_concat(df, gr_cols, col_concat):
 
     return df_out
 
+def calc_recommendation_nation(df_pop):
+
+    print("Popular input")
+    print(df_pop.head())
+    df_out = (
+        df_pop
+        .assign(impressions=lambda x: x["impressions"].apply(str))
+        .sort_values(GR_COLS + ["n_clicks"],
+                     ascending=[True, True, True, True, False])
+    )
+
+    df_out = group_concat(df_out, GR_COLS, "impressions")
+    df_out.rename(columns={'impressions': 'item_recommendations'}, inplace=True)
+    print(df_out)
+    return df_out
 
 def calc_recommendation(df_expl, df_pop):
     """Calculate recommendations based on popularity of items.
@@ -124,7 +140,10 @@ def calc_recommendation(df_expl, df_pop):
     :param df_pop: Data frame with items and number of clicks
     :return: Data frame with sorted impression list according to popularity in df_pop
     """
-
+    print("Exploded input")
+    print(df_expl.head())
+    print("Popular input")
+    print(df_pop.head())
     df_expl_clicks = (
         df_expl[GR_COLS + ["impressions"]]
         .merge(df_pop,
@@ -144,7 +163,7 @@ def calc_recommendation(df_expl, df_pop):
 
     df_out = group_concat(df_out, GR_COLS, "impressions")
     df_out.rename(columns={'impressions': 'item_recommendations'}, inplace=True)
-
+    print(df_out)
     return df_out
     
 
@@ -166,8 +185,8 @@ def get_rec_nation(base_dir, df_train, df_test, w_nation, w_base):
 
     print("Get recommendations...")
     df_expl = explode(df_target, "impressions")
-    df_expl_nation = get_popularity_by_nation(df_train, df_expl, df_popular, w_nation, w_base)
-    df_out = calc_recommendation(df_expl_nation, df_popular)
+    df_popular_nation = get_popularity_by_nation(df_train, df_expl, df_popular, w_nation, w_base)
+    df_out = calc_recommendation_nation(df_popular_nation)
 
     print(f"Writing {subm_csv}...")
     df_out.to_csv(subm_csv, index=False)

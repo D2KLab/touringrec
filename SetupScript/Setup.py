@@ -29,20 +29,16 @@ df_test = pd.read_csv(filename)
 gt_csv = sys.argv[3]
 print("Groud truth is: " + filename)
 
+
 chosen_solution = sys.argv[4]
 print("Executing the solution " + chosen_solution)
 
-#Set test reference values to NULL for clickout items as we must not know what will be clicked
-#df_test.loc[df_test["action_type"] == "clickout item", ["reference"]] = None
-
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
-# weights = [0.00001, 0.0001, 0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, 0.4]
-weights = [0.5]
+#weights = [0.00001, 0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.6, 1]
+weights = [0.01]
 for i in weights:
-
     df_rec = solutions[chosen_solution](base_dir, df_train, df_test, 1, i)
-
     #Computing score
     subm_csv = base_dir + "submission_popular.csv"
     mrr = f.score_submissions(subm_csv, gt_csv, f.get_reciprocal_ranks)

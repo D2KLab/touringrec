@@ -94,6 +94,7 @@ def send_telegram_message(message):
     bot_token = '804159482:AAGWfE5RiCKbW-92nLJehda3B9v_51yc6cI' 
     chat_id = '124425954'
 
-    send_text = "https://api.telegram.org/bot" + bot_token + "/sendMessage?chat_id=" + chat_id + "&text=" + message + " @ {}"  
-    response = requests.get(send_text.format(datetime.now().strftime("%H:%M:%S")))
+    send_text = "https://api.telegram.org/bot" + bot_token + "/sendMessage?chat_id=" + chat_id + "&text=" + message #+ " @ {}"  
+    #response = requests.get(send_text.format(datetime.now().strftime("%H:%M:%S")))
+    response = requests.get(send_text)
     return response.json()
