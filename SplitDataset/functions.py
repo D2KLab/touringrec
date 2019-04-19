@@ -89,3 +89,9 @@ def split_group_csv(df, list_train, list_test, split_param):
     train_file.close()
     test_file.close()
     return
+
+def clean_dataset(df_test):
+    df_test['timestamp_max'] = df_test.groupby(['user_id'])['timestamp'].transform(max)
+    df_test.loc[(df_test['timestamp_max'] == df_test['timestamp']) & (df_test["action_type"] == "clickout item"), ["reference"]] = None
+    del df_test['timestamp_max']
+    return df_test
