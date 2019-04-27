@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import functions as f
 import base_solution as bs
+import matrix_factorization as mf
 import sys as sys
 
 
@@ -11,7 +12,8 @@ base_dir = "./"
 # Defining all the solutions implemented
 solutions = {
     "basesolution": bs.get_rec_base,
-    "basesolution_nation": bs.get_rec_nation
+    "basesolution_nation": bs.get_rec_nation,
+    "matrixfactorization": mf.get_rec_matrix
 }
 
 #importing and defining Datasets
@@ -29,16 +31,18 @@ df_test = pd.read_csv(filename)
 gt_csv = sys.argv[3]
 print("Groud truth is: " + filename)
 
+metadata_csv = sys.argv[4]
+print("The metadata file is: " + filename)
 
-chosen_solution = sys.argv[4]
+chosen_solution = sys.argv[5]
 print("Executing the solution " + chosen_solution)
 
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
-#weights = [0.00001, 0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.6, 1]
-weights = [0.01]
+weights = [0.00001, 0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.6, 1]
+#weights = [0.01]
 for i in weights:
-    df_rec = solutions[chosen_solution](base_dir, df_train, df_test, 1, i)
+    df_rec = solutions[chosen_solution](base_dir, df_train, df_test, w_nation = 1, w_base = i)
     #Computing score
     subm_csv = base_dir + "submission_popular.csv"
     mrr = f.score_submissions(subm_csv, gt_csv, f.get_reciprocal_ranks)
