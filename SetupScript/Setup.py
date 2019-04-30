@@ -39,12 +39,12 @@ print("Executing the solution " + chosen_solution)
 
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
-weights = [0.00001, 0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.6, 1]
-#weights = [0.01]
+#weights = [0.00001, 0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.6, 1]
+weights = [0.01]
 for i in weights:
-    df_rec = solutions[chosen_solution](base_dir, df_train, df_test, w_nation = 1, w_base = i)
+    df_rec = solutions[chosen_solution](df_train, df_test, file_metadata = metadata_csv, w_nation = 1, w_base = i)
     #Computing score
-    subm_csv = base_dir + "submission_popular.csv"
+    subm_csv = "submission_popular.csv"
     mrr = f.score_submissions(subm_csv, gt_csv, f.get_reciprocal_ranks)
     print("End execution with score " + str(mrr))
     f.send_telegram_message("End execution with score " + str(mrr))

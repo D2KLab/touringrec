@@ -6,15 +6,6 @@ import functions as f
 GR_COLS = ["user_id", "session_id", "timestamp", "step"]
 
 
-def get_submission_target(df):
-    """Identify target rows with missing click outs."""
-
-    mask = df["reference"].isnull() & (df["action_type"] == "clickout item")
-    df_out = df[mask]
-
-    return df_out
-
-
 def get_popularity(df):
     """Get number of clicks that each item received in the df."""
 
@@ -140,13 +131,13 @@ def calc_recommendation(df_expl, df_pop):
     return df_out
     
 
-def get_rec_nation(base_dir, df_train, df_test, **kwargs):
+def get_rec_nation(df_train, df_test, **kwargs):
 
     w_nation = kwargs.get('w_nation', 1)
     w_base = kwargs.get('w_base', 0.01)
     f.send_telegram_message("Starting base solution by nation with w_nation = " + str(w_nation) + " and w_base: " + str(w_base))
 
-    subm_csv = base_dir +"submission_popular.csv"
+    subm_csv = "submission_popular.csv"
 
     print("Get popular items...")
     df_popular = get_popularity(df_train)
@@ -154,7 +145,7 @@ def get_rec_nation(base_dir, df_train, df_test, **kwargs):
     print(df_popular.head())
 
     print("Identify target rows...")
-    df_target = get_submission_target(df_test)
+    df_target = f.get_submission_target(df_test)
     print("Dataset of target starts with:")
     print(df_target.head())
 
@@ -170,9 +161,9 @@ def get_rec_nation(base_dir, df_train, df_test, **kwargs):
 
     return df_out
 
-def get_rec_base(base_dir, df_train, df_test, **kwargs):
+def get_rec_base(df_train, df_test, **kwargs):
 
-    subm_csv = base_dir +"submission_popular.csv"
+    subm_csv = "submission_popular.csv"
 
     print("Get popular items...")
     df_popular = get_popularity(df_train)
@@ -180,7 +171,7 @@ def get_rec_base(base_dir, df_train, df_test, **kwargs):
     print(df_popular.head())
 
     print("Identify target rows...")
-    df_target = get_submission_target(df_test)
+    df_target = f.get_submission_target(df_test)
     print("Dataset of target starts with:")
     print(df_target.head())
 
