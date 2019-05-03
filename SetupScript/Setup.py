@@ -6,7 +6,6 @@ import base_solution as bs
 import matrix_factorization as mf
 import sys as sys
 
-
 #Defining working directory
 base_dir = "./"
 # Defining all the solutions implemented

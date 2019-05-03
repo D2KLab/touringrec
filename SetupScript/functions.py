@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import requests
 import time
 from datetime import datetime
-
+from sklearn.preprocessing import OneHotEncoder
 
 def get_submission_target(df):
     """Identify target rows with missing click outs."""
@@ -118,10 +118,12 @@ def score_submissions(subm_csv, gt_csv, objective_function):
 
     print(f"Reading ground truth data {gt_csv} ...")
     df_gt = read_into_df(gt_csv)
+    df_gt = df_gt.head(100)
 
     print(f"Reading submission data {subm_csv} ...")
     df_subm = read_into_df(subm_csv)
-
+    print('Submissions')
+    print(df_subm.head(10))
     # create dataframe containing the ground truth to target rows
     cols = ['reference', 'impressions', 'prices']
     df_key = df_gt.loc[:, cols]
@@ -167,3 +169,56 @@ def send_telegram_message(message):
     #response = requests.get(send_text.format(datetime.now().strftime("%H:%M:%S")))
     response = requests.get(send_text)
     return response.json()
+
+def extract_unique_features(df_meta):
+    d = []
+    h_feat = df_meta['properties']
+    for properties in df_meta['properties']:
+      temp = properties.split('|')
+      for property in temp:
+          d.append(property)
+    prop_dict = set(d)
+    prop_dict = list(prop_dict)
+    return prop_dict
+
+def encode_features(df_meta):
+    features = extract_unique_features(df_meta)
+    #features
+    features_col = []
+    i = 0
+    for feat in features:
+        temp = []
+        temp.append(feat)
+        features_col.append(temp)
+    #features_col
+    # binary encode
+    onehot_encoder = OneHotEncoder(sparse=False)
+    onehot_encoded = onehot_encoder.fit_transform(features_col)
+    #print(onehot_encoded)
+    #Now I encode every hotel using its features
+    features_dict = {} 
+    i = 0
+    for key in features:
+        features_dict[key] = onehot_encoded[i]
+        i = i + 1
+    #print(features_dict)
+
+    d = {}
+    for index, row in df_meta.iterrows():
+        key = row['item_id']
+        value = row["properties"]
+        temp = value.split('|')
+        features = []
+        for property in temp:
+            features.append(property)
+        d[key] = features
+    #d
+    hotel_dict = {}
+    for key, value in d.items():
+        temp = []
+        for feat in value:
+            temp.append(features_dict[feat])
+        temp = np.asarray(temp)
+        res = temp.sum(axis=0)
+        hotel_dict[key] = res
+    return hotel_dict

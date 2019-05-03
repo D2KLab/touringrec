@@ -127,7 +127,7 @@ def calc_recommendation(df_expl, df_pop):
 
     df_out = group_concat(df_out, GR_COLS, "impressions")
     df_out.rename(columns={'impressions': 'item_recommendations'}, inplace=True)
-    print(df_out)
+    print(df_out.head())
     return df_out
     
 
