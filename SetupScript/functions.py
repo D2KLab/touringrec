@@ -14,6 +14,16 @@ def get_submission_target(df):
 
     return df_out
 
+''' Return a dataset where all the actions are related to interaction between user and item.
+    clean_null -> if is set to true cleans the Null clickout actions of the test set
+'''
+def get_interaction_actions(df, clean_null=False):
+    mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "search for item")|(df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
+    df_cleaned = df[mask]
+    if(clean_null):
+        df_cleaned = df_cleaned.drop(df_cleaned[(df_cleaned['action_type'] == "clickout item") & (df_cleaned['reference'].isnull())].index)
+    return df_cleaned;
+
 def create_interaction_matrix(df,user_col, item_col, rating_col, norm= False, threshold = None):
     '''
     Function to create an interaction matrix dataframe from transactional type interactions
@@ -45,6 +55,10 @@ def string_to_array(s):
     else:
         raise ValueError("Value must be either string of nan")
     return out
+
+def get_df_percentage(df, perc):
+    df_size = df.shape[0]
+    return df.head(int(perc * df_size))
 
 def get_all_properties(df_meta):
     d = []
@@ -118,7 +132,10 @@ def score_submissions(subm_csv, gt_csv, objective_function):
 
     print(f"Reading ground truth data {gt_csv} ...")
     df_gt = read_into_df(gt_csv)
-    df_gt = df_gt.head(100)
+    # Take the same portion of data
+    mask = (df_gt["action_type"] == "clickout item") | (df_gt["action_type"] == "interaction item rating") | (df_gt["action_type"] == "search for item")|(df_gt["action_type"] == "interaction item image") | (df_gt["action_type"] == "interaction item deals")
+    df_cleaned = df_gt[mask]
+    #df_gt = df_cleaned.head(1000)
 
     print(f"Reading submission data {subm_csv} ...")
     df_subm = read_into_df(subm_csv)

@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import functions as f
 import base_solution as bs
+import matrix_factorization_metadata as mf_metadata
 import matrix_factorization as mf
 import sys as sys
 
@@ -12,6 +13,7 @@ base_dir = "./"
 solutions = {
     "basesolution": bs.get_rec_base,
     "basesolution_nation": bs.get_rec_nation,
+    "matrixfactorization_metadata": mf_metadata.get_rec_matrix,
     "matrixfactorization": mf.get_rec_matrix
 }
 
