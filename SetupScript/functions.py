@@ -132,10 +132,6 @@ def score_submissions(subm_csv, gt_csv, objective_function):
 
     print(f"Reading ground truth data {gt_csv} ...")
     df_gt = read_into_df(gt_csv)
-    # Take the same portion of data
-    mask = (df_gt["action_type"] == "clickout item") | (df_gt["action_type"] == "interaction item rating") | (df_gt["action_type"] == "search for item")|(df_gt["action_type"] == "interaction item image") | (df_gt["action_type"] == "interaction item deals")
-    df_cleaned = df_gt[mask]
-    #df_gt = df_cleaned.head(1000)
 
     print(f"Reading submission data {subm_csv} ...")
     df_subm = read_into_df(subm_csv)
