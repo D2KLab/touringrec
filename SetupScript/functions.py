@@ -5,6 +5,7 @@ import requests
 import time
 from datetime import datetime
 from sklearn.preprocessing import OneHotEncoder
+from scipy.sparse import coo_matrix
 
 def int_array_to_string_list(array):
     l = []
@@ -34,6 +35,30 @@ def get_interaction_actions(df, clean_null=False):
         df_cleaned = df_cleaned.drop(df_cleaned[(df_cleaned['action_type'] == "clickout item") & (df_cleaned['reference'].isnull())].index)
     return df_cleaned;
 
+def create_sparse_interaction_matrix(df, user_dict, item_dict, user_col = 'user_id', item_col='reference', data_col='n_interactions'):
+    '''
+        Required Input:
+            - df = Pandas Dataframe with the following format: user_id | item_id | #interactions
+            - user_dict = dictionary to convert from user_id to index
+            - item_dict = dictionary to convert from item_id to index
+        Expected Output:
+            - Sparse COO matrix with interactions 
+    '''
+    list_users = list(df[user_col])
+    list_items = list(df[item_col])
+    list_data = list(df[data_col])
+    n_user = len(list_users)
+    n_items = len(list_items)
+    # Convert each list of string in a list of indexes
+    list_users = list(map(lambda x: user_dict[x], list_users))
+    list_items = list(map(lambda x: item_dict[x], list_items))
+    # Generate the sparse matrix
+    row = np.array(list_users)
+    col = np.array(list_items)
+    data = np.array(list_data)
+    coo = coo_matrix((data, (row, col)), shape = (n_user, n_items))
+    
+    return coo
 def create_interaction_matrix(df,user_col, item_col, rating_col, norm= False, threshold = None):
     '''
     Function to create an interaction matrix dataframe from transactional type interactions

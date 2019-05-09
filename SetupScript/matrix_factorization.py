@@ -14,20 +14,18 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     df_train = f.get_interaction_actions(df_train)
     df_test_cleaned = f.get_interaction_actions(df_test, True)
     df_train = remove_single_actions(df_train)
-    df_train = f.get_df_percentage(df_train, 0.0001)
+    #df_train = f.get_df_percentage(df_train, 0.0001)
     print('Train: Taken #: ' + str(df_train.shape[0]) + ' rows')
     df_test_cleaned = remove_single_actions(df_test_cleaned)
-    df_test_cleaned = f.get_df_percentage(df_test_cleaned, 0.15)
+    #df_test_cleaned = f.get_df_percentage(df_test_cleaned, 0.15)
     print('Test: Taken #: ' + str(df_test_cleaned.shape[0]) + ' rows')
     df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
-    #df_train['user_id'] = df_train['user_id'].apply(lambda x: convertToNumber(x))
     print(df_train.head())
     df_interactions = get_n_interaction(df_train)
-    interaction_matrix = f.create_interaction_matrix(df_interactions,'user_id', 'reference', 'n_interactions')
-    print(interaction_matrix.head())
+    user_dict = create_user_dict(df_interactions)
+    hotel_dict = create_item_dict(df_interactions)
+    interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dict, hotel_dict)
     mf_model = runMF(interactions = interaction_matrix, n_components = 30, loss = 'warp', epoch = 30, n_jobs = 4)
-    user_dict = create_user_dict(interactions = interaction_matrix)
-    hotel_dict = create_item_dict(interaction_matrix)
     print(df_test.shape[0])
     df_test = f.get_submission_target(df_test)
     print("Size before: " + str(df_test.shape[0]))
@@ -47,11 +45,11 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     return df_out
 
 
-''' 
-Returns a dataframe with:
-user_id | item_id | n_interactions
-'''
 def get_n_interaction(df):
+    """ 
+    Returns a dataframe with:
+    user_id | item_id | n_interactions
+    """
     print('Get number of occurrences for each pair (user,item)')
     df = df[['user_id','reference']]
     df = (
@@ -81,20 +79,20 @@ def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4)
         Model - Trained model
     '''
     print('Starting building a model')
-    x = sparse.csr_matrix(interactions.values)
+    #x = sparse.csr_matrix(interactions.values)
     model = LightFM(no_components= n_components, loss=loss,k=k)
-    model.fit(x,epochs=epoch,num_threads = n_jobs)
+    model.fit(interactions,epochs=epoch,num_threads = n_jobs)
     return model
 
-def create_user_dict(interactions):
+def create_user_dict(interactions, col_name='user_id'):
     '''
     Function to create a user dictionary based on their index and number in interaction dataset
     Required Input - 
-        interactions - dataset create by create_interaction_matrix
+        interactions - 
     Expected Output -
         user_dict - Dictionary type output containing interaction_index as key and user_id as value
     '''
-    user_id = list(interactions.index)
+    user_id = list(interactions[col_name].drop_duplicates())
     user_dict = {}
     counter = 0 
     for i in user_id:
@@ -102,15 +100,15 @@ def create_user_dict(interactions):
         counter += 1
     return user_dict
     
-def create_item_dict(interactions):
+def create_item_dict(interactions, col_name='reference'):
     '''
     Function to create a user dictionary based on their index and number in interaction dataset
     Required Input - 
-        interactions - dataset create by create_interaction_matrix
+        interactions 
     Expected Output -
-        user_dict - Dictionary type output containing interaction_index as key and user_id as value
+        item_dict - Dictionary type output containing interaction_index as key and item_id as value
     '''
-    item_id = list(interactions.columns)
+    item_id = list(interactions[col_name].drop_duplicates())
     item_dict = {}
     counter = 0 
     for i in item_id:
