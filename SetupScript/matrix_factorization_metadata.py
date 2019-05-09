@@ -109,9 +109,6 @@ def generate_preference_matrix(df_metadata, df_filtered, df_feature_matrix):
             print(e)
     return matrix_interaction
 
-def list_to_space_string(l):
-    s = " ".join(l)
-    return s
 
 # Funzione utilizzata nel caso di matrice di feature
 
@@ -203,9 +200,9 @@ def generate_submission(df_test, feature_dict, preference_matrix):
             scores.append(score)
             not_present = False
         score_for_hotel = dict(zip(impressions, scores))
-        sorted_x = sorted(score_for_hotel.items(), key=operator.itemgetter(1))
+        sorted_x = sorted(score_for_hotel.items(), key=operator.itemgetter(1), reverse = True)
         sorted_dict = cl.OrderedDict(sorted_x)
-        hotel_rec = list_to_space_string(list(sorted_dict.keys()))
+        hotel_rec = f.list_to_space_string(list(sorted_dict.keys()))
         #print(hotel_rec)
         df_out = df_out.append({'user_id': my_user, 'session_id': my_session, 'timestamp': my_timestamp, 'step': my_step, 'item_recommendations': hotel_rec}, ignore_index=True)
     print('The hotel feature have been used #:' + str(feature_used))

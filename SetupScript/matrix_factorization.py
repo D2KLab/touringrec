@@ -5,21 +5,21 @@ import functions as f
 from lightfm import LightFM
 from scipy import sparse
 import math
+import operator
+import collections as cl
 
 def get_rec_matrix(df_train, df_test, **kwargs):
-    
+    subm_csv = 'submission_popular.csv'
     # Select only a portion of dataset for testing purpose
     df_train = f.get_interaction_actions(df_train)
-    df_test = f.get_interaction_actions(df_test, True)
+    df_test_cleaned = f.get_interaction_actions(df_test, True)
     df_train = remove_single_actions(df_train)
-    df_train = f.get_df_percentage(df_train, 0.02)
-    print('Taken #: ' + str(df_train.shape[0]) + ' rows')
-    df_test = remove_single_actions(df_test)
-    df_test = f.get_df_percentage(df_test, 0.01)
-    users = df_test['user_id'].drop_duplicates()
-    print(users.head(10))
-    print(df_test.head())
-    df_train = pd.concat([df_train, df_test], ignore_index=True)
+    df_train = f.get_df_percentage(df_train, 0.0001)
+    print('Train: Taken #: ' + str(df_train.shape[0]) + ' rows')
+    df_test_cleaned = remove_single_actions(df_test_cleaned)
+    df_test_cleaned = f.get_df_percentage(df_test_cleaned, 0.15)
+    print('Test: Taken #: ' + str(df_test_cleaned.shape[0]) + ' rows')
+    df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
     #df_train['user_id'] = df_train['user_id'].apply(lambda x: convertToNumber(x))
     print(df_train.head())
     df_interactions = get_n_interaction(df_train)
@@ -27,10 +27,25 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     print(interaction_matrix.head())
     mf_model = runMF(interactions = interaction_matrix, n_components = 30, loss = 'warp', epoch = 30, n_jobs = 4)
     user_dict = create_user_dict(interactions = interaction_matrix)
-    #hotel_dict = create_item_dict(df = df_train, id_col = 'reference', name_col = 'reference')
+    hotel_dict = create_item_dict(interaction_matrix)
+    print(df_test.shape[0])
+    df_test = f.get_submission_target(df_test)
+    print("Size before: " + str(df_test.shape[0]))
+    df_test = df_test[df_test['user_id'].isin(list(user_dict.keys()))]
+    print("Size after: " + str(df_test.shape[0]))
+    #print('Value error #:' + str(verror))
+    print('Submissions')
+    print(df_test.shape[0])
+    print('Calculate submissions')
+    df_test['item_recommendations'] = df_test.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dict, hotel_dict), axis=1)
+    df_test = df_test[df_test['item_recommendations'] != ""]
+    df_out = df_test[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+    print(df_out.head())
+    #rec_list = sample_recommendation_user(model = mf_model, interactions = interaction_matrix, user_id = '1M9Q1ZR5Q5FJ', user_dict = user_dict, threshold = 4, nrec_items = 10, show = True)
+    print(f"Writing {subm_csv}...")
+    df_out.to_csv(subm_csv, index=False)
+    return df_out
 
-    rec_list = sample_recommendation_user(model = mf_model, interactions = interaction_matrix, user_id = '1M9Q1ZR5Q5FJ', user_dict = user_dict, threshold = 4, nrec_items = 10, show = True)
-    return
 
 ''' 
 Returns a dataframe with:
@@ -87,22 +102,24 @@ def create_user_dict(interactions):
         counter += 1
     return user_dict
     
-def create_item_dict(df,id_col,name_col):
+def create_item_dict(interactions):
     '''
-    Function to create an item dictionary based on their item_id and item name
+    Function to create a user dictionary based on their index and number in interaction dataset
     Required Input - 
-        - df = Pandas dataframe with Item information
-        - id_col = Column name containing unique identifier for an item
-        - name_col = Column name containing name of the item
+        interactions - dataset create by create_interaction_matrix
     Expected Output -
-        item_dict = Dictionary type output containing item_id as key and item_name as value
+        user_dict - Dictionary type output containing interaction_index as key and user_id as value
     '''
-    item_dict ={}
-    for i in range(df.shape[0]):
-        item_dict[(df.loc[i,id_col])] = df.loc[i,name_col]
+    item_id = list(interactions.columns)
+    item_dict = {}
+    counter = 0 
+    for i in item_id:
+        item_dict[i] = counter
+        counter += 1
     return item_dict
 
-def sample_recommendation_user(model, interactions, user_id, user_dict, threshold = 0,nrec_items = 10, show = True):
+
+def sample_recommendation_user(model, interactions, impressions, user_id, user_dict, item_dict):
     '''
     Function to produce user recommendations
     Required Input - 
@@ -110,38 +127,33 @@ def sample_recommendation_user(model, interactions, user_id, user_dict, threshol
         - interactions = dataset used for training the model
         - user_id = user ID for which we need to generate recommendation
         - user_dict = Dictionary type input containing interaction_index as key and user_id as value
-        - item_dict = Dictionary type input containing item_id as key and item_name as value
-        - threshold = value above which the rating is favorable in new interaction matrix
-        - nrec_items = Number of output recommendation needed
     Expected Output - 
-        - Prints list of items the given user has already bought
-        - Prints list of N recommended items  which user hopefully will be interested in
+        - Space separated string of recommended hotels
     '''
-    n_users, n_items = interactions.shape
     user_x = user_dict[user_id]
-    scores = pd.Series(model.predict(user_x,np.arange(n_items)))
-    scores.index = interactions.columns
-    scores = list(pd.Series(scores.sort_values(ascending=False).index))
+    items_to_predict = impressions.split('|')
+    # Create a dictionary with key=item_id, value=score
+    item_missed = []
     
-    known_items = list(pd.Series(interactions.loc[user_id,:] \
-                                 [interactions.loc[user_id,:] > threshold].index) \
-								 .sort_values(ascending=False))
+    encoded_item = []
+    decoded_item = []
+    for item in items_to_predict:
+        if item in item_dict: # Se ho già interagito con l'hotel -> Predict
+            item_x = item_dict[item]
+            encoded_item.append(item_x)
+            decoded_item.append(item)
+        else:
+            item_missed.append(item)
+    if(len(encoded_item) == 0):
+        hotel_rec = ""
+    else:
+        scores = model.predict(user_x, encoded_item)
+        hotel_dic = dict(zip(decoded_item, scores))
+        for i in item_missed: #Set score 0 for the missed hotels -> To improve with another system
+            hotel_dic[i] = -10
+        sorted_x = sorted(hotel_dic.items(), key=operator.itemgetter(1), reverse = True)
+        sorted_items = list(map(lambda x:x[0], sorted_x))
+        hotel_rec = f.list_to_space_string(sorted_items)
     
-    scores = [x for x in scores if x not in known_items]
-    return_score_list = scores[0:nrec_items]
-    known_items = list(pd.Series(known_items))
-    scores = list(pd.Series(return_score_list))
-    if show == True:
-        print("Known Likes:")
-        counter = 1
-        for i in known_items:
-            print(str(counter) + '- ' + i)
-            counter+=1
-
-        print("\n Recommended Items:")
-        counter = 1
-        for i in scores:
-            print(str(counter) + '- ' + i)
-            counter+=1
-    return return_score_list
+    return hotel_rec
     

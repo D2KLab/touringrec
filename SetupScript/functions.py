@@ -6,6 +6,17 @@ import time
 from datetime import datetime
 from sklearn.preprocessing import OneHotEncoder
 
+def int_array_to_string_list(array):
+    l = []
+    for i in array:
+        l.append(str(i))
+    return l
+
+def list_to_space_string(l):
+    """Return a space separated string from a list"""
+    s = " ".join(l)
+    return s
+
 def get_submission_target(df):
     """Identify target rows with missing click outs."""
 
@@ -14,10 +25,9 @@ def get_submission_target(df):
 
     return df_out
 
-''' Return a dataset where all the actions are related to interaction between user and item.
-    clean_null -> if is set to true cleans the Null clickout actions of the test set
-'''
 def get_interaction_actions(df, clean_null=False):
+    """ Return a dataset where all the actions are related to interaction between user and item.
+    clean_null -> if is set to true cleans the Null clickout actions of the test set"""
     mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "search for item")|(df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
     df_cleaned = df[mask]
     if(clean_null):
