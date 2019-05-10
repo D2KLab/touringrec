@@ -25,7 +25,7 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     user_dict = create_user_dict(df_interactions)
     hotel_dict = create_item_dict(df_interactions)
     interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dict, hotel_dict)
-    mf_model = runMF(interactions = interaction_matrix, n_components = 30, loss = 'warp', epoch = 30, n_jobs = 4)
+    mf_model = runMF(interactions = interaction_matrix,k = 500, n_components = 200, loss = 'warp-kos', epoch = 100, n_jobs = 4)
     print(df_test.shape[0])
     df_test = f.get_submission_target(df_test)
     print("Size before: " + str(df_test.shape[0]))
@@ -42,6 +42,7 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     #rec_list = sample_recommendation_user(model = mf_model, interactions = interaction_matrix, user_id = '1M9Q1ZR5Q5FJ', user_dict = user_dict, threshold = 4, nrec_items = 10, show = True)
     print(f"Writing {subm_csv}...")
     df_out.to_csv(subm_csv, index=False)
+
     return df_out
 
 
@@ -80,7 +81,7 @@ def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4)
     '''
     print('Starting building a model')
     #x = sparse.csr_matrix(interactions.values)
-    model = LightFM(no_components= n_components, loss=loss,k=k)
+    model = LightFM(no_components= n_components, loss=loss, k=k, learning_schedule='adadelta', learning_rate=0.5)
     model.fit(interactions,epochs=epoch,num_threads = n_jobs)
     return model
 

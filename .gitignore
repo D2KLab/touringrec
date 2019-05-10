@@ -4,3 +4,7 @@ SetupScript/__pycache__/
 SetupScript/\.vscode/launch\.json
 
 SetupScript/\.vscode/
+
+SplitDataset/\.vscode/settings\.json
+
+SplitDataset/__pycache__/

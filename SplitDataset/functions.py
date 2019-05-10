@@ -62,15 +62,15 @@ def split_group_csv(df, list_train, list_test, split_param):
     if Path("train.csv").is_file():
         os.remove("train.csv")
         print('Cleared train.csv')
-    if Path("test.csv").is_file():
-        os.remove("test.csv")
+    if Path("gt.csv").is_file():
+        os.remove("gt.csv")
         print('Cleared test.csv')
     
     print('Start writing the file...')
 
     train_file = open('train.csv', mode='w')
     train_writer = csv.writer(train_file, delimiter=',')
-    test_file = open('test.csv', mode='w')
+    test_file = open('gt.csv', mode='w')
     test_writer = csv.writer(test_file, delimiter=',')
     #Write headers
     train_writer.writerow(df.columns.values)
