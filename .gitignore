@@ -8,3 +8,5 @@ SetupScript/\.vscode/
 SplitDataset/\.vscode/settings\.json
 
 SplitDataset/__pycache__/
+
+\.DS_Store
