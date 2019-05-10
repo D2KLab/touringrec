@@ -6,19 +6,12 @@ import functions as f
 GR_COLS = ["user_id", "session_id", "timestamp", "step"]
 
 
-def get_submission_target(df):
-    """Identify target rows with missing click outs."""
-
-    mask = df["reference"].isnull() & (df["action_type"] == "clickout item")
-    df_out = df[mask]
-
-    return df_out
-
-
 def get_popularity(df):
     """Get number of clicks that each item received in the df."""
 
     mask = df["action_type"] == "clickout item"
+    #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "interaction item info") | (df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
+    #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
     df_clicks = df[mask]
     df_item_clicks = (
         df_clicks
@@ -33,6 +26,7 @@ def get_popularity(df):
 def get_popularity_by_nation(df, df_expl, df_popular, w_nation, w_all):
     # Generate most popular per nation table
     mask = df["action_type"] == "clickout item"
+    #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
     df_clicks = df[mask]
     df_item_clicks = (
     df_clicks
@@ -70,36 +64,6 @@ def get_popularity_by_nation(df, df_expl, df_popular, w_nation, w_all):
     print("First elements of click per nation joined with most popular")
     print(df_click_weighted.head())
     return df_click_weighted
-
-
-def string_to_array(s):
-    """Convert pipe separated string to array."""
-
-    if isinstance(s, str):
-        out = s.split("|")
-    elif math.isnan(s):
-        out = []
-    else:
-        raise ValueError("Value must be either string of nan")
-    return out
-
-
-def explode(df_in, col_expl):
-    """Explode column col_expl of array type into multiple rows."""
-
-    df = df_in.copy()
-    df.loc[:, col_expl] = df[col_expl].apply(string_to_array)
-
-    df_out = pd.DataFrame(
-        {col: np.repeat(df[col].values,
-                        df[col_expl].str.len())
-         for col in df.columns.drop(col_expl)}
-    )
-
-    df_out.loc[:, col_expl] = np.concatenate(df[col_expl].values)
-    df_out.loc[:, col_expl] = df_out[col_expl].apply(int)
-
-    return df_out
 
 
 def group_concat(df, gr_cols, col_concat):
@@ -163,15 +127,17 @@ def calc_recommendation(df_expl, df_pop):
 
     df_out = group_concat(df_out, GR_COLS, "impressions")
     df_out.rename(columns={'impressions': 'item_recommendations'}, inplace=True)
-    print(df_out)
+    print(df_out.head())
     return df_out
     
 
-def get_rec_nation(base_dir, df_train, df_test, w_nation, w_base):
+def get_rec_nation(df_train, df_test, **kwargs):
 
+    w_nation = kwargs.get('w_nation', 1)
+    w_base = kwargs.get('w_base', 0.01)
     f.send_telegram_message("Starting base solution by nation with w_nation = " + str(w_nation) + " and w_base: " + str(w_base))
 
-    subm_csv = base_dir +"submission_popular.csv"
+    subm_csv = "submission_popular.csv"
 
     print("Get popular items...")
     df_popular = get_popularity(df_train)
@@ -179,12 +145,12 @@ def get_rec_nation(base_dir, df_train, df_test, w_nation, w_base):
     print(df_popular.head())
 
     print("Identify target rows...")
-    df_target = get_submission_target(df_test)
+    df_target = f.get_submission_target(df_test)
     print("Dataset of target starts with:")
     print(df_target.head())
 
     print("Get recommendations...")
-    df_expl = explode(df_target, "impressions")
+    df_expl = f.explode(df_target, "impressions")
     df_popular_nation = get_popularity_by_nation(df_train, df_expl, df_popular, w_nation, w_base)
     df_out = calc_recommendation_nation(df_popular_nation)
 
@@ -195,9 +161,9 @@ def get_rec_nation(base_dir, df_train, df_test, w_nation, w_base):
 
     return df_out
 
-def get_rec_base(base_dir, df_train, df_test):
+def get_rec_base(df_train, df_test, **kwargs):
 
-    subm_csv = base_dir +"submission_popular.csv"
+    subm_csv = "submission_popular.csv"
 
     print("Get popular items...")
     df_popular = get_popularity(df_train)
@@ -205,12 +171,12 @@ def get_rec_base(base_dir, df_train, df_test):
     print(df_popular.head())
 
     print("Identify target rows...")
-    df_target = get_submission_target(df_test)
+    df_target = f.get_submission_target(df_test)
     print("Dataset of target starts with:")
     print(df_target.head())
 
     print("Get recommendations...")
-    df_expl = explode(df_target, "impressions")
+    df_expl = f.explode(df_target, "impressions")
     df_out = calc_recommendation(df_expl, df_popular)
 
     print(f"Writing {subm_csv}...")

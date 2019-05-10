@@ -1,2 +1,6 @@
 *.csv
 SetupScript/__pycache__/
+
+SetupScript/\.vscode/launch\.json
+
+SetupScript/\.vscode/
