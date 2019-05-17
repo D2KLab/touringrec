@@ -8,3 +8,7 @@ SetupScript/\.vscode/
 SplitDataset/\.vscode/settings\.json
 
 SplitDataset/__pycache__/
+
+SetupScript/\.ipynb_checkpoints/
+
+SplitDataset/\.vscode/

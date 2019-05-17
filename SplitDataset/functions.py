@@ -57,20 +57,23 @@ def split_group_csv(path, list_train, list_test, split_param):
 """
 
 
-def split_group_csv(df, list_train, list_test, split_param):
+def split_group_csv(df, list_train, list_test, split_param, percentage=""):
 
-    if Path("train.csv").is_file():
-        os.remove("train.csv")
-        print('Cleared train.csv')
-    if Path("gt.csv").is_file():
-        os.remove("gt.csv")
-        print('Cleared test.csv')
+    if Path("test_" + percentage + '.csv').is_file():
+        os.remove("test_" + percentage + '.csv')
+        print('Cleared test_' + percentage + '.csv')
+    if Path("gt_" + percentage + '.csv').is_file():
+        os.remove("gt_" + percentage + '.csv')
+        print('Cleared gt_' + percentage + '.csv')
+    if Path("train_" + percentage + '.csv').is_file():
+        os.remove("train_" + percentage + '.csv')
+        print('Cleared train_' + percentage + '.csv')
     
     print('Start writing the file...')
 
-    train_file = open('train.csv', mode='w')
+    train_file = open('train_' + percentage + '.csv', mode='w')
     train_writer = csv.writer(train_file, delimiter=',')
-    test_file = open('gt.csv', mode='w')
+    test_file = open('gt_' + percentage + '.csv' , mode='w')
     test_writer = csv.writer(test_file, delimiter=',')
     #Write headers
     train_writer.writerow(df.columns.values)
@@ -95,3 +98,7 @@ def clean_dataset(df_test):
     df_test.loc[(df_test['timestamp_max'] == df_test['timestamp']) & (df_test["action_type"] == "clickout item"), ["reference"]] = None
     del df_test['timestamp_max']
     return df_test
+
+def get_df_percentage(df, perc):
+    df_size = df.shape[0]
+    return df.head(int(perc * df_size))
