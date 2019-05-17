@@ -13,38 +13,106 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     # Select only a portion of dataset for testing purpose
     df_train = f.get_interaction_actions(df_train)
     df_test_cleaned = f.get_interaction_actions(df_test, True)
-    df_train = remove_single_actions(df_train)
-    #df_train = f.get_df_percentage(df_train, 0.0001)
-    print('Train: Taken #: ' + str(df_train.shape[0]) + ' rows')
-    df_test_cleaned = remove_single_actions(df_test_cleaned)
-    #df_test_cleaned = f.get_df_percentage(df_test_cleaned, 0.15)
-    print('Test: Taken #: ' + str(df_test_cleaned.shape[0]) + ' rows')
+    df_test_cleaned = remove_null_clickout(df_test_cleaned)
     df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
-    print(df_train.head())
+    df_test_user, df_test_nation = split_one_action(df_test)
+    #df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user)
+    df_out_user = pd.DataFrame()
+    df_missed = pd.DataFrame()
+    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed)
+    print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
+    print(df_missed.head())
+    #duplicates = df_out_user['user_id', 'session_id']][df_out_user[].isin(df_out_nation)]
+    #print('There are #' + str(duplicates.shape[0]) + ' items with duplicate predictions')
+    #print(duplicates.head())
+    df_out = pd.concat([df_out_user, df_out_nation], ignore_index=True)
+    print(f"Writing {subm_csv}...")
+    df_out.to_csv(subm_csv, index=False)
+    return df_out
+
+
+def generate_prediction_per_user(df_train, df_test_user):
+
+    """
+        Expected input:
+            - df_train = df concatenates train + test
+            - df_test_user = df without single action clickout to predict
+        Expected output:
+            - df_out_user = df with recommended items for each user in the df_test_user
+            - df_missed 
+    """
+    print('Start predicting item for user')
     df_interactions = get_n_interaction(df_train)
     user_dict = create_user_dict(df_interactions)
     hotel_dict = create_item_dict(df_interactions)
     interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dict, hotel_dict)
-    mf_model = runMF(interactions = interaction_matrix,k = 500, n_components = 200, loss = 'warp-kos', epoch = 100, n_jobs = 4)
-    print(df_test.shape[0])
+    mf_model = runMF(interactions = interaction_matrix,k = 300, n_components = 10, loss = 'warp-kos', epoch = 2, n_jobs = 4)
+    before = df_test_user.shape[0]
+    df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dict.keys()))]
+    print("User missed: " + str(before - df_test_user.shape[0]))
+    print('Calculate submissions per user')
+    df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dict, hotel_dict), axis=1)
+    df_missed = df_test_user[df_test_user['item_recommendations'] == ""]
+    df_test_user = df_test_user[df_test_user['item_recommendations'] != ""]
+    print('No prediction for #' + str(df_missed.shape[0]) + 'users')
+    print(df_missed.head())
+    df_out_user = df_test_user[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+
+    return df_out_user, df_missed
+
+def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame()):
+    print('Start predicting the single action clickout')
+    df_interactions_nations = get_n_interaction_nation(df_train)
+    nation_dict = create_user_dict(df_interactions_nations, col_name='platform')
+    hotel_dict = create_item_dict(df_interactions_nations)
+    interaction_matrix_nation = f.create_sparse_interaction_matrix(df_interactions_nations, nation_dict, hotel_dict, user_col='platform')
+    mf_model = runMF(interactions = interaction_matrix_nation,k = 300, n_components = 300, loss = 'warp-kos', epoch = 30, n_jobs = 4)
+    print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
+    df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True)
+    print('Calculate submissions per nation')
+    df_test_nation['item_recommendations'] = df_test_nation.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix_nation, x.impressions, x.platform, nation_dict, hotel_dict, complete = True), axis=1)
+    df_missed = df_test_nation[df_test_nation['item_recommendations'] == ""]
+    print('No prediction for #' + str(df_missed.shape[0]) + 'items')
+    df_out_nation = df_test_nation[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+    return df_out_nation, df_missed
+
+def remove_null_clickout(df):
+    """
+    Remove all the occurences where the clickout reference is set to null (Item to predict)
+    """
+    df = df.drop(df[(df['action_type'] == "clickout item") & (df['reference'].isnull())].index)
+    return df
+
+def split_one_action(df_test):
+    """
+    Required Input -
+        - df_test = test set dataframe
+    Expected Output  -
+        - df_no_single_action = dataframe without clickout at step 1 to predict
+        - df_single_action = dataframe with only clickout at step 1 to predict
+    """
     df_test = f.get_submission_target(df_test)
-    print("Size before: " + str(df_test.shape[0]))
-    df_test = df_test[df_test['user_id'].isin(list(user_dict.keys()))]
-    print("Size after: " + str(df_test.shape[0]))
-    #print('Value error #:' + str(verror))
-    print('Submissions')
-    print(df_test.shape[0])
-    print('Calculate submissions')
-    df_test['item_recommendations'] = df_test.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dict, hotel_dict), axis=1)
-    df_test = df_test[df_test['item_recommendations'] != ""]
-    df_out = df_test[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
-    print(df_out.head())
-    #rec_list = sample_recommendation_user(model = mf_model, interactions = interaction_matrix, user_id = '1M9Q1ZR5Q5FJ', user_dict = user_dict, threshold = 4, nrec_items = 10, show = True)
-    print(f"Writing {subm_csv}...")
-    df_out.to_csv(subm_csv, index=False)
+    df_no_single_action = remove_single_actions(df_test)
+    df_single_action = get_single_actions(df_test)
+    print('Total item of test set: ' + str(df_test.shape[0]) + ' No single action: #' + str(df_no_single_action.shape[0]) + ' Only single actions: #' + str(df_single_action.shape[0]))
+    return df_no_single_action, df_single_action;
 
-    return df_out
-
+def get_n_interaction_nation(df):
+    """
+    Returns a dataframe with:
+    nation | item_id | n_interactions
+    """
+    print('Get number of occurrences for each pair (nation,item)')
+    df = df[['platform','reference']]
+    df = (
+        df
+        .groupby(["platform", "reference"])
+        .size()
+        .reset_index(name="n_interactions")
+    )
+    print('First elements of the matrix')
+    print(df.head())
+    return df
 
 def get_n_interaction(df):
     """ 
@@ -64,7 +132,11 @@ def get_n_interaction(df):
     return df
 
 def remove_single_actions(df):
-    df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1)].index)
+    df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1) & (df['reference'].isnull())].index)
+    return df
+
+def get_single_actions(df):
+    df = df[(df['action_type'] == "clickout item") & (df['step'] == 1) & (df['reference'].isnull())]
     return df
 
 def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4):
@@ -118,7 +190,7 @@ def create_item_dict(interactions, col_name='reference'):
     return item_dict
 
 
-def sample_recommendation_user(model, interactions, impressions, user_id, user_dict, item_dict):
+def sample_recommendation_user(model, interactions, impressions, user_id, user_dict, item_dict, complete=False):
     '''
     Function to produce user recommendations
     Required Input - 
@@ -144,7 +216,10 @@ def sample_recommendation_user(model, interactions, impressions, user_id, user_d
         else:
             item_missed.append(item)
     if(len(encoded_item) == 0):
-        hotel_rec = ""
+        if(complete):
+            hotel_rec = f.list_to_space_string(items_to_predict)
+        else:
+            hotel_rec = ""
     else:
         scores = model.predict(user_x, encoded_item)
         hotel_dic = dict(zip(decoded_item, scores))
