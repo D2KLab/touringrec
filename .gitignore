@@ -9,6 +9,8 @@ SplitDataset/\.vscode/settings\.json
 
 SplitDataset/__pycache__/
 
+\.DS_Store
+
 SetupScript/\.ipynb_checkpoints/
 
 SplitDataset/\.vscode/
