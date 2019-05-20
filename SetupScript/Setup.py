@@ -6,9 +6,46 @@ import base_solution as bs
 import matrix_factorization_metadata as mf_metadata
 import matrix_factorization as mf
 import sys as sys
+import argparse
+import csv
+import os.path
 
-#Defining working directory
-base_dir = "./"
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
+parser.add_argument('--train', action="store", type=str, help="--train train.csv")
+parser.add_argument('--test', action="store", type=str, help="--test test.csv")
+parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
+parser.add_argument('--metadata', action="store", type=str, help="Define the metadata file")
+parser.add_argument('--localscore', action="store", type=int, help="0 -> Local score, 1 -> Official score")
+parser.add_argument('--epochs', action="store", type=int, help="Define the number of epochs")
+parser.add_argument('--ncomponents', action='store', type=int, help='MF: number of components')
+parser.add_argument('--lossfunction', action='store', type=str, help='MF: define the loss function')
+parser.add_argument('--mfk', action='store', type=int, help='MF: parameter K')
+parser.add_argument('--actions', nargs='+')
+
+
+
+
+# Get all the parameters
+args = parser.parse_args()
+algorithm = args.algorithm
+train = args.train
+test = args.test
+gt = args.gt
+metadata = args.metadata
+localscore = args.localscore
+epochs = args.epochs
+ncomponents = args.ncomponents
+lossfunction = args.lossfunction
+mfk = args.mfk
+actions = args.actions
+
+# Convert actions in a correct list format
+list_actions = []
+for i in actions:
+    list_actions.append(" ".join(i.split('_')))
+
 # Defining all the solutions implemented
 solutions = {
     "basesolution": bs.get_rec_base,
@@ -20,37 +57,35 @@ solutions = {
 #importing and defining Datasets
 
 #Train
-filename = sys.argv[1]
-print("Reading train set " + filename)
-df_train = pd.read_csv(filename)
+print("Reading train set " + train)
+df_train = pd.read_csv(train)
 
 #Test
-filename = sys.argv[2]
-print("Reading test set " + filename)
-df_test = pd.read_csv(filename)
+print("Reading test set " + test)
+df_test = pd.read_csv(test)
 
-gt_csv = sys.argv[3]
-print("Groud truth is: " + filename)
+print("Groud truth is: " + gt)
 
-metadata_csv = sys.argv[4]
-print("The metadata file is: " + filename)
+print("The metadata file is: " + metadata)
 
-chosen_solution = sys.argv[5]
-print("Executing the solution " + chosen_solution)
+print("Executing the solution " + algorithm)
 
-local_score = True
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
-#weights = [0.00001, 0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.6, 1]
-weights = [0.01]
-for i in weights:
-    df_rec = solutions[chosen_solution](df_train, df_test, file_metadata = metadata_csv, w_nation = 1, w_base = i)
-    #Computing score
-    subm_csv = "submission_popular.csv"
-    if(local_score):
-        mrr = f.score_submissions(subm_csv, gt_csv, f.get_reciprocal_ranks)
-        print("End execution with score " + str(mrr))
-        f.send_telegram_message("End execution with score " + str(mrr))
+
+df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, epochs = epochs, ncomponents = ncomponents, lossfunction = lossfunction, mfk = mfk, actions = list_actions)
+#Computing score
+subm_csv = 'submission_' + algorithm + '.csv'
+if localscore == 1:
+    mrr = f.score_submissions(subm_csv, gt, f.get_reciprocal_ranks)
+    print("End execution with score " + str(mrr))
+    file_exists = os.path.isfile('scores.csv')
+    with open('scores.csv', mode='a') as score_file:
+        file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        if not file_exists: # Write headers
+            file_writer.writerow(['#Epochs', '#Components', 'Loss Function', 'K', 'List of action', 'Score'])
+        file_writer.writerow([str(epochs), str(ncomponents), lossfunction, str(mfk), str(actions), str(mrr)])
+    f.send_telegram_message("End execution with score " + str(mrr))
 
 
 #print(f'Mean reciprocal rank: {mrr}')

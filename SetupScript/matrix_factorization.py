@@ -9,17 +9,23 @@ import operator
 import collections as cl
 
 def get_rec_matrix(df_train, df_test, **kwargs):
-    subm_csv = 'submission_popular.csv'
+    # Parse parameters
+    epochs = kwargs.get('epochs', 10)
+    ncomponents = kwargs.get('ncomponents', 10)
+    lossfunction = kwargs.get('lossfunction', 'warp-kos')
+    mfk = kwargs.get('mfk', 200)
+    subm_csv = 'submission_matrixfactorization.csv'
+    list_actions = kwargs.get('actions', "")
     # Select only a portion of dataset for testing purpose
-    df_train = f.get_interaction_actions(df_train)
-    df_test_cleaned = f.get_interaction_actions(df_test, True)
+    df_train = f.get_interaction_actions(df_train, actions = list_actions)
+    df_test_cleaned = f.get_interaction_actions(df_test, actions = list_actions, clean_null = True)
     df_test_cleaned = remove_null_clickout(df_test_cleaned)
     df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
     df_test_user, df_test_nation = split_one_action(df_test)
-    #df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user)
-    df_out_user = pd.DataFrame()
-    df_missed = pd.DataFrame()
-    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed)
+    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk)
+    #df_out_user = pd.DataFrame()
+    #df_missed = pd.DataFrame()
+    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk)
     print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
     print(df_missed.head())
     #duplicates = df_out_user['user_id', 'session_id']][df_out_user[].isin(df_out_nation)]
@@ -31,7 +37,7 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     return df_out
 
 
-def generate_prediction_per_user(df_train, df_test_user):
+def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200):
 
     """
         Expected input:
@@ -46,7 +52,7 @@ def generate_prediction_per_user(df_train, df_test_user):
     user_dict = create_user_dict(df_interactions)
     hotel_dict = create_item_dict(df_interactions)
     interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dict, hotel_dict)
-    mf_model = runMF(interactions = interaction_matrix,k = 300, n_components = 10, loss = 'warp-kos', epoch = 2, n_jobs = 4)
+    mf_model = runMF(interactions = interaction_matrix,k = 300, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4)
     before = df_test_user.shape[0]
     df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dict.keys()))]
     print("User missed: " + str(before - df_test_user.shape[0]))
@@ -60,13 +66,13 @@ def generate_prediction_per_user(df_train, df_test_user):
 
     return df_out_user, df_missed
 
-def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame()):
+def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200):
     print('Start predicting the single action clickout')
     df_interactions_nations = get_n_interaction_nation(df_train)
     nation_dict = create_user_dict(df_interactions_nations, col_name='platform')
     hotel_dict = create_item_dict(df_interactions_nations)
     interaction_matrix_nation = f.create_sparse_interaction_matrix(df_interactions_nations, nation_dict, hotel_dict, user_col='platform')
-    mf_model = runMF(interactions = interaction_matrix_nation,k = 300, n_components = 300, loss = 'warp-kos', epoch = 30, n_jobs = 4)
+    mf_model = runMF(interactions = interaction_matrix_nation,k = mfk, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4)
     print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
     df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True)
     print('Calculate submissions per nation')
@@ -95,7 +101,7 @@ def split_one_action(df_test):
     df_no_single_action = remove_single_actions(df_test)
     df_single_action = get_single_actions(df_test)
     print('Total item of test set: ' + str(df_test.shape[0]) + ' No single action: #' + str(df_no_single_action.shape[0]) + ' Only single actions: #' + str(df_single_action.shape[0]))
-    return df_no_single_action, df_single_action;
+    return df_no_single_action, df_single_action
 
 def get_n_interaction_nation(df):
     """
