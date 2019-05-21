@@ -16,16 +16,17 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     mfk = kwargs.get('mfk', 200)
     subm_csv = 'submission_matrixfactorization.csv'
     list_actions = kwargs.get('actions', "")
+    actions_w = kwargs.get('actions_w', "")
     # Select only a portion of dataset for testing purpose
     df_train = f.get_interaction_actions(df_train, actions = list_actions)
     df_test_cleaned = f.get_interaction_actions(df_test, actions = list_actions, clean_null = True)
     df_test_cleaned = remove_null_clickout(df_test_cleaned)
     df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
     df_test_user, df_test_nation = split_one_action(df_test)
-    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk)
+    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w)
     #df_out_user = pd.DataFrame()
     #df_missed = pd.DataFrame()
-    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk)
+    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w)
     print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
     print(df_missed.head())
     #duplicates = df_out_user['user_id', 'session_id']][df_out_user[].isin(df_out_nation)]
@@ -37,7 +38,7 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     return df_out
 
 
-def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200):
+def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None):
 
     """
         Expected input:
@@ -48,7 +49,7 @@ def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 1
             - df_missed 
     """
     print('Start predicting item for user')
-    df_interactions = get_n_interaction(df_train)
+    df_interactions = get_n_interaction(df_train, weight_dic = action_weights)
     user_dict = create_user_dict(df_interactions)
     hotel_dict = create_item_dict(df_interactions)
     interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dict, hotel_dict)
@@ -66,9 +67,9 @@ def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 1
 
     return df_out_user, df_missed
 
-def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200):
+def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None):
     print('Start predicting the single action clickout')
-    df_interactions_nations = get_n_interaction_nation(df_train)
+    df_interactions_nations = get_n_interaction(df_train, user_col='platform', weight_dic = action_weights)
     nation_dict = create_user_dict(df_interactions_nations, col_name='platform')
     hotel_dict = create_item_dict(df_interactions_nations)
     interaction_matrix_nation = f.create_sparse_interaction_matrix(df_interactions_nations, nation_dict, hotel_dict, user_col='platform')
@@ -103,39 +104,40 @@ def split_one_action(df_test):
     print('Total item of test set: ' + str(df_test.shape[0]) + ' No single action: #' + str(df_no_single_action.shape[0]) + ' Only single actions: #' + str(df_single_action.shape[0]))
     return df_no_single_action, df_single_action
 
-def get_n_interaction_nation(df):
-    """
+
+def get_n_interaction(df, user_col='user_id', weight_dic = None):
+    """ 
     Returns a dataframe with:
-    nation | item_id | n_interactions
+    user_id | item_id | n_interactions
+    - Input:
+        df -> pandas dataframe
+        user_col -> name of the user column
+        weight_dic -> weight for each type of interaction
     """
-    print('Get number of occurrences for each pair (nation,item)')
-    df = df[['platform','reference']]
-    df = (
-        df
-        .groupby(["platform", "reference"])
-        .size()
-        .reset_index(name="n_interactions")
-    )
+    # If no weight is specified -> All actions have the same weight
+    print('Get number of occurrences for each pair (user,item)')
+    if(weight_dic == None):
+        df = df[[user_col,'reference']]
+        df = (
+            df
+            .groupby([user_col, "reference"])
+            .sum()
+            .reset_index(name="n_interactions")
+        )
+    else:
+        df = df.replace({'action_type': weight_dic})
+        #df['n_interactions'] = df.apply(lambda x : weight_dic[x.action_type], axis=1)
+        df = df[[user_col,'reference', 'action_type']]
+        df = df.groupby([user_col, "reference"])['action_type'].sum().reset_index(name="n_interactions")
+
     print('First elements of the matrix')
     print(df.head())
     return df
 
-def get_n_interaction(df):
-    """ 
-    Returns a dataframe with:
-    user_id | item_id | n_interactions
-    """
-    print('Get number of occurrences for each pair (user,item)')
-    df = df[['user_id','reference']]
-    df = (
-        df
-        .groupby(["user_id", "reference"])
-        .size()
-        .reset_index(name="n_interactions")
-    )
-    print('First elements of the matrix')
-    print(df.head())
-    return df
+def encode_actions(action, dic):
+    value = dic[action]
+    return value
+    
 
 def remove_single_actions(df):
     df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1) & (df['reference'].isnull())].index)

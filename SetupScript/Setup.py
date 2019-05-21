@@ -9,6 +9,7 @@ import sys as sys
 import argparse
 import csv
 import os.path
+import json
 
 
 parser = argparse.ArgumentParser()
@@ -43,8 +44,14 @@ actions = args.actions
 
 # Convert actions in a correct list format
 list_actions = []
+actions_weights = {}
 for i in actions:
-    list_actions.append(" ".join(i.split('_')))
+    spl = i.split(' ')
+    value = spl[-1]
+    spl.remove(value)
+    action = ' '.join(spl)
+    actions_weights[action] = float(value)
+    list_actions.append(' '.join(spl))
 
 # Defining all the solutions implemented
 solutions = {
@@ -73,7 +80,7 @@ print("Executing the solution " + algorithm)
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
 
-df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, epochs = epochs, ncomponents = ncomponents, lossfunction = lossfunction, mfk = mfk, actions = list_actions)
+df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, epochs = epochs, ncomponents = ncomponents, lossfunction = lossfunction, mfk = mfk, actions = list_actions, actions_w = actions_weights)
 #Computing score
 subm_csv = 'submission_' + algorithm + '.csv'
 if localscore == 1:
@@ -83,8 +90,8 @@ if localscore == 1:
     with open('scores.csv', mode='a') as score_file:
         file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         if not file_exists: # Write headers
-            file_writer.writerow(['#Epochs', '#Components', 'Loss Function', 'K', 'List of action', 'Score'])
-        file_writer.writerow([str(epochs), str(ncomponents), lossfunction, str(mfk), str(actions), str(mrr)])
+            file_writer.writerow(['#Epochs', '#Components', 'Loss Function', 'K', 'Weight of action', 'Score'])
+        file_writer.writerow([str(epochs), str(ncomponents), lossfunction, str(mfk), json.dumps(actions_weights), str(mrr)])
     f.send_telegram_message("End execution with score " + str(mrr))
 
 

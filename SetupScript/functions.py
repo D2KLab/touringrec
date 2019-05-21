@@ -32,11 +32,15 @@ def get_interaction_actions(df, actions =["clickout item", "interaction item rat
     clean_null -> if is set to true cleans the Null clickout actions of the test set"""
     
     #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "search for item")|(df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
-    if 'interaction item info' in actions:
-        df = df[(df['action_type'] == 'interaction item info') & (df['reference'].str.isdigit())] 
+    
     df_cleaned = df[df['action_type'].isin(actions)]
-    if(clean_null):
+
+    if 'interaction item info' in actions:
+        df_cleaned = df_cleaned.drop(df_cleaned[(df_cleaned['action_type'] == 'interaction item info') & (df_cleaned['reference'].str.isdigit() != True)].index)
+    
+    if clean_null:
         df_cleaned = df_cleaned.drop(df_cleaned[(df_cleaned['action_type'] == "clickout item") & (df_cleaned['reference'].isnull())].index)
+    
     return df_cleaned
 
 def create_sparse_interaction_matrix(df, user_dict, item_dict, user_col = 'user_id', item_col='reference', data_col='n_interactions'):
