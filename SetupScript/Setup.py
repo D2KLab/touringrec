@@ -45,14 +45,17 @@ actions = args.actions
 # Convert actions in a correct list format
 list_actions = []
 actions_weights = {}
-for i in actions:
-    spl = i.split(' ')
-    value = spl[-1]
-    spl.remove(value)
-    action = ' '.join(spl)
-    actions_weights[action] = float(value)
-    list_actions.append(' '.join(spl))
-
+if actions != None:
+    for i in actions:
+        spl = i.split(' ')
+        value = spl[-1]
+        spl.remove(value)
+        action = ' '.join(spl)
+        actions_weights[action] = float(value)
+        list_actions.append(' '.join(spl))
+else:
+    actions_weights = None
+    list_actions = None
 # Defining all the solutions implemented
 solutions = {
     "basesolution": bs.get_rec_base,
@@ -66,14 +69,13 @@ solutions = {
 #Train
 print("Reading train set " + train)
 df_train = pd.read_csv(train)
-
 #Test
 print("Reading test set " + test)
 df_test = pd.read_csv(test)
 
 print("Groud truth is: " + gt)
-
-print("The metadata file is: " + metadata)
+if metadata != None:
+    print("The metadata file is: " + metadata)
 
 print("Executing the solution " + algorithm)
 
@@ -90,8 +92,8 @@ if localscore == 1:
     with open('scores.csv', mode='a') as score_file:
         file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         if not file_exists: # Write headers
-            file_writer.writerow(['#Epochs', '#Components', 'Loss Function', 'K', 'Weight of action', 'Score'])
-        file_writer.writerow([str(epochs), str(ncomponents), lossfunction, str(mfk), json.dumps(actions_weights), str(mrr)])
+            file_writer.writerow(['#Epochs', '#Components', 'Loss Function', 'K', 'Metadata', 'Score',  'Weight of action'])
+        file_writer.writerow([str(epochs), str(ncomponents), lossfunction, str(mfk), str(metadata), str(mrr), json.dumps(actions_weights)])
     f.send_telegram_message("End execution with score " + str(mrr))
 
 

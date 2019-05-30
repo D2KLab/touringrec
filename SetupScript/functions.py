@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 from sklearn.preprocessing import OneHotEncoder
 from scipy.sparse import coo_matrix
+import math
 
 def int_array_to_string_list(array):
     l = []
@@ -26,13 +27,14 @@ def get_submission_target(df):
 
     return df_out
 
-def get_interaction_actions(df, actions =["clickout item", "interaction item rating", "search for item", "interaction item image", "interaction item deals", "interaction item info"],clean_null=False):
+def get_interaction_actions(df, actions = None,clean_null=False):
     """ Return a dataset where all the actions are related to interaction between user and item.
     actions -> list of user/item interactions to select
     clean_null -> if is set to true cleans the Null clickout actions of the test set"""
     
     #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "search for item")|(df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
-    
+    if actions == None:
+        actions = list(["clickout item", "interaction item rating", "search for item", "interaction item image", "interaction item deals", "interaction item info"])
     df_cleaned = df[df['action_type'].isin(actions)]
 
     if 'interaction item info' in actions:
@@ -55,8 +57,8 @@ def create_sparse_interaction_matrix(df, user_dict, item_dict, user_col = 'user_
     list_users = list(df[user_col])
     list_items = list(df[item_col])
     list_data = list(df[data_col])
-    n_user = len(list_users)
-    n_items = len(list_items)
+    n_user = len(user_dict)
+    n_items = len(item_dict)
     # Convert each list of string in a list of indexes
     list_users = list(map(lambda x: user_dict[x], list_users))
     list_items = list(map(lambda x: item_dict[x], list_items))

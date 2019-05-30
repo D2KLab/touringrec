@@ -7,6 +7,12 @@ from scipy import sparse
 import math
 import operator
 import collections as cl
+from scipy.sparse import csr_matrix
+import dataset_clean as dsc
+from sklearn.preprocessing import OneHotEncoder
+import time
+from lightfm.evaluation import reciprocal_rank
+
 
 def get_rec_matrix(df_train, df_test, **kwargs):
     # Parse parameters
@@ -14,19 +20,29 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     ncomponents = kwargs.get('ncomponents', 10)
     lossfunction = kwargs.get('lossfunction', 'warp-kos')
     mfk = kwargs.get('mfk', 200)
+    hotel_prices_file = kwargs.get('file_metadata', None)
     subm_csv = 'submission_matrixfactorization.csv'
-    list_actions = kwargs.get('actions', "")
-    actions_w = kwargs.get('actions_w', "")
-    # Select only a portion of dataset for testing purpose
+    list_actions = kwargs.get('actions', None)
+    actions_w = kwargs.get('actions_w', None)
+
+    #df_train = df_train.head(10000)
+    #df_test = df_test.head(1000)
+    # Clean the dataset
     df_train = f.get_interaction_actions(df_train, actions = list_actions)
     df_test_cleaned = f.get_interaction_actions(df_test, actions = list_actions, clean_null = True)
     df_test_cleaned = remove_null_clickout(df_test_cleaned)
     df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
+    #df_train = dsc.clean_no_clickout_session(df_train)
     df_test_user, df_test_nation = split_one_action(df_test)
-    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w)
+    if hotel_prices_file != None:
+        hotel_features = get_hotel_prices(hotel_prices_file, df_train)
+    else:
+        hotel_features = None
+    #df_out_user, df_missed = generate_prediction_per_user_with_loss(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features)
+    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features)
     #df_out_user = pd.DataFrame()
     #df_missed = pd.DataFrame()
-    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w)
+    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, item_features = hotel_features)
     print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
     print(df_missed.head())
     #duplicates = df_out_user['user_id', 'session_id']][df_out_user[].isin(df_out_nation)]
@@ -38,7 +54,7 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     return df_out
 
 
-def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None):
+def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None):
 
     """
         Expected input:
@@ -53,12 +69,12 @@ def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 1
     user_dict = create_user_dict(df_interactions)
     hotel_dict = create_item_dict(df_interactions)
     interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dict, hotel_dict)
-    mf_model = runMF(interactions = interaction_matrix,k = 300, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4)
+    mf_model = runMF(interactions = interaction_matrix,k = 300, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4, item_f = item_features)
     before = df_test_user.shape[0]
     df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dict.keys()))]
     print("User missed: " + str(before - df_test_user.shape[0]))
     print('Calculate submissions per user')
-    df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dict, hotel_dict), axis=1)
+    df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dict, hotel_dict, hotel_features=item_features), axis=1)
     df_missed = df_test_user[df_test_user['item_recommendations'] == ""]
     df_test_user = df_test_user[df_test_user['item_recommendations'] != ""]
     print('No prediction for #' + str(df_missed.shape[0]) + 'users')
@@ -67,21 +83,62 @@ def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 1
 
     return df_out_user, df_missed
 
-def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None):
+def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None):
     print('Start predicting the single action clickout')
     df_interactions_nations = get_n_interaction(df_train, user_col='platform', weight_dic = action_weights)
     nation_dict = create_user_dict(df_interactions_nations, col_name='platform')
     hotel_dict = create_item_dict(df_interactions_nations)
     interaction_matrix_nation = f.create_sparse_interaction_matrix(df_interactions_nations, nation_dict, hotel_dict, user_col='platform')
-    mf_model = runMF(interactions = interaction_matrix_nation,k = mfk, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4)
+    mf_model = runMF(interactions = interaction_matrix_nation,k = mfk, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4, item_f = item_features)
     print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
     df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True)
     print('Calculate submissions per nation')
-    df_test_nation['item_recommendations'] = df_test_nation.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix_nation, x.impressions, x.platform, nation_dict, hotel_dict, complete = True), axis=1)
+    df_test_nation['item_recommendations'] = df_test_nation.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix_nation, x.impressions, x.platform, nation_dict, hotel_dict, complete = True, hotel_features=item_features), axis=1)
     df_missed = df_test_nation[df_test_nation['item_recommendations'] == ""]
     print('No prediction for #' + str(df_missed.shape[0]) + 'items')
     df_out_nation = df_test_nation[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
     return df_out_nation, df_missed
+
+def generate_prediction_per_user_with_loss(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None):
+    print('Start predicting item for user')
+    df_interactions = get_n_interaction(df_train, weight_dic = action_weights)
+    user_dict = create_user_dict(df_interactions)
+    hotel_dict = create_item_dict(df_interactions)
+    slice_int = int(0.2*df_interactions.shape[0])
+    df_validation_interactions = df_interactions.iloc[:slice_int, :]
+    df_train_interactions = df_interactions.iloc[slice_int:, :]
+    interaction_matrix = f.create_sparse_interaction_matrix(df_train_interactions, user_dict, hotel_dict)
+    sparse_test_matrix = generate_test_sparse_matrix(df_validation_interactions, user_dict, hotel_dict)
+    mf_model = runMF_loss(interaction_matrix, sparse_test_matrix, k = mfk, n_components = n_comp, loss = lossf, epochs = epochs, n_jobs = 4, item_f = item_features)
+    before = df_test_user.shape[0]
+    df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dict.keys()))]
+    print("User missed: " + str(before - df_test_user.shape[0]))
+    print('Calculate submissions per user')
+    df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dict, hotel_dict, hotel_features=item_features), axis=1)
+    df_missed = df_test_user[df_test_user['item_recommendations'] == ""]
+    df_test_user = df_test_user[df_test_user['item_recommendations'] != ""]
+    print('No prediction for #' + str(df_missed.shape[0]) + 'users')
+    print(df_missed.head())
+    df_out_user = df_test_user[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+
+    return df_out_user, df_missed
+
+def generate_test_sparse_matrix(df, user_dict, item_dict):
+    df['present'] = 1
+    list_user = list(df['user_id'])
+    list_item = list(df['reference'])
+    list_data = list(df['present'])
+    n_user = len(user_dict)
+    n_item = len(item_dict)
+    # Convert each list of string in a list of indexes
+    list_items = list(map(lambda x: item_dict[x], list_item))
+    list_user = list(map(lambda x: user_dict[x], list_user))
+    # Generate the sparse matrix
+    row = np.array(list_user)
+    col = np.array(list_items)
+    data = np.array(list_data)
+    csr = csr_matrix((data, (row, col)), shape=(n_user, n_item))
+    return csr
 
 def remove_null_clickout(df):
     """
@@ -89,6 +146,70 @@ def remove_null_clickout(df):
     """
     df = df.drop(df[(df['action_type'] == "clickout item") & (df['reference'].isnull())].index)
     return df
+def generate_prices_sparse_matrix(df, features_col='intervals'):
+    df['present'] = 1
+    hotel_dict = create_item_dict(df) #Controllare che sia uguale all'altro dizionario
+    feature_dict = create_item_dict(df, col_name='feature')
+    list_hotel = list(df['reference'])
+    list_features = list(df['feature'])
+    list_data = list(df['present'])
+    n_items = len(list_hotel)
+    n_features = len(list_features)
+    # Convert each list of string in a list of indexes
+    list_items = list(map(lambda x: hotel_dict[x], list_hotel))
+    list_features = list(map(lambda x: feature_dict[x], list_features))
+    # Generate the sparse matrix
+    row = np.array(list_items)
+    col = np.array(list_features)
+    data = np.array(list_data)
+    csr = csr_matrix((data, (row, col)), shape=(n_items, n_features))
+
+    return csr
+def get_hotel_prices(metadata_file, interactions, n_categories = 2000):
+    """
+    Required Input -
+        - metadata_file = file with the average price for each hotel
+    """
+    print("Reading metadata: " + metadata_file)
+    df_metadata = pd.read_csv(metadata_file)
+    df_metadata['prices'] = df_metadata['prices'].apply(lambda x: math.log10(x))
+    # Define the range
+    max_price = df_metadata['prices'].max()
+    min_price = df_metadata['prices'].min()
+    range = (max_price - min_price) / n_categories
+    # Generate the classes
+    df_metadata['intervals'] = pd.cut(df_metadata['prices'], bins=np.arange(min_price,max_price,range))
+    df_metadata.loc[:, 'intervals'] = df_metadata['intervals'].apply(str)
+    #classes_dic = create_user_dict(df_metadata, col_name = 'intervals')
+    #df_metadata.loc[:, 'intervals'] = df_metadata['intervals'].apply(lambda x : classes_dic.get(x))
+    #df_metadata.loc[:, 'intervals'] = df_metadata['intervals'].apply(int)
+    # Create a dictionary of item_id -> price_category
+    price_dic = pd.Series(df_metadata.intervals.values,index=df_metadata.impressions).to_dict()
+    """
+    items = list(interactions['reference'].drop_duplicates().apply(int).values)
+    item_cat = map(price_dic.get, items)
+
+    list_items_category = np.array(list(item_cat))
+    """
+    interactions = get_n_interaction(interactions)
+    print('# Of items: ' + str(interactions.shape[0]))
+    interactions.loc[:, 'reference'] = interactions['reference'].apply(int)
+    interactions.loc[:, 'feature'] = interactions['reference'].apply(lambda x : price_dic.get(x))
+    interactions['feature'] = interactions['feature'].fillna('no_cat')
+    s_matrix = generate_prices_sparse_matrix(interactions)
+
+    """
+    list_items_category = np.array(list(interactions['reference'].values))
+    rows = np.arange(len(list_items_category))
+    cols = np.repeat(0, len(list_items_category))
+    data = np.array(list_items_category).astype('int64')
+    ifeatures = csr_matrix((data, (rows, cols)), shape=(len(list_items_category), 1))
+    """
+
+    return s_matrix
+
+
+
 
 def split_one_action(df_test):
     """
@@ -117,18 +238,20 @@ def get_n_interaction(df, user_col='user_id', weight_dic = None):
     # If no weight is specified -> All actions have the same weight
     print('Get number of occurrences for each pair (user,item)')
     if(weight_dic == None):
+        print(df.head())
         df = df[[user_col,'reference']]
         df = (
             df
             .groupby([user_col, "reference"])
-            .sum()
+            .size()
             .reset_index(name="n_interactions")
         )
+        print(df.head())
     else:
         df = df.replace({'action_type': weight_dic})
         #df['n_interactions'] = df.apply(lambda x : weight_dic[x.action_type], axis=1)
         df = df[[user_col,'reference', 'action_type']]
-        df = df.groupby([user_col, "reference"])['action_type'].sum().reset_index(name="n_interactions")
+        df = df.groupby([user_col, "reference"])['action_type'].agg('sum').reset_index(name='n_interactions')
 
     print('First elements of the matrix')
     print(df.head())
@@ -147,7 +270,7 @@ def get_single_actions(df):
     df = df[(df['action_type'] == "clickout item") & (df['step'] == 1) & (df['reference'].isnull())]
     return df
 
-def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4):
+def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4, item_f = None):
     '''
     Function to run matrix-factorization algorithm
     Required Input -
@@ -163,6 +286,40 @@ def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4)
     #x = sparse.csr_matrix(interactions.values)
     model = LightFM(no_components= n_components, loss=loss, k=k, learning_schedule='adadelta', learning_rate=0.5)
     model.fit(interactions,epochs=epoch,num_threads = n_jobs)
+    return model
+
+def runMF_loss(interactions, test_interactions, n_components=30, loss='warp', k=15, epochs=30, n_jobs = 4, item_f = None):
+    '''
+    Function to run matrix-factorization algorithm
+    Required Input -
+        - interactions = dataset create by create_interaction_matrix
+        - n_components = number of embeddings you want to create to define Item and user
+        - loss = loss function other options are logistic, brp
+        - epoch = number of epochs to run 
+        - n_jobs = number of cores used for execution 
+    Expected Output  -
+        Model - Trained model
+    '''
+    print('Starting building a model')
+    #x = sparse.csr_matrix(interactions.values)
+    warp_duration = []
+    warp_mrr = []
+    model = LightFM(no_components= n_components, loss=loss, k=k, learning_schedule='adadelta', learning_rate=0.5)
+    for epoch in range(epochs):
+        start = time.time()
+        model.fit_partial(interactions, epochs=1, num_threads = n_jobs)
+        warp_duration.append(time.time() - start)
+        print('Start calculating the score for the epoch')
+        mrr = reciprocal_rank(model, test_interactions, train_interactions=interactions, num_threads=n_jobs).mean()
+        print('Epoch #' + str(epoch) + ' MRR: ' + str(mrr))
+        warp_mrr.append(mrr)
+        
+
+    x = np.arange(epochs)
+    plt.plot(x, np.array(warp_mrr))
+    plt.legend(['WARP MRR'], loc='upper right')
+    plt.show()
+
     return model
 
 def create_user_dict(interactions, col_name='user_id'):
@@ -198,7 +355,7 @@ def create_item_dict(interactions, col_name='reference'):
     return item_dict
 
 
-def sample_recommendation_user(model, interactions, impressions, user_id, user_dict, item_dict, complete=False):
+def sample_recommendation_user(model, interactions, impressions, user_id, user_dict, item_dict, hotel_features = None, complete=False):
     '''
     Function to produce user recommendations
     Required Input - 

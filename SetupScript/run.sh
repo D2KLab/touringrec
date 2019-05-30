@@ -1,0 +1,8 @@
+python Setup.py --algorithm matrixfactorization --epochs 200 --ncomponents 200 --lossfunction warp --mfk 300 --train train.csv --test test.csv --gt gt.csv --localscore 1
+python Setup.py --algorithm matrixfactorization --epochs 200 --ncomponents 200 --lossfunction warp-kos --mfk 300 --train train.csv --test test.csv --gt gt.csv --localscore 1
+python Setup.py --algorithm matrixfactorization --epochs 200 --ncomponents 200 --lossfunction warp-kos --mfk 300 --train train.csv --test test.csv --gt gt.csv --localscore 1 --metadata hotel_prices.csv
+python Setup.py --algorithm matrixfactorization --epochs 200 --ncomponents 200 --lossfunction warp --mfk 300 --train train.csv --test test.csv --gt gt.csv --localscore 1 --metadata hotel_prices.csv
+python Setup.py --algorithm matrixfactorization --epochs 200 --ncomponents 200 --lossfunction bpr --mfk 300 --train train.csv --test test.csv --gt gt.csv --localscore 1 --metadata hotel_prices.csv
+python Setup.py --algorithm matrixfactorization --epochs 200 --ncomponents 200 --lossfunction logistic --mfk 300 --train train.csv --test test.csv --gt gt.csv --localscore 1 --metadata hotel_prices.csv
+python Setup.py --algorithm matrixfactorization --epochs 200 --ncomponents 200 --lossfunction warp-kos --mfk 300 --train train.csv --test test.csv --gt gt.csv --localscore 1 --metadata hotel_prices.csv --actions "clickout item 1" "interaction item rating 1" "search for item 10" "interaction item image 1" "interaction item deals 1" "interaction item info 1"
+python Setup.py --algorithm matrixfactorization --epochs 200 --ncomponents 200 --lossfunction warp-kos --mfk 300 --train train_off.csv --test test_off.csv --gt gt.csv --localscore 0 --metadata hotel_prices.csv
