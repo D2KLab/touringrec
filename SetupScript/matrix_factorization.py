@@ -23,6 +23,8 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     subm_csv = 'submission_matrixfactorization.csv'
     list_actions = kwargs.get('actions', None)
     actions_w = kwargs.get('actions_w', None)
+    df_train = df_train.head(10000)
+    df_test = df_test.head(1000)
 
     # Clean the dataset
     df_train = f.get_interaction_actions(df_train, actions = list_actions)
@@ -32,17 +34,23 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     df_test_user = f.get_submission_target(df_test)
     
     u_features, user_dict, nation_dict = generate_user_features(df_train)
+    df_test_user, df_test_nation = split_one_action(df_test)
 
     if hotel_prices_file != None:
         hotel_features, hotel_dict = get_hotel_prices(hotel_prices_file, df_train)
     else:
         hotel_features = None
     #df_out_user, df_missed = generate_prediction_per_user_with_loss(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features)
-    df_out, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features, user_features = u_features, nation_dic = nation_dict, hotel_dic = hotel_dict, user_dic = user_dict)
+    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features, user_features = u_features, nation_dic = nation_dict, hotel_dic = hotel_dict, user_dic = user_dict)
 
     print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
     print(df_missed.head())
 
+    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, item_features = hotel_features, nation_dict = nation_dict, hotel_dict = hotel_dict)
+    print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
+    print(df_missed.head())
+
+    df_out = pd.concat([df_out_user, df_out_nation], ignore_index=True)
     print(f"Writing {subm_csv}...")
     df_out.to_csv(subm_csv, index=False)
     return df_out
@@ -122,6 +130,20 @@ def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 1
 
     return df_out_user, df_missed
 
+def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None, nation_dict = None, hotel_dict = None):
+    print('Start predicting the single action clickout')
+    df_interactions_nations = get_n_interaction(df_train, user_col='platform', weight_dic = action_weights)
+    interaction_matrix_nation = f.create_sparse_interaction_matrix(df_interactions_nations, nation_dict, hotel_dict, user_col='platform')
+    mf_model = runMF(interactions = interaction_matrix_nation,k = mfk, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4, item_f = item_features)
+    print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
+    df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True)
+    print('Calculate submissions per nation')
+    df_test_nation['item_recommendations'] = df_test_nation.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix_nation, x.impressions, x.platform, nation_dict, hotel_dict, complete = True, hotel_features=item_features), axis=1)
+    df_missed = df_test_nation[df_test_nation['item_recommendations'] == ""]
+    print('No prediction for #' + str(df_missed.shape[0]) + 'items')
+    df_out_nation = df_test_nation[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+    return df_out_nation, df_missed
+
 def get_similar_tags(model, tag_id):
     # Define similarity as the cosine of the angle
     # between the tag latent vectors
@@ -143,6 +165,7 @@ def remove_null_clickout(df):
     """
     df = df.drop(df[(df['action_type'] == "clickout item") & (df['reference'].isnull())].index)
     return df
+
 def generate_prices_sparse_matrix(df, features_col='intervals'):
     df['present'] = 1
     hotel_dict = create_item_dict(df) #Controllare che sia uguale all'altro dizionario
@@ -380,7 +403,8 @@ def sample_recommendation_user(model, interactions, impressions, user_id, user_d
             item_missed.append(item)
     if(len(encoded_item) == 0):
         if(complete):
-            hotel_rec = f.list_to_space_string(items_to_predict)
+            complete_prediction = list(map(str, items_to_predict))
+            hotel_rec = f.list_to_space_string(complete_prediction)
         else:
             hotel_rec = ""
     else:
