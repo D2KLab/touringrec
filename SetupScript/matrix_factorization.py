@@ -417,3 +417,4 @@ def sample_recommendation_user(model, interactions, impressions, user_id, user_d
         hotel_rec = f.list_to_space_string(sorted_items)
     
     return hotel_rec
+    
