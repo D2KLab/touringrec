@@ -5,11 +5,18 @@ import math
 MERGE_COLS = ["user_id", "session_id", "timestamp", "step"]
 
 def best_score(row):
-    mf_rec_list = row.item_recommendations_mf.split(' ')
-    rnn_rec_list = row.item_recommendations_rnn.split(' ')
     gt = row.reference
-    mf_pos = mf_rec_list.index(gt) + 1
-    rnn_pos = rnn_rec_list.index(gt) + 1
+    if(row.item_recommendations_mf != ''):
+        mf_rec_list = row.item_recommendations_mf.split(' ')
+        mf_pos = mf_rec_list.index(gt) + 1
+    else:
+        mf_pos = 999
+    if(row.item_recommendations_rnn != ''):
+        rnn_rec_list = row.item_recommendations_rnn.split(' ')
+        rnn_pos = rnn_rec_list.index(gt) + 1
+    else:
+        rnn_pos = 999
+
     best_pos = min(mf_pos, rnn_pos)
     score = 1/best_pos
 
@@ -21,8 +28,8 @@ df_rnn = pd.read_csv('submission_RNN.csv')
 df_gt = pd.read_csv('gt.csv')
 df_mf = df_mf[MERGE_COLS + ['item_recommendations']]
 # Clean step 1
-df_mf = df_mf[df_mf['step'] != 1]
-df_mf = df_mf[df_mf['user_id'] != '764BG6TC2QGT']
+#df_mf = df_mf[df_mf['step'] != 1]
+#df_mf = df_mf[df_mf['user_id'] != '764BG6TC2QGT']
 df_rnn = df_rnn[MERGE_COLS + ['item_recommendations']]
 df_gt = df_gt[MERGE_COLS + ['reference']]
 
@@ -41,6 +48,8 @@ df_merged = (
            right_on=MERGE_COLS,
            how="left")
     )
+#df_merged = df_merged.dropna()
+df_merged = df_merged.fillna('')
 print(df_merged)
 df_merged = df_merged.apply(lambda x : best_score(x), axis=1)
 print(df_merged)
