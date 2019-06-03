@@ -55,7 +55,7 @@ def create_sparse_interaction_matrix(df, user_dict, item_dict, user_col = 'user_
             - Sparse COO matrix with interactions 
     '''
     list_users = list(df[user_col])
-    list_items = list(map(int,list(df[item_col])))
+    list_items = list(df[item_col])
     list_data = list(df[data_col])
     n_user = len(user_dict)
     n_items = len(item_dict)

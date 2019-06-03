@@ -13,6 +13,7 @@ from sklearn.preprocessing import OneHotEncoder
 import time
 from lightfm.evaluation import reciprocal_rank
 
+
 def get_rec_matrix(df_train, df_test, **kwargs):
     # Parse parameters
     epochs = kwargs.get('epochs', 10)
@@ -24,62 +25,36 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     list_actions = kwargs.get('actions', None)
     actions_w = kwargs.get('actions_w', None)
 
+    #df_train = df_train.head(10000)
+    #df_test = df_test.head(1000)
     # Clean the dataset
     df_train = f.get_interaction_actions(df_train, actions = list_actions)
     df_test_cleaned = f.get_interaction_actions(df_test, actions = list_actions, clean_null = True)
     df_test_cleaned = remove_null_clickout(df_test_cleaned)
     df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
-    df_test_user = f.get_submission_target(df_test)
-    
-    u_features, user_dict, nation_dict = generate_user_features(df_train)
-
+    #df_train = dsc.clean_no_clickout_session(df_train)
+    df_test_user, df_test_nation = split_one_action(df_test)
     if hotel_prices_file != None:
-        hotel_features, hotel_dict = get_hotel_prices(hotel_prices_file, df_train)
+        hotel_features = get_hotel_prices(hotel_prices_file, df_train)
     else:
         hotel_features = None
     #df_out_user, df_missed = generate_prediction_per_user_with_loss(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features)
-    df_out, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features, user_features = u_features, nation_dic = nation_dict, hotel_dic = hotel_dict, user_dic = user_dict)
-
+    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features)
+    #df_out_user = pd.DataFrame()
+    #df_missed = pd.DataFrame()
+    df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, item_features = hotel_features)
     print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
     print(df_missed.head())
-
+    #duplicates = df_out_user['user_id', 'session_id']][df_out_user[].isin(df_out_nation)]
+    #print('There are #' + str(duplicates.shape[0]) + ' items with duplicate predictions')
+    #print(duplicates.head())
+    df_out = pd.concat([df_out_user, df_out_nation], ignore_index=True)
     print(f"Writing {subm_csv}...")
     df_out.to_csv(subm_csv, index=False)
     return df_out
 
 
-def generate_user_features(df):
-    df['present'] = 1
-    starting_user = df.shape[0]
-    df_user_features = df.drop_duplicates(subset='user_id', keep='first')
-    print('# of duplicates: ' + str(starting_user - df_user_features.shape[0]))
-    df_user_features = df_user_features[['user_id', 'platform', 'present']]
-    print('First elements of the dataset')
-    print(df_user_features.head())
-    print('Create dictionaries')
-    user_dict = create_user_dict(df_user_features) #Controllare che sia uguale all'altro dizionario
-    nation_dict = create_item_dict(df_user_features, col_name='platform')
-
-    list_user = list(df_user_features['user_id'])
-    list_nations = list(df_user_features['platform'])
-    list_data = list(df_user_features['present'])
-    n_user = len(user_dict)
-    n_nations = len(nation_dict)
-    # Convert each list of string in a list of indexes
-    list_user = list(map(lambda x: user_dict[x], list_user))
-    list_nations = list(map(lambda x: nation_dict[x], list_nations))
-    # Generate the sparse matrix
-    row = np.array(list_user)
-    col = np.array(list_nations)
-    data = np.array(list_data)
-    csr = csr_matrix((data, (row, col)), shape=(n_user, n_nations))
-    print(csr.toarray())
-
-    return csr, user_dict, nation_dict
-
-
-
-def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None, user_features = None, nation_dic = None, hotel_dic = None, user_dic = None):
+def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None):
 
     """
         Expected input:
@@ -90,30 +65,16 @@ def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 1
             - df_missed 
     """
     print('Start predicting item for user')
-    #Create user dictionary
     df_interactions = get_n_interaction(df_train, weight_dic = action_weights)
-    if user_dic == None:
-        user_dic = create_user_dict(df_interactions)
-    if hotel_dic == None:
-        hotel_dic = create_item_dict(df_interactions)
-    interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dic, hotel_dic)
-    mf_model = runMF(interactions = interaction_matrix,k = 300, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4, item_f = item_features, user_f = user_features)
-    """
-    for tag in (u'AU', u'BR', u'GB'):
-        tag_id = nation_dic.get(tag)
-        similars = get_similar_tags(mf_model, tag_id)
-        print('Similar tag for ' + tag)
-        for tid in similars:
-            # Iterating over values 
-            for nat, id in nation_dic.items(): 
-                if (id == tid):
-                    print(nat, ":", id) 
-    """
+    user_dict = create_user_dict(df_interactions)
+    hotel_dict = create_item_dict(df_interactions)
+    interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dict, hotel_dict)
+    mf_model = runMF(interactions = interaction_matrix,k = 300, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4, item_f = item_features)
     before = df_test_user.shape[0]
-    df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dic.keys()))]
+    df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dict.keys()))]
     print("User missed: " + str(before - df_test_user.shape[0]))
     print('Calculate submissions per user')
-    df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dic, hotel_dic, hotel_features=item_features), axis=1)
+    df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dict, hotel_dict, hotel_features=item_features), axis=1)
     df_missed = df_test_user[df_test_user['item_recommendations'] == ""]
     df_test_user = df_test_user[df_test_user['item_recommendations'] != ""]
     print('No prediction for #' + str(df_missed.shape[0]) + 'users')
@@ -122,20 +83,62 @@ def generate_prediction_per_user(df_train, df_test_user, epochs = 30, n_comp = 1
 
     return df_out_user, df_missed
 
-def get_similar_tags(model, tag_id):
-    # Define similarity as the cosine of the angle
-    # between the tag latent vectors
+def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None):
+    print('Start predicting the single action clickout')
+    df_interactions_nations = get_n_interaction(df_train, user_col='platform', weight_dic = action_weights)
+    nation_dict = create_user_dict(df_interactions_nations, col_name='platform')
+    hotel_dict = create_item_dict(df_interactions_nations)
+    interaction_matrix_nation = f.create_sparse_interaction_matrix(df_interactions_nations, nation_dict, hotel_dict, user_col='platform')
+    mf_model = runMF(interactions = interaction_matrix_nation,k = mfk, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4, item_f = item_features)
+    print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
+    df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True)
+    print('Calculate submissions per nation')
+    df_test_nation['item_recommendations'] = df_test_nation.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix_nation, x.impressions, x.platform, nation_dict, hotel_dict, complete = True, hotel_features=item_features), axis=1)
+    df_missed = df_test_nation[df_test_nation['item_recommendations'] == ""]
+    print('No prediction for #' + str(df_missed.shape[0]) + 'items')
+    df_out_nation = df_test_nation[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+    return df_out_nation, df_missed
 
-    # Normalize the vectors to unit length
-    tag_embeddings = (model.user_embeddings.T
-                      / np.linalg.norm(model.user_embeddings, axis=1)).T
+def generate_prediction_per_user_with_loss(df_train, df_test_user, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None):
+    print('Start predicting item for user')
+    df_interactions = get_n_interaction(df_train, weight_dic = action_weights)
+    user_dict = create_user_dict(df_interactions)
+    hotel_dict = create_item_dict(df_interactions)
+    slice_int = int(0.2*df_interactions.shape[0])
+    df_validation_interactions = df_interactions.iloc[:slice_int, :]
+    df_train_interactions = df_interactions.iloc[slice_int:, :]
+    interaction_matrix = f.create_sparse_interaction_matrix(df_train_interactions, user_dict, hotel_dict)
+    sparse_test_matrix = generate_test_sparse_matrix(df_validation_interactions, user_dict, hotel_dict)
+    mf_model = runMF_loss(interaction_matrix, sparse_test_matrix, k = mfk, n_components = n_comp, loss = lossf, epochs = epochs, n_jobs = 4, item_f = item_features)
+    before = df_test_user.shape[0]
+    df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dict.keys()))]
+    print("User missed: " + str(before - df_test_user.shape[0]))
+    print('Calculate submissions per user')
+    df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dict, hotel_dict, hotel_features=item_features), axis=1)
+    df_missed = df_test_user[df_test_user['item_recommendations'] == ""]
+    df_test_user = df_test_user[df_test_user['item_recommendations'] != ""]
+    print('No prediction for #' + str(df_missed.shape[0]) + 'users')
+    print(df_missed.head())
+    df_out_user = df_test_user[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
 
-    query_embedding = tag_embeddings[tag_id]
-    similarity = np.dot(tag_embeddings, query_embedding)
-    most_similar = np.argsort(-similarity)[1:4]
+    return df_out_user, df_missed
 
-    return most_similar
-
+def generate_test_sparse_matrix(df, user_dict, item_dict):
+    df['present'] = 1
+    list_user = list(df['user_id'])
+    list_item = list(df['reference'])
+    list_data = list(df['present'])
+    n_user = len(user_dict)
+    n_item = len(item_dict)
+    # Convert each list of string in a list of indexes
+    list_items = list(map(lambda x: item_dict[x], list_item))
+    list_user = list(map(lambda x: user_dict[x], list_user))
+    # Generate the sparse matrix
+    row = np.array(list_user)
+    col = np.array(list_items)
+    data = np.array(list_data)
+    csr = csr_matrix((data, (row, col)), shape=(n_user, n_item))
+    return csr
 
 def remove_null_clickout(df):
     """
@@ -161,7 +164,7 @@ def generate_prices_sparse_matrix(df, features_col='intervals'):
     data = np.array(list_data)
     csr = csr_matrix((data, (row, col)), shape=(n_items, n_features))
 
-    return csr, hotel_dict
+    return csr
 def get_hotel_prices(metadata_file, interactions, n_categories = 2000):
     """
     Required Input -
@@ -169,13 +172,13 @@ def get_hotel_prices(metadata_file, interactions, n_categories = 2000):
     """
     print("Reading metadata: " + metadata_file)
     df_metadata = pd.read_csv(metadata_file)
-    df_metadata['price'] = df_metadata['price'].apply(lambda x: math.log10(x))
+    df_metadata['prices'] = df_metadata['prices'].apply(lambda x: math.log10(x))
     # Define the range
-    max_price = df_metadata['price'].max()
-    min_price = df_metadata['price'].min()
+    max_price = df_metadata['prices'].max()
+    min_price = df_metadata['prices'].min()
     range = (max_price - min_price) / n_categories
     # Generate the classes
-    df_metadata['intervals'] = pd.cut(df_metadata['price'], bins=np.arange(min_price,max_price,range))
+    df_metadata['intervals'] = pd.cut(df_metadata['prices'], bins=np.arange(min_price,max_price,range))
     df_metadata.loc[:, 'intervals'] = df_metadata['intervals'].apply(str)
     #classes_dic = create_user_dict(df_metadata, col_name = 'intervals')
     #df_metadata.loc[:, 'intervals'] = df_metadata['intervals'].apply(lambda x : classes_dic.get(x))
@@ -193,7 +196,7 @@ def get_hotel_prices(metadata_file, interactions, n_categories = 2000):
     interactions.loc[:, 'reference'] = interactions['reference'].apply(int)
     interactions.loc[:, 'feature'] = interactions['reference'].apply(lambda x : price_dic.get(x))
     interactions['feature'] = interactions['feature'].fillna('no_cat')
-    s_matrix, hotel_dic = generate_prices_sparse_matrix(interactions)
+    s_matrix = generate_prices_sparse_matrix(interactions)
 
     """
     list_items_category = np.array(list(interactions['reference'].values))
@@ -203,7 +206,7 @@ def get_hotel_prices(metadata_file, interactions, n_categories = 2000):
     ifeatures = csr_matrix((data, (rows, cols)), shape=(len(list_items_category), 1))
     """
 
-    return s_matrix, hotel_dic
+    return s_matrix
 
 
 
@@ -267,7 +270,7 @@ def get_single_actions(df):
     df = df[(df['action_type'] == "clickout item") & (df['step'] == 1) & (df['reference'].isnull())]
     return df
 
-def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4, item_f = None, user_f = None):
+def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4, item_f = None):
     '''
     Function to run matrix-factorization algorithm
     Required Input -
@@ -281,8 +284,8 @@ def runMF(interactions, n_components=30, loss='warp', k=15, epoch=30,n_jobs = 4,
     '''
     print('Starting building a model')
     #x = sparse.csr_matrix(interactions.values)
-    model = LightFM(no_components= n_components, loss=loss, k=k, learning_schedule='adadelta', learning_rate=0.5, user_alpha=1e-6)
-    model.fit(interactions,epochs=epoch,num_threads = n_jobs, item_features=item_f)
+    model = LightFM(no_components= n_components, loss=loss, k=k, learning_schedule='adadelta', learning_rate=0.5)
+    model.fit(interactions,epochs=epoch,num_threads = n_jobs)
     return model
 
 def runMF_loss(interactions, test_interactions, n_components=30, loss='warp', k=15, epochs=30, n_jobs = 4, item_f = None):
@@ -352,7 +355,7 @@ def create_item_dict(interactions, col_name='reference'):
     return item_dict
 
 
-def sample_recommendation_user(model, interactions, impressions, user_id, user_dict, item_dict, hotel_features = None, user_nations = None, complete=False):
+def sample_recommendation_user(model, interactions, impressions, user_id, user_dict, item_dict, hotel_features = None, complete=False):
     '''
     Function to produce user recommendations
     Required Input - 
@@ -365,7 +368,6 @@ def sample_recommendation_user(model, interactions, impressions, user_id, user_d
     '''
     user_x = user_dict[user_id]
     items_to_predict = impressions.split('|')
-    items_to_predict = list(map(int, items_to_predict))
     # Create a dictionary with key=item_id, value=score
     item_missed = []
     
@@ -384,12 +386,12 @@ def sample_recommendation_user(model, interactions, impressions, user_id, user_d
         else:
             hotel_rec = ""
     else:
-        scores = model.predict(user_x, encoded_item, item_features=hotel_features)
+        scores = model.predict(user_x, encoded_item)
         hotel_dic = dict(zip(decoded_item, scores))
+        for i in item_missed: #Set score 0 for the missed hotels -> To improve with another system
+            hotel_dic[i] = -10
         sorted_x = sorted(hotel_dic.items(), key=operator.itemgetter(1), reverse = True)
         sorted_items = list(map(lambda x:x[0], sorted_x))
-        sorted_items = sorted_items + item_missed
-        sorted_items = list(map(str, sorted_items))
         hotel_rec = f.list_to_space_string(sorted_items)
     
     return hotel_rec
