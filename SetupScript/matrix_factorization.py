@@ -13,23 +13,15 @@ from sklearn.preprocessing import OneHotEncoder
 import time
 from lightfm.evaluation import reciprocal_rank
 
-def get_rec_matrix(df_train, df_test, **kwargs):
-    # Parse parameters
-    epochs = kwargs.get('epochs', 10)
-    ncomponents = kwargs.get('ncomponents', 10)
-    lossfunction = kwargs.get('lossfunction', 'warp-kos')
-    mfk = kwargs.get('mfk', 200)
+def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
+
     hotel_prices_file = kwargs.get('file_metadata', None)
     subm_csv = 'submission_matrixfactorization.csv'
-    list_actions = kwargs.get('actions', None)
-    actions_w = kwargs.get('actions_w', None)
-    l_rate = kwargs.get('l_rate', 0.5)
-    #df_train = df_train.head(10000)
-    #df_test = df_test.head(1000)
+
 
     # Clean the dataset
-    df_train = f.get_interaction_actions(df_train, actions = list_actions)
-    df_test_cleaned = f.get_interaction_actions(df_test, actions = list_actions, clean_null = True)
+    df_train = f.get_interaction_actions(df_train, actions = parameters.listactions)
+    df_test_cleaned = f.get_interaction_actions(df_test, actions = parameters.listactions, clean_null = True)
     df_test_cleaned = remove_null_clickout(df_test_cleaned)
     df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
     df_test_user = f.get_submission_target(df_test)
@@ -42,7 +34,7 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     else:
         hotel_features = None
 
-    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, epochs = epochs, learning_rate = l_rate, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, action_weights = actions_w, item_features = hotel_features, user_features = u_features, nation_dic = nation_dict, hotel_dic = hotel_dict, user_dic = user_dict)
+    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, parameters, item_features = hotel_features, user_features = u_features, nation_dic = nation_dict, hotel_dic = hotel_dict, user_dic = user_dict)
 
     print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
     print(df_missed.head())
@@ -103,7 +95,7 @@ def generate_user_features(df):
 
 
 
-def generate_prediction_per_user(df_train, df_test_user, learning_rate = 0.5, epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None, user_features = None, nation_dic = None, hotel_dic = None, user_dic = None):
+def generate_prediction_per_user(df_train, df_test_user, params, item_features = None, user_features = None, nation_dic = None, hotel_dic = None, user_dic = None):
 
     """
         Expected input:
@@ -115,13 +107,13 @@ def generate_prediction_per_user(df_train, df_test_user, learning_rate = 0.5, ep
     """
     print('Start predicting item for user')
     #Create user dictionary
-    df_interactions = get_n_interaction(df_train, weight_dic = action_weights)
+    df_interactions = get_n_interaction(df_train, weight_dic = params.actionsweights)
     if user_dic == None:
         user_dic = create_user_dict(df_interactions)
     if hotel_dic == None:
         hotel_dic = create_item_dict(df_interactions)
     interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dic, hotel_dic)
-    mf_model = runMF(interactions = interaction_matrix,k = 300, l_rate=learning_rate, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4, item_f = item_features, user_f = user_features)
+    mf_model = runMF(interaction_matrix, params, n_jobs = 4, item_f = item_features, user_f = user_features)
     """
     for tag in (u'AU', u'BR', u'GB'):
         tag_id = nation_dic.get(tag)
@@ -306,7 +298,7 @@ def get_single_actions(df):
     df = df[(df['action_type'] == "clickout item") & (df['step'] == 1) & (df['reference'].isnull())]
     return df
 
-def runMF(interactions, n_components=30, l_rate = 0.5, loss='warp', k=15, epoch=30,n_jobs = 4, item_f = None, user_f = None):
+def runMF(interactions, params, n_jobs = 4, item_f = None, user_f = None):
     '''
     Function to run matrix-factorization algorithm
     Required Input -
@@ -320,8 +312,8 @@ def runMF(interactions, n_components=30, l_rate = 0.5, loss='warp', k=15, epoch=
     '''
     print('Starting building a model')
     #x = sparse.csr_matrix(interactions.values)
-    model = LightFM(no_components= n_components, loss=loss, k=k, learning_schedule='adadelta', learning_rate=l_rate, user_alpha=1e-6, item_alpha=1e-6)
-    model.fit(interactions,epochs=epoch,num_threads = n_jobs, item_features=item_f)
+    model = LightFM(no_components= params.ncomponents, loss=params.lossfunction, k=params.mfk, learning_schedule=params.learningschedule, learning_rate=params.learningrate, user_alpha=1e-6, item_alpha=1e-6)
+    model.fit(interactions,epochs=params.epochs,num_threads = n_jobs, item_features=item_f)
     return model
 
 def runMF_loss(interactions, test_interactions, n_components=30, loss='warp', k=15, epochs=30, n_jobs = 4, item_f = None):
