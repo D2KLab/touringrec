@@ -18,10 +18,11 @@ parser.add_argument('--train', action="store", type=str, help="--train train.csv
 parser.add_argument('--test', action="store", type=str, help="--test test.csv")
 parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
 parser.add_argument('--metadata', action="store", type=str, help="Define the metadata file")
-parser.add_argument('--localscore', action="store", type=int, help="0 -> Local score, 1 -> Official score")
+parser.add_argument('--localscore', action="store", type=int, help="0 -> Official score, 1 -> Local score")
 parser.add_argument('--epochs', action="store", type=int, help="Define the number of epochs")
 parser.add_argument('--ncomponents', action='store', type=int, help='MF: number of components')
 parser.add_argument('--lossfunction', action='store', type=str, help='MF: define the loss function')
+parser.add_argument('--learningrate', action='store', type=int, help='MF: define the loss function')
 parser.add_argument('--mfk', action='store', type=int, help='MF: parameter K')
 parser.add_argument('--actions', nargs='+')
 
@@ -41,6 +42,7 @@ ncomponents = args.ncomponents
 lossfunction = args.lossfunction
 mfk = args.mfk
 actions = args.actions
+learningrate = args.learningrate
 
 # Convert actions in a correct list format
 list_actions = []
@@ -82,7 +84,7 @@ print("Executing the solution " + algorithm)
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
 
-df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, epochs = epochs, ncomponents = ncomponents, lossfunction = lossfunction, mfk = mfk, actions = list_actions, actions_w = actions_weights)
+df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, epochs = epochs, ncomponents = ncomponents, lossfunction = lossfunction, mfk = mfk, actions = list_actions, actions_w = actions_weights, l_rate = learningrate)
 #Computing score
 subm_csv = 'submission_' + algorithm + '.csv'
 if localscore == 1:

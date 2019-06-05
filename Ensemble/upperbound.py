@@ -23,8 +23,8 @@ def best_score(row):
     return pd.Series(index=MERGE_COLS + ['rank_mf', 'rank_rnn', 'best_score'], data=[row.user_id, row.session_id, row.timestamp, row.step, mf_pos, rnn_pos, score])
 
 
-df_mf = pd.read_csv('submission_matrixfactorization.csv')
-df_rnn = pd.read_csv('submission_RNN.csv')
+df_mf = pd.read_csv('submission_matrixfactorization_1.csv')
+df_rnn = pd.read_csv('submission_rnn_1.csv')
 df_gt = pd.read_csv('gt.csv')
 df_mf = df_mf[MERGE_COLS + ['item_recommendations']]
 # Clean step 1
@@ -54,3 +54,4 @@ print(df_merged)
 df_merged = df_merged.apply(lambda x : best_score(x), axis=1)
 print(df_merged)
 print('Score: ' + str(df_merged['best_score'].mean()))
+df_merged.to_csv('upperbound.csv')
