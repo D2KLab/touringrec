@@ -131,7 +131,7 @@ def score_submissions(subm_csv, gt_csv, objective_function):
 
     return mrr
 
-def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, subname):
+def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, subname="submission_default_name", isprint=False):
     """Return the score obtained by the net on the test dataframe"""
 
     #Creating a NaN column for item recommendations
@@ -184,7 +184,8 @@ def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, subname):
     df_sub = df_sub[mask]
 
     # Saving df_sub
-    df_sub.to_csv('./' + subname + '.csv')
+    if isprint:
+        df_sub.to_csv('./' + subname + '.csv')
 
     mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
     return mrr

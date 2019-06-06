@@ -224,7 +224,7 @@ for epoch in range(1, num_epochs + 1):
       all_losses.append(current_loss / (plot_every * len(sessions)))
       print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
       print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
-      acc = tst.test_accuracy(model, df_test, df_gt)
+      acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features,)
       print("Score: " + str(acc))
       all_acc.append(acc)
       current_loss = 0
@@ -248,7 +248,7 @@ plt.plot(all_acc)
 STEP 7: PREPARE TEST SET
 '''
 
-mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features)
+mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, param.subname, isprint=True)
 print("Final score: " + str(mrr))
 
 
