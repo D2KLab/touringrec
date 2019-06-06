@@ -61,7 +61,7 @@ def get_rec_matrix(df_train, df_test, **kwargs):
     df_out = generate_submission(df_test, df_feature_dict, df_preference_matrix)
     print('First element of the submission:')
     print(df_out.head())
-    print(f"Writing {subm_csv}...")
+    #print(f"Writing {subm_csv}...")
     df_out.to_csv(subm_csv, index=False)
     return
 

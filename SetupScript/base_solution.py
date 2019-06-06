@@ -154,7 +154,7 @@ def get_rec_nation(df_train, df_test, **kwargs):
     df_popular_nation = get_popularity_by_nation(df_train, df_expl, df_popular, w_nation, w_base)
     df_out = calc_recommendation_nation(df_popular_nation)
 
-    print(f"Writing {subm_csv}...")
+    #print(f"Writing {subm_csv}...")
     df_out.to_csv(subm_csv, index=False)
 
     print("Finished calculating recommendations.")
@@ -179,7 +179,7 @@ def get_rec_base(df_train, df_test, **kwargs):
     df_expl = f.explode(df_target, "impressions")
     df_out = calc_recommendation(df_expl, df_popular)
 
-    print(f"Writing {subm_csv}...")
+    #print(f"Writing {subm_csv}...")
     df_out.to_csv(subm_csv, index=False)
 
     print("Finished calculating recommendations.")
