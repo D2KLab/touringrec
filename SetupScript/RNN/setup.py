@@ -27,9 +27,11 @@ import ds_manipulation as dsm
 import w2vec as w2v
 import test_f as tst
 import LSTM as lstm
+import LSTMParameters as LSTMParam
 
 import argparse
 
+#python3 python3 setup.py --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --epochs 10 --ncomponents 100 --window 3 --learnrate 0.001
 torch.manual_seed(1)
 
 parser = argparse.ArgumentParser()
@@ -43,29 +45,29 @@ parser.add_argument('--epochs', action="store", type=int, help="Define the numbe
 parser.add_argument('--ncomponents', action='store', type=int, help='item2vec: number of components')
 #parser.add_argument('--lossfunction', action='store', type=str, help='MF: define the loss function')
 parser.add_argument('--window', action='store', type=int, help='item2vec: window length')
-parser.add_argument('--learnrate', action='store', type=int, help='learning rate for the model')
+parser.add_argument('--learnrate', action='store', type=float, help='learning rate for the model')
+parser.add_argument('--iscuda', action='store', type=int, help='1 -> Use GPU, 0 -> use CPU')
+parser.add_argument('--subname', action='store', type=int, help='1 -> Use GPU, 0 -> use CPU')
 parser.add_argument('--actions', nargs='+')
 
 
 # Get all the parameters
 args = parser.parse_args()
-algorithm = args.algorithm
-train = args.train
-test = args.test
-gt = args.gt
-metadata = args.metadata
-localscore = args.localscore
-epochs = args.epochs
-ncomponents = args.ncomponents
-lossfunction = args.lossfunction
-window = args.window
-learning_rate = args.learnrate
-actions = args.actions
+
+param = LSTMParam.LSTMParameters(   args.train, 
+                                    args.test,
+                                    args.gt,
+                                    args.epochs,
+                                    args.ncomponents,
+                                    args.window,
+                                    args.learnrate,
+                                    args.iscuda,
+                                    args.subname)
 
 
-print("Reading train set " + train)
-print("Reading test set " + test)
-print("Groud truth is: " + gt)
+print("Reading train set " + param.train)
+print("Reading test set " + param.test)
+print("Groud truth is: " + param.gt)
 #print("The metadata file is: " + metadata)
 #print("Executing the solution " + algorithm)
 
@@ -75,26 +77,26 @@ STEP 1: IMPORTING and MANIPULATING DATASET
 '''
 
 #importing encode set
-df_encode = pd.read_csv(train)
+df_encode = pd.read_csv(param.train)
 df_encode = dsm.remove_single_actions(df_encode)
 df_encode = dsm.remove_nonitem_actions(df_encode)
-#df_encode = dsm.reduce_df(df_encode, 80000)
+df_encode = dsm.reduce_df(df_encode, 80000)
 
 #importing training set
-df_train = pd.read_csv(train)
+df_train = pd.read_csv(param.train)
 df_train = dsm.remove_single_actions(df_train)
 df_train =  dsm.remove_nonitem_actions(df_train)
-#df_train = dsm.reduce_df(df_train, 10000)
+df_train = dsm.reduce_df(df_train, 1000)
 
 #importing test set
-df_test = pd.read_csv(test)
+df_test = pd.read_csv(param.test)
 df_test = dsm.remove_single_actions(df_test)
 df_test = dsm.remove_nonitem_actions(df_test)
-#df_test = dsm.reduce_df(df_test, 1000)
+df_test = dsm.reduce_df(df_test, 100)
 
 #importing ground truth
-df_gt = pd.read_csv(gt)
-#df_gt = dsm.reduce_df(df_gt, 1000)
+df_gt = pd.read_csv(param.gt)
+df_gt = dsm.reduce_df(df_gt, 100)
 
 df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
 
@@ -108,7 +110,7 @@ STEP 2: ENCODING TO CREATE DICTIONARY
 #w2vec item encoding
 from gensim.models import Word2Vec
 
-word2vec = Word2Vec(corpus, min_count=1, window=window, sg=1)
+word2vec = Word2Vec(corpus, min_count=1, window=param.window, sg=1)
 
 n_features = len(word2vec.wv['666856'])
 
@@ -135,6 +137,7 @@ sessions, categories, hotels_window = dsm.prepare_input(df_train)
 STEP 4: CREATE NETWORK
 '''
 
+#DEFINE PARAMETERS
 input_dim = n_features
 output_dim = n_hotels
 hidden_dim = int(1/3 * (input_dim + output_dim))
@@ -142,23 +145,36 @@ print('hidden_dim is ' + str(hidden_dim))
 layer_dim = 1 #try more hidden layers
 
 #NET CREATION
-model = lstm.LSTMModel(input_dim, hidden_dim, layer_dim, output_dim).cuda()
+model = lstm.LSTMModel(input_dim, hidden_dim, layer_dim, output_dim, param.iscuda)
 
+if param.iscuda:
+    model = model.cuda()
+
+#WEIGHT INIT
+model.lstm.weight_hh_l0.data.fill_(0)
+x = 1
+nn.init.uniform_(model.fc.weight, -x, x)
+nn.init.uniform_(model.fc.bias, -x, x)
 
 '''
 STEP 5: LEARNING PHASE
 '''
 
-loss_fn = torch.nn.CrossEntropyLoss().cuda()
+#LOSS FUNCTION
+loss_fn = torch.nn.CrossEntropyLoss()
 
-learning_rate = learning_rate
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+if param.iscuda:
+    loss_fn = loss_fn.cuda()
+
+#OPTIMIZER
+optimizer = torch.optim.Adam(model.parameters(), lr=param.learnrate)
+model.optimizer = optimizer
 
 import time
 import math
 
 
-num_epochs = epochs
+num_epochs = param.epochs
 plot_every = 1
 
 n_iters = len(sessions) * num_epochs
@@ -179,7 +195,7 @@ def timeSince(since):
 start = time.time()
 
 for epoch in range(1, num_epochs + 1):
-  model.train()
+  #model.train()
   iter = 0
   
   print(str(len(sessions)) + ' sessions to be computed')
@@ -187,17 +203,17 @@ for epoch in range(1, num_epochs + 1):
   for index, session in enumerate(sessions):
     iter = iter + 1
 
-    session_tensor = lstm.session_to_tensor(session)
+    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features)
     category = categories[index]
     category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
 
     
-    output, loss = lstm.train(category_tensor, session_tensor)
+    output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
 
     current_loss += loss
       
     if iter % print_every == 0:
-        guess, guess_i = lstm.category_from_output(output)
+        guess, guess_i = lstm.category_from_output(output, hotel_dict)
 
         correct = '✓' if guess == category else '✗ (%s)' % category
         print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[0]['session_id'], guess, correct))
@@ -232,7 +248,7 @@ plt.plot(all_acc)
 STEP 7: PREPARE TEST SET
 '''
 
-mrr = tst.test_accuracy(model, df_test, df_gt)
+mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features)
 print("Final score: " + str(mrr))
 
 
@@ -241,13 +257,21 @@ STEP 8: SAVING SUBMISSION
 '''
 
 #Computing score
-subm_csv = 'submission.csv'
-
 print("End execution with score " + str(mrr))
 file_exists = os.path.isfile('scores.csv')
 with open('scores.csv', mode='a') as score_file:
     file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     if not file_exists: # Write headers
         file_writer.writerow(['#Epochs', '#Components', 'W2Vec window', 'Learn Rate', 'Score'])
-    file_writer.writerow([str(epochs), str(ncomponents), str(window), str(learning_rate), str(mrr)])
-f.send_telegram_message("End execution with score " + str(mrr))
+    file_writer.writerow([str(param.epochs), str(param.ncomponents), str(param.window), str(param.learnrate), str(mrr)])
+#f.send_telegram_message("End execution with score " + str(mrr))
+
+#Saving loss
+with open(param.subname + '_loss', mode='a') as loss_file:
+    file_writer = csv.writer(loss_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    file_writer.writerow(all_losses)
+
+#Saving acc
+with open(param.subname + '_acc', mode='a') as acc_file:
+    file_writer = csv.writer(acc_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    file_writer.writerow(all_acc)

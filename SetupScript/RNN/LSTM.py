@@ -4,8 +4,11 @@ import numpy as np
 import pandas as pd
 
 class LSTMModel(nn.Module):
-    def __init__(self, input_dim, hidden_dim, layer_dim, output_dim, bias=True):
+    def __init__(self, input_dim, hidden_dim, layer_dim, output_dim, iscuda, bias=True):
         super(LSTMModel, self).__init__()
+
+        # Cuda flag
+        self.iscuda = iscuda
 
         # Hidden dimensions
         self.hidden_dim = hidden_dim
@@ -21,18 +24,21 @@ class LSTMModel(nn.Module):
     def forward(self, x):
         
         # Initialize hidden state with zeros
-        if torch.cuda.is_available():
+        if self.iscuda:
             h0 = torch.zeros(self.layer_dim, x.size(1), self.hidden_dim).cuda()
         else:
             h0 = torch.zeros(self.layer_dim, x.size(1), self.hidden_dim)
 
         # Initialize cell state
-        if torch.cuda.is_available():
+        if self.iscuda:
             c0 = torch.zeros(self.layer_dim, x.size(1), self.hidden_dim).cuda()
         else:
-            c0 = torch.zeros(self.layer_dim, x.size(1), hidden_dim)
+            c0 = torch.zeros(self.layer_dim, x.size(1), self.hidden_dim)
 
-            
+        # Tensor to cuda if necessary
+        if self.iscuda:
+          x = x.cuda()
+
         out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
 
         
@@ -43,19 +49,16 @@ class LSTMModel(nn.Module):
         return out
 
 
-def train(category_tensor, line_tensor):
-    hidden = torch.zeros(1, 1, n_hidden)
-    c = torch.zeros(1, 1, n_hidden)
+def train(model, loss_fn, optimizer, category_tensor, line_tensor, iscuda):
     
     optimizer.zero_grad()
     
     line_tensor = line_tensor.requires_grad_()
-    line_tensor = line_tensor.cuda()
-    
 
     output = model(line_tensor)
     
-    category_tensor = category_tensor.long().cuda()
+    if iscuda:
+      category_tensor = category_tensor.long().cuda()
 
     loss = loss_fn(output, category_tensor)
     loss.backward()
@@ -67,7 +70,7 @@ def train(category_tensor, line_tensor):
 
 #functions for training phase
 
-def session_to_tensor(session):
+def session_to_tensor(session, hotel_dict, n_features):
   tensor = torch.zeros(len(session), 1, n_features)
   
   for ai, action in enumerate(session):
@@ -89,7 +92,7 @@ def hotel_to_category(hotel, hotel_dict, n_features):
   
   return tensor
 
-def category_from_output(output):
+def category_from_output(output, hotel_dict):
   top_n, top_i = output.data.topk(1) # Tensor out of Variable with .data
   category_i = int(top_i[0][0])
   #print(output)
