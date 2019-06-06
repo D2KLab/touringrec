@@ -106,8 +106,8 @@ def calculate_borda(mf_rec, rnn_rec):
     result = " ".join(list_items)
     return result
 
-df_mf = pd.read_csv('submission_matrixfactorization.csv')
-df_rnn = pd.read_csv('submission_RNN.csv')
+df_mf = pd.read_csv('submission_matrixfactorization_1.csv')
+df_rnn = pd.read_csv('submission_rnn_1.csv')
 gt_file = 'gt.csv'
 submission_file = 'submission_ensamble.csv'
 

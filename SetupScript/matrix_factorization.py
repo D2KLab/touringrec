@@ -12,7 +12,7 @@ import dataset_clean as dsc
 from sklearn.preprocessing import OneHotEncoder
 import time
 from lightfm.evaluation import reciprocal_rank
-
+    
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
@@ -35,28 +35,29 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
         hotel_features = None
 
     df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, parameters, item_features = hotel_features, user_features = u_features, nation_dic = nation_dict, hotel_dic = hotel_dict, user_dic = user_dict)
-
+    #df_missed = pd.DataFrame()
+    #df_out_user = pd.DataFrame()
     print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
-    print(df_missed.head())
+    #print(df_missed.head())
     df_out_nation = complete_prediction(df_test_nation, df_missed)
     #df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, item_features = hotel_features, nation_dict = nation_dict, hotel_dict = hotel_dict)
-    print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
-    print(df_missed.head())
+    #print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
+    #print(df_missed.head())
 
     df_out = pd.concat([df_out_user, df_out_nation], ignore_index=True)
-    print(f"Writing {subm_csv}...")
+    #print(f"Writing {subm_csv}...")
     df_out.to_csv(subm_csv, index=False)
     return df_out
 
 
 def complete_prediction(df_test_nation, df_missed):
-    print('Start predicting the single action clickout')
-    print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
-    df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True)
-    print('Fill submissions')
+    #print('Start predicting the single action clickout')
+    #print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
+    df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True, sort=False)
+    #print('Fill submissions')
     df_test_nation['item_recommendations'] = df_test_nation.apply(lambda x: fill_recs(x.impressions), axis=1)
     df_missed = df_test_nation[df_test_nation['item_recommendations'] == ""]
-    print('No prediction for #' + str(df_missed.shape[0]) + 'items')
+    #print('No prediction for #' + str(df_missed.shape[0]) + 'items')
     df_out_nation = df_test_nation[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
     return df_out_nation
 
@@ -68,11 +69,11 @@ def generate_user_features(df):
     df['present'] = 1
     starting_user = df.shape[0]
     df_user_features = df.drop_duplicates(subset='user_id', keep='first')
-    print('# of duplicates: ' + str(starting_user - df_user_features.shape[0]))
+    #print('# of duplicates: ' + str(starting_user - df_user_features.shape[0]))
     df_user_features = df_user_features[['user_id', 'platform', 'present']]
-    print('First elements of the dataset')
-    print(df_user_features.head())
-    print('Create dictionaries')
+    #print('First elements of the dataset')
+    #print(df_user_features.head())
+    #print('Create dictionaries')
     user_dict = create_user_dict(df_user_features) #Controllare che sia uguale all'altro dizionario
     nation_dict = create_item_dict(df_user_features, col_name='platform')
 
@@ -89,7 +90,7 @@ def generate_user_features(df):
     col = np.array(list_nations)
     data = np.array(list_data)
     csr = csr_matrix((data, (row, col)), shape=(n_user, n_nations))
-    print(csr.toarray())
+    #print(csr.toarray())
 
     return csr, user_dict, nation_dict
 
@@ -105,7 +106,7 @@ def generate_prediction_per_user(df_train, df_test_user, params, item_features =
             - df_out_user = df with recommended items for each user in the df_test_user
             - df_missed 
     """
-    print('Start predicting item for user')
+    #print('Start predicting item for user')
     #Create user dictionary
     df_interactions = get_n_interaction(df_train, weight_dic = params.actionsweights)
     if user_dic == None:
@@ -127,17 +128,18 @@ def generate_prediction_per_user(df_train, df_test_user, params, item_features =
     """
     before = df_test_user.shape[0]
     df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dic.keys()))]
-    print("User missed: " + str(before - df_test_user.shape[0]))
-    print('Calculate submissions per user')
+    #print("User missed: " + str(before - df_test_user.shape[0]))
+    #print('Calculate submissions per user')
     df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dic, hotel_dic, hotel_features=item_features), axis=1)
     df_missed = df_test_user[df_test_user['item_recommendations'] == ""]
     df_test_user = df_test_user[df_test_user['item_recommendations'] != ""]
-    print('No prediction for #' + str(df_missed.shape[0]) + 'users')
-    print(df_missed.head())
+    #print('No prediction for #' + str(df_missed.shape[0]) + 'users')
+    #print(df_missed.head())
     df_out_user = df_test_user[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
 
     return df_out_user, df_missed
 
+"""
 def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None, nation_dict = None, hotel_dict = None):
     print('Start predicting the single action clickout')
     df_interactions_nations = get_n_interaction(df_train, user_col='platform', weight_dic = action_weights)
@@ -151,7 +153,7 @@ def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.Data
     print('No prediction for #' + str(df_missed.shape[0]) + 'items')
     df_out_nation = df_test_nation[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
     return df_out_nation, df_missed
-
+"""
 def get_similar_tags(model, tag_id):
     # Define similarity as the cosine of the angle
     # between the tag latent vectors
@@ -198,7 +200,7 @@ def get_hotel_prices(metadata_file, interactions, n_categories = 2000):
     Required Input -
         - metadata_file = file with the average price for each hotel
     """
-    print("Reading metadata: " + metadata_file)
+    #print("Reading metadata: " + metadata_file)
     df_metadata = pd.read_csv(metadata_file)
     df_metadata['price'] = df_metadata['price'].apply(lambda x: math.log10(x))
     # Define the range
@@ -220,7 +222,7 @@ def get_hotel_prices(metadata_file, interactions, n_categories = 2000):
     list_items_category = np.array(list(item_cat))
     """
     interactions = get_n_interaction(interactions)
-    print('# Of items: ' + str(interactions.shape[0]))
+    #print('# Of items: ' + str(interactions.shape[0]))
     interactions.loc[:, 'reference'] = interactions['reference'].apply(int)
     interactions.loc[:, 'feature'] = interactions['reference'].apply(lambda x : price_dic.get(x))
     interactions['feature'] = interactions['feature'].fillna('no_cat')
@@ -250,7 +252,7 @@ def split_one_action(df_test):
     df_test = f.get_submission_target(df_test)
     df_no_single_action = remove_single_actions(df_test)
     df_single_action = get_single_actions(df_test)
-    print('Total item of test set: ' + str(df_test.shape[0]) + ' No single action: #' + str(df_no_single_action.shape[0]) + ' Only single actions: #' + str(df_single_action.shape[0]))
+    #print('Total item of test set: ' + str(df_test.shape[0]) + ' No single action: #' + str(df_no_single_action.shape[0]) + ' Only single actions: #' + str(df_single_action.shape[0]))
     return df_no_single_action, df_single_action
 
 
@@ -264,9 +266,9 @@ def get_n_interaction(df, user_col='user_id', weight_dic = None):
         weight_dic -> weight for each type of interaction
     """
     # If no weight is specified -> All actions have the same weight
-    print('Get number of occurrences for each pair (user,item)')
+    #print('Get number of occurrences for each pair (user,item)')
     if(weight_dic == None):
-        print(df.head())
+        #print(df.head())
         df = df[[user_col,'reference']]
         df = (
             df
@@ -274,15 +276,15 @@ def get_n_interaction(df, user_col='user_id', weight_dic = None):
             .size()
             .reset_index(name="n_interactions")
         )
-        print(df.head())
+        #print(df.head())
     else:
         df = df.replace({'action_type': weight_dic})
         #df['n_interactions'] = df.apply(lambda x : weight_dic[x.action_type], axis=1)
         df = df[[user_col,'reference', 'action_type']]
         df = df.groupby([user_col, "reference"])['action_type'].agg('sum').reset_index(name='n_interactions')
 
-    print('First elements of the matrix')
-    print(df.head())
+    #print('First elements of the matrix')
+    #print(df.head())
     return df
 
 def encode_actions(action, dic):

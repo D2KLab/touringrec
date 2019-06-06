@@ -17,7 +17,7 @@ parser.add_argument('--algorithm', action="store", type=str, help="Choose the al
 parser.add_argument('--train', action="store", type=str, help="--train train.csv", default='train.csv')
 parser.add_argument('--test', action="store", type=str, help="--test test.csv", default='test.csv')
 parser.add_argument('--gt', action="store", type=str, help="--gt train.csv", default='gt.csv')
-parser.add_argument('--metadata', action="store", type=str, help="Define the metadata file", default='item_metadata.csv')
+parser.add_argument('--metadata', action="store", type=str, help="Define the metadata file", default='hotel_prices.csv')
 parser.add_argument('--localscore', action="store", type=int, help="0 -> Official score, 1 -> Local score", default=1)
 parser.add_argument('--epochs', action="store", type=int, help="Define the number of epochs", default=30)
 parser.add_argument('--ncomponents', action='store', type=int, help='MF: number of components', default=100)
@@ -25,13 +25,13 @@ parser.add_argument('--lossfunction', action='store', type=str, help='MF: define
 parser.add_argument('--learningrate', action='store', type=float, help='Choose the MF learning rate', default=0.5)
 parser.add_argument('--learningschedule', action='store', type=str, help='MF: choose the learning schedule between adagrad and adadelta', default='adadelta')
 parser.add_argument('--mfk', action='store', type=int, help='MF: parameter K', default=200)
-parser.add_argument('--useralpha', action='store', type=int, help='User L2 penalty', default=0)
-parser.add_argument('--itemalpha', action='store', type=int, help='Item L2 penalty', default=0)
+parser.add_argument('--useralpha', action='store', type=float, help='User L2 penalty', default=0)
+parser.add_argument('--itemalpha', action='store', type=float, help='Item L2 penalty', default=0)
 parser.add_argument('--rho', action='store', type=float, help='Rho', default=0.95)
 parser.add_argument('--epsilon', action='store', type=float, help='Epsilon', default=1e-06)
 parser.add_argument('--maxsampled', action='store', type=float, help='Max Element sampled in warp loss', default=10)
 parser.add_argument('--actions', nargs='+')
-
+parser.add_argument('-v', '--verbose', action='store_true')
 
 # Get all the parameters
 args = parser.parse_args()
@@ -53,7 +53,8 @@ itemalpha = args.itemalpha
 rho = args.rho
 epsilon = args.epsilon
 maxsampled = args.maxsampled
-
+verbose = args.verbose
+verboseprint = print if verbose else lambda *a, **k: None
 # Convert actions in a correct list format
 list_actions = []
 actions_weights = {}
@@ -77,21 +78,21 @@ solutions = {
 }
 
 params = MF_Parameters(epochs, ncomponents, lossfunction, mfk, learningrate, learningschedule, useralpha, itemalpha, rho, epsilon, maxsampled, actions_weights, list_actions)
-
+params.print_params()
 #importing and defining Datasets
 
 #Train
-print("Reading train set " + train)
+verboseprint("Reading train set " + train)
 df_train = pd.read_csv(train)
 #Test
-print("Reading test set " + test)
+verboseprint("Reading test set " + test)
 df_test = pd.read_csv(test)
 
-print("Groud truth is: " + gt)
+verboseprint("Groud truth is: " + gt)
 if metadata != None:
-    print("The metadata file is: " + metadata)
+    verboseprint("The metadata file is: " + metadata)
 
-print("Executing the solution " + algorithm)
+verboseprint("Executing the solution " + algorithm)
 
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
