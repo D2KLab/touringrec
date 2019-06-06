@@ -42,8 +42,8 @@ parser.add_argument('--ncomponents', action='store', type=int, help='item2vec: n
 #parser.add_argument('--lossfunction', action='store', type=str, help='MF: define the loss function')
 parser.add_argument('--window', action='store', type=int, help='item2vec: window length')
 parser.add_argument('--learnrate', action='store', type=float, help='learning rate for the model')
-parser.add_argument('--iscuda', action='store', type=int, help='1 -> Use GPU, 0 -> use CPU')
-parser.add_argument('--subname', action='store', type=int, help='1 -> Use GPU, 0 -> use CPU')
+parser.add_argument('--iscuda', action='store_true', help='1 -> Use GPU, 0 -> use CPU')
+parser.add_argument('--subname', action='store', type=str, help='sub file name')
 parser.add_argument('--actions', nargs='+')
 
 
@@ -61,9 +61,9 @@ param = LSTMParam.LSTMParameters(   args.train,
                                     args.subname)
 
 
-print("Reading train set " + param.train)
-print("Reading test set " + param.test)
-print("Groud truth is: " + param.gt)
+#print("Reading train set " + param.train)
+#print("Reading test set " + param.test)
+#print("Groud truth is: " + param.gt)
 #print("The metadata file is: " + metadata)
 #print("Executing the solution " + algorithm)
 
