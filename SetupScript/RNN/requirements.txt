@@ -3,7 +3,6 @@ torch
 matplotlib
 numpy
 pandas
-operator
 sklearn
-collections
+gensim
 
