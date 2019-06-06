@@ -1,0 +1,9 @@
+# cat requirements.txt
+torch
+matplotlib
+numpy
+pandas
+operator
+sklearn
+collections
+
