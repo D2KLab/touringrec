@@ -14,3 +14,5 @@ SplitDataset/__pycache__/
 SetupScript/\.ipynb_checkpoints/
 
 SplitDataset/\.vscode/
+
+SetupScript/RNN/__pycache__/
