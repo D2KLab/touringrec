@@ -43,7 +43,7 @@ def evaluate(model, session, hotel_dict, n_features, hotels_window):
     
     session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features)
     
-    output = lstm.model(session_tensor)
+    output = model(session_tensor)
 
     output = recommendations_from_output(output, hotel_dict, hotels_window, n_features)
 
@@ -97,6 +97,8 @@ def score_submissions_no_csv(df_subm, df_gt, objective_function):
         df_subm_with_key, 'item_recommendations', 'item_recommendations'
     )
 
+    #print(df_subm_with_key)
+
     # score each row
     df_subm_with_key['score'] = df_subm_with_key.apply(objective_function, axis=1)
     mrr = df_subm_with_key.score.mean()
@@ -106,13 +108,13 @@ def score_submissions_no_csv(df_subm, df_gt, objective_function):
 def score_submissions(subm_csv, gt_csv, objective_function):
     """Score submissions with given objective function."""
 
-    print(f"Reading ground truth data {gt_csv} ...")
+    #print(f"Reading ground truth data {gt_csv} ...")
     df_gt = f.read_into_df(gt_csv)
 
-    print(f"Reading submission data {subm_csv} ...")
+    #print(f"Reading submission data {subm_csv} ...")
     df_subm = f.read_into_df(subm_csv)
-    print('Submissions')
-    print(df_subm.head(10))
+    #print('Submissions')
+    #print(df_subm.head(10))
 
     # create dataframe containing the ground truth to target rows
     cols = ['reference', 'impressions', 'prices']

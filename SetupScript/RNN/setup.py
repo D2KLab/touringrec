@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals, print_function, division
-from io import open
-import glob
 import os
 import torch
 import torch.nn as nn
@@ -80,23 +76,23 @@ STEP 1: IMPORTING and MANIPULATING DATASET
 df_encode = pd.read_csv(param.train)
 df_encode = dsm.remove_single_actions(df_encode)
 df_encode = dsm.remove_nonitem_actions(df_encode)
-df_encode = dsm.reduce_df(df_encode, 80000)
+#df_encode = dsm.reduce_df(df_encode, 80000)
 
 #importing training set
 df_train = pd.read_csv(param.train)
 df_train = dsm.remove_single_actions(df_train)
 df_train =  dsm.remove_nonitem_actions(df_train)
-df_train = dsm.reduce_df(df_train, 1000)
+#df_train = dsm.reduce_df(df_train, 100)
 
 #importing test set
 df_test = pd.read_csv(param.test)
 df_test = dsm.remove_single_actions(df_test)
 df_test = dsm.remove_nonitem_actions(df_test)
-df_test = dsm.reduce_df(df_test, 100)
+#df_test = dsm.reduce_df(df_test, 1000)
 
 #importing ground truth
 df_gt = pd.read_csv(param.gt)
-df_gt = dsm.reduce_df(df_gt, 100)
+df_gt = dsm.reduce_df(df_gt, 1000)
 
 df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
 
@@ -121,8 +117,8 @@ hotel_dict = word2vec.wv
 n_hotels = len(hotel_dict.index2word)
 n_features = len(word2vec.wv['666856'])
 
-print('n_hotels is ' + str(n_hotels))
-print('n_features is ' + str(n_features))
+#print('n_hotels is ' + str(n_hotels))
+#print('n_features is ' + str(n_features))
 
 
 '''
@@ -141,7 +137,7 @@ STEP 4: CREATE NETWORK
 input_dim = n_features
 output_dim = n_hotels
 hidden_dim = int(1/3 * (input_dim + output_dim))
-print('hidden_dim is ' + str(hidden_dim))
+#print('hidden_dim is ' + str(hidden_dim))
 layer_dim = 1 #try more hidden layers
 
 #NET CREATION
@@ -198,7 +194,7 @@ for epoch in range(1, num_epochs + 1):
   #model.train()
   iter = 0
   
-  print(str(len(sessions)) + ' sessions to be computed')
+  #print(str(len(sessions)) + ' sessions to be computed')
   
   for index, session in enumerate(sessions):
     iter = iter + 1
@@ -216,16 +212,16 @@ for epoch in range(1, num_epochs + 1):
         guess, guess_i = lstm.category_from_output(output, hotel_dict)
 
         correct = '✓' if guess == category else '✗ (%s)' % category
-        print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[0]['session_id'], guess, correct))
+        #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[0]['session_id'], guess, correct))
 
         
   # Add current loss avg to list of losses
   if epoch % plot_every == 0:
       all_losses.append(current_loss / (plot_every * len(sessions)))
-      print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
-      print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
-      acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features,)
-      print("Score: " + str(acc))
+      #print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
+      #print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
+      acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features)
+      #print("Score: " + str(acc))
       all_acc.append(acc)
       current_loss = 0
 
@@ -257,7 +253,7 @@ STEP 8: SAVING SUBMISSION
 '''
 
 #Computing score
-print("End execution with score " + str(mrr))
+#print("End execution with score " + str(mrr))
 file_exists = os.path.isfile('scores.csv')
 with open('scores.csv', mode='a') as score_file:
     file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
