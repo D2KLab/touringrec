@@ -267,11 +267,11 @@ with open('scores.csv', mode='a') as score_file:
 #f.send_telegram_message("End execution with score " + str(mrr))
 
 #Saving loss
-with open(param.subname + '_loss', mode='a') as loss_file:
+with open(param.subname + '_loss.csv', mode='a') as loss_file:
     file_writer = csv.writer(loss_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     file_writer.writerow(all_losses)
 
 #Saving acc
-with open(param.subname + '_acc', mode='a') as acc_file:
+with open(param.subname + '_acc.csv', mode='a') as acc_file:
     file_writer = csv.writer(acc_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     file_writer.writerow(all_acc)
