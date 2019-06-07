@@ -44,6 +44,7 @@ parser.add_argument('--window', action='store', type=int, help='item2vec: window
 parser.add_argument('--learnrate', action='store', type=float, help='learning rate for the model')
 parser.add_argument('--iscuda', action='store_true', help='1 -> Use GPU, 0 -> use CPU')
 parser.add_argument('--subname', action='store', type=str, help='sub file name')
+parser.add_argument('--numthread', action='store', type=int, help='sub file name', deafult=1)
 parser.add_argument('--actions', nargs='+')
 
 
@@ -58,7 +59,8 @@ param = LSTMParam.LSTMParameters(   args.train,
                                     args.window,
                                     args.learnrate,
                                     args.iscuda,
-                                    args.subname)
+                                    args.subname
+                                    args.numthread)
 
 
 #print("Reading train set " + param.train)
@@ -66,6 +68,19 @@ param = LSTMParam.LSTMParameters(   args.train,
 #print("Groud truth is: " + param.gt)
 #print("The metadata file is: " + metadata)
 #print("Executing the solution " + algorithm)
+
+
+'''
+STEP 0: CONFIGURATIONS
+'''
+
+if iscuda:
+    #device = torch.device('cuda:0')
+    #torch.cuda.set_device(device)
+else:
+    torch.set_num_threads(args.num_thread)
+    number_of_threads = torch.get_num_threads()
+    print('Using ' + number_of_threads)
 
 
 '''
@@ -92,7 +107,7 @@ df_test = dsm.remove_nonitem_actions(df_test)
 
 #importing ground truth
 df_gt = pd.read_csv(param.gt)
-df_gt = dsm.reduce_df(df_gt, 1000)
+#df_gt = dsm.reduce_df(df_gt, 1000)
 
 df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
 
