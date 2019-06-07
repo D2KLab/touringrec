@@ -18,6 +18,8 @@ class LSTMModel(nn.Module):
                
         self.lstm = nn.LSTM(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim)  
         
+        self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 2)
+
         self.fc = nn.Linear(hidden_dim, output_dim)
     
     
@@ -41,7 +43,8 @@ class LSTMModel(nn.Module):
 
         out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
 
-        
+        out = self.hidden_fc(out)
+
         out = out[-1, :, :]
         
         out = self.fc(out)
