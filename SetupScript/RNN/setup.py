@@ -44,7 +44,7 @@ parser.add_argument('--window', action='store', type=int, help='item2vec: window
 parser.add_argument('--learnrate', action='store', type=float, help='learning rate for the model')
 parser.add_argument('--iscuda', action='store_true', help='1 -> Use GPU, 0 -> use CPU')
 parser.add_argument('--subname', action='store', type=str, help='sub file name')
-parser.add_argument('--numthread', action='store', type=int, help='sub file name', deafult=1)
+parser.add_argument('--numthread', action='store', type=int, help='sub file name', default=1)
 parser.add_argument('--actions', nargs='+')
 
 
@@ -59,7 +59,7 @@ param = LSTMParam.LSTMParameters(   args.train,
                                     args.window,
                                     args.learnrate,
                                     args.iscuda,
-                                    args.subname
+                                    args.subname,
                                     args.numthread)
 
 
@@ -74,14 +74,14 @@ param = LSTMParam.LSTMParameters(   args.train,
 STEP 0: CONFIGURATIONS
 '''
 
-if iscuda:
+if args.iscuda:
     device = torch.device('cuda:0')
     torch.cuda.set_device(device)
     print('Using GPU: ' + device)
 
-torch.set_num_threads(args.num_thread)
+torch.set_num_threads(args.numthread)
 number_of_threads = torch.get_num_threads()
-print('Using num thread= ' + number_of_threads)
+print('Using num thread = ' + str(number_of_threads))
 
 
 '''
