@@ -75,12 +75,13 @@ STEP 0: CONFIGURATIONS
 '''
 
 if iscuda:
-    #device = torch.device('cuda:0')
-    #torch.cuda.set_device(device)
-else:
-    torch.set_num_threads(args.num_thread)
-    number_of_threads = torch.get_num_threads()
-    print('Using ' + number_of_threads)
+    device = torch.device('cuda:0')
+    torch.cuda.set_device(device)
+    print('Using GPU: ' + device)
+
+torch.set_num_threads(args.num_thread)
+number_of_threads = torch.get_num_threads()
+print('Using num thread= ' + number_of_threads)
 
 
 '''
