@@ -152,9 +152,9 @@ STEP 4: CREATE NETWORK
 #DEFINE PARAMETERS
 input_dim = n_features
 output_dim = n_hotels
-hidden_dim = int(1/3 * (input_dim + output_dim))
-#print('hidden_dim is ' + str(hidden_dim))
-layer_dim = 1 #try more hidden layers
+hidden_dim = int(1/30 * (input_dim + output_dim))
+print('hidden_dim is ' + str(hidden_dim))
+layer_dim = 1
 
 #NET CREATION
 model = lstm.LSTMModel(input_dim, hidden_dim, layer_dim, output_dim, param.iscuda)
