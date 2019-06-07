@@ -20,7 +20,7 @@ class LSTMModel(nn.Module):
         
         self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 2)
 
-        self.fc = nn.Linear(hidden_dim, output_dim)
+        self.fc = nn.Linear(hidden_dim * 2, output_dim)
     
     
     def forward(self, x):
