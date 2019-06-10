@@ -45,6 +45,7 @@ parser.add_argument('--learnrate', action='store', type=float, help='learning ra
 parser.add_argument('--iscuda', action='store_true', help='1 -> Use GPU, 0 -> use CPU')
 parser.add_argument('--subname', action='store', type=str, help='sub file name', default='submission')
 parser.add_argument('--numthread', action='store', type=int, help='sub file name', default=1)
+parser.add_argument('--batchsize', action='store', type=int, help='batch size', default=0)
 parser.add_argument('--actions', nargs='+')
 
 
@@ -60,7 +61,8 @@ param = LSTMParam.LSTMParameters(   args.train,
                                     args.learnrate,
                                     args.iscuda,
                                     args.subname,
-                                    args.numthread)
+                                    args.numthread,
+                                    args.batchsize)
 
 
 #print("Reading train set " + param.train)
