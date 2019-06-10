@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+import torch
 
 def remove_single_actions(df):
   df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1)].index)

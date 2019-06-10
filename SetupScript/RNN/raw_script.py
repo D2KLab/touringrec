@@ -240,7 +240,7 @@ def evaluate(session, hotel_dict, n_features, hotels_window):
     for i in range(line_tensor.size()[0]):
       input = torch.zeros(1, 1, n_features)
       input[0][0] = line_tensor[i]
-      input = input.cuda()
+      input = input#.cuda()
       output = model(input)
         
     #print(output)
@@ -476,7 +476,7 @@ model.lstm.weight_hh_l0.data.fill_(0)
 x = 1
 nn.init.uniform_(model.fc.weight, -x, x)
 nn.init.uniform_(model.fc.bias, -x, x)
-model = model.cuda()
+#model = model.cuda()
 
 #functions for training phase
 
@@ -514,7 +514,7 @@ def list_to_space_string(l):
   s = " ".join(l)
   return s
 
-loss_fn = torch.nn.CrossEntropyLoss().cuda()
+loss_fn = torch.nn.CrossEntropyLoss()#.cuda()
 
 learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -526,12 +526,12 @@ def train(category_tensor, line_tensor):
     optimizer.zero_grad()
     
     line_tensor = line_tensor.requires_grad_()
-    line_tensor = line_tensor.cuda()
+    line_tensor = line_tensor#.cuda()
     
 
     output = model(line_tensor)
     
-    category_tensor = category_tensor.long().cuda()
+    category_tensor = category_tensor.long()#.cuda()
 
     loss = loss_fn(output, category_tensor)
     loss.backward()
@@ -676,7 +676,7 @@ def evaluate(session, hotel_dict, n_features, hotels_window):
     for i in range(line_tensor.size()[0]):
       input = torch.zeros(1, 1, n_features)
       input[0][0] = line_tensor[i]
-      input = input.cuda()
+      input = input#.cuda()
       output = model(input)
         
     #print(output)

@@ -212,7 +212,7 @@ for epoch in range(1, num_epochs + 1):
   #model.train()
   iter = 0
   
-  #print(str(len(sessions)) + ' sessions to be computed')
+  print(str(len(sessions)) + ' sessions to be computed')
   
   for index, session in enumerate(sessions):
     iter = iter + 1
@@ -236,10 +236,10 @@ for epoch in range(1, num_epochs + 1):
   # Add current loss avg to list of losses
   if epoch % plot_every == 0:
       all_losses.append(current_loss / (plot_every * len(sessions)))
-      #print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
-      #print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
+      print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
+      print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
       acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features)
-      #print("Score: " + str(acc))
+      print("Score: " + str(acc))
       all_acc.append(acc)
       current_loss = 0
 
