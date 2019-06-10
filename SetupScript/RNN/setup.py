@@ -43,7 +43,7 @@ parser.add_argument('--ncomponents', action='store', type=int, help='item2vec: n
 parser.add_argument('--window', action='store', type=int, help='item2vec: window length')
 parser.add_argument('--learnrate', action='store', type=float, help='learning rate for the model')
 parser.add_argument('--iscuda', action='store_true', help='1 -> Use GPU, 0 -> use CPU')
-parser.add_argument('--subname', action='store', type=str, help='sub file name')
+parser.add_argument('--subname', action='store', type=str, help='sub file name', default='submission')
 parser.add_argument('--numthread', action='store', type=int, help='sub file name', default=1)
 parser.add_argument('--actions', nargs='+')
 
@@ -92,23 +92,23 @@ STEP 1: IMPORTING and MANIPULATING DATASET
 df_encode = pd.read_csv(param.train)
 df_encode = dsm.remove_single_actions(df_encode)
 df_encode = dsm.remove_nonitem_actions(df_encode)
-#df_encode = dsm.reduce_df(df_encode, 80000)
+df_encode = dsm.reduce_df(df_encode, 80000)
 
 #importing training set
 df_train = pd.read_csv(param.train)
 df_train = dsm.remove_single_actions(df_train)
 df_train =  dsm.remove_nonitem_actions(df_train)
-#df_train = dsm.reduce_df(df_train, 100)
+df_train = dsm.reduce_df(df_train, 100)
 
 #importing test set
 df_test = pd.read_csv(param.test)
 df_test = dsm.remove_single_actions(df_test)
 df_test = dsm.remove_nonitem_actions(df_test)
-#df_test = dsm.reduce_df(df_test, 1000)
+df_test = dsm.reduce_df(df_test, 1000)
 
 #importing ground truth
 df_gt = pd.read_csv(param.gt)
-#df_gt = dsm.reduce_df(df_gt, 1000)
+df_gt = dsm.reduce_df(df_gt, 1000)
 
 df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
 
@@ -133,8 +133,8 @@ hotel_dict = word2vec.wv
 n_hotels = len(hotel_dict.index2word)
 n_features = len(word2vec.wv['666856'])
 
-#print('n_hotels is ' + str(n_hotels))
-#print('n_features is ' + str(n_features))
+print('n_hotels is ' + str(n_hotels))
+print('n_features is ' + str(n_features))
 
 
 '''
@@ -144,7 +144,6 @@ STEP 3: PREPARE NET INPUT
 #this splits the training set sessions into multiple mini-sessions
 sessions, categories, hotels_window = dsm.prepare_input(df_train)
 
-
 '''
 STEP 4: CREATE NETWORK
 '''
@@ -153,7 +152,10 @@ STEP 4: CREATE NETWORK
 input_dim = n_features
 output_dim = n_hotels
 hidden_dim = int(1/30 * (input_dim + output_dim))
-print('hidden_dim is ' + str(hidden_dim))
+print('The model is:')
+print('input_dim is:' + str(input_dim))
+print('hidden_dim is: ' + str(hidden_dim))
+print('output_dim is:' + str(output_dim))
 layer_dim = 1
 
 #NET CREATION
