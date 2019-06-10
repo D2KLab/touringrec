@@ -572,8 +572,8 @@ for epoch in range(1, num_epochs + 1):
   model.train()
   iter = 0
   
-  #print('epoch ' + str(epoch))
-  #print(str(len(sessions)) + ' sessions to be computed')
+  print('epoch ' + str(epoch))
+  print(str(len(sessions)) + ' sessions to be computed')
   
   for index, session in enumerate(sessions):
     iter = iter + 1
