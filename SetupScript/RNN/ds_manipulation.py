@@ -80,3 +80,62 @@ def prepare_input(df_train):
     
     
   return training_set, category_set, hotels_window_set
+
+  #gets the training set and splits it in subsessions populated by the item of the action
+def prepare_input_batched(df_train, batch_size):
+  training_set = []
+  category_set = []
+  hotels_window_set = []
+
+  training_set_batched = []
+  category_set_batched = []
+  hotels_window_set_batched = []
+
+  df_sessions = df_train.groupby('session_id')
+
+  for group_name, df_group in df_sessions:
+    sub_sessions = []
+    categories = []
+    temp_session = []
+    hotels_window = []
+
+    for action_index, action in df_group.iterrows():
+      if action['action_type'] == 'clickout item':
+        sub_sessions.append(temp_session)
+        temp_session.append(action)
+        categories.append(action['reference'])
+        hotels_window.append(action['impressions'].split('|'))
+      else:
+        temp_session.append(action)
+        
+    #training_set.concatenate(sub_sessions)
+    #category_set.concatenate(categories)
+    #hotels_window_set.concatenate(hotels_window)
+    training_set = training_set + sub_sessions
+    category_set = category_set + categories
+    hotels_window_set = hotels_window_set + hotels_window
+  
+  temp_session_batched = []
+  temp_category_batched = []
+  temp_hotel_window_batched = []
+  
+  for si, session in enumerate(training_set):
+    temp_session_batched.append(session)
+    temp_category_batched.append(category_set[si])
+    temp_hotel_window_batched.append(hotels_window_set[si])
+  
+    if len(temp_session_batched) == batch_size:
+      training_set_batched.append(temp_session_batched)
+      category_set_batched.append(temp_category_batched)
+      hotels_window_set_batched.append(temp_hotel_window_batched)
+      temp_session_batched = []
+      temp_category_batched = []
+      temp_hotel_window_batched = []
+
+  if len(temp_session_batched) != 0:
+    training_set_batched.append(temp_session_batched)
+    category_set_batched.append(temp_category_batched)
+    hotels_window_set_batched.append(temp_hotel_window_batched)
+    
+    
+  return training_set_batched, category_set_batched, hotels_window_set_batched

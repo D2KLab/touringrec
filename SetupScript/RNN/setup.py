@@ -142,7 +142,10 @@ STEP 3: PREPARE NET INPUT
 '''
 
 #this splits the training set sessions into multiple mini-sessions
-sessions, categories, hotels_window = dsm.prepare_input(df_train)
+if param.batchsize == 0:
+    sessions, categories, hotels_window = dsm.prepare_input(df_train)
+else:
+    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train, param.batchsize)
 
 '''
 STEP 4: CREATE NETWORK
@@ -217,9 +220,19 @@ for epoch in range(1, num_epochs + 1):
   for index, session in enumerate(sessions):
     iter = iter + 1
 
-    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features)
-    category = categories[index]
-    category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
+    if param.batchsize == 0:
+        session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features)
+        category = categories[index]
+        category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
+    else:
+      max_session_len = 0
+      for si, single_session in enumerate(session):
+        if len(single_session) > max_session_len:
+          max_session_len = len(single_session)
+          
+      session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features)
+      category = categories[index]
+      category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
 
     
     output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
