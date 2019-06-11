@@ -32,6 +32,7 @@ torch.manual_seed(1)
 
 parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
+parser.add_argument('--encode', action="store", type=str, help="--train encode.csv")
 parser.add_argument('--train', action="store", type=str, help="--train train.csv")
 parser.add_argument('--test', action="store", type=str, help="--test test.csv")
 parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
@@ -51,7 +52,8 @@ parser.add_argument('--actions', nargs='+')
 # Get all the parameters
 args = parser.parse_args()
 
-param = LSTMParam.LSTMParameters(   args.train, 
+param = LSTMParam.LSTMParameters(   args.encode,
+                                    args.train, 
                                     args.test,
                                     args.gt,
                                     args.epochs,
@@ -89,26 +91,26 @@ STEP 1: IMPORTING and MANIPULATING DATASET
 '''
 
 #importing encode set
-df_encode = pd.read_csv(param.train)
+df_encode = pd.read_csv(param.encode)
 df_encode = dsm.remove_single_actions(df_encode)
 df_encode = dsm.remove_nonitem_actions(df_encode)
-#df_encode = dsm.reduce_df(df_encode, 80000)
+df_encode = dsm.reduce_df(df_encode, 80000)
 
 #importing training set
 df_train = pd.read_csv(param.train)
 df_train = dsm.remove_single_actions(df_train)
 df_train =  dsm.remove_nonitem_actions(df_train)
-#df_train = dsm.reduce_df(df_train, 100)
+df_train = dsm.reduce_df(df_train, 1000)
 
 #importing test set
 df_test = pd.read_csv(param.test)
 df_test = dsm.remove_single_actions(df_test)
 df_test = dsm.remove_nonitem_actions(df_test)
-#df_test = dsm.reduce_df(df_test, 1000)
+df_test = dsm.reduce_df(df_test, 10000)
 
 #importing ground truth
 df_gt = pd.read_csv(param.gt)
-#df_gt = dsm.reduce_df(df_gt, 1000)
+df_gt = dsm.reduce_df(df_gt, 10000)
 
 df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
 

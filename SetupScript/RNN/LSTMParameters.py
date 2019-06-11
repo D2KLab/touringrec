@@ -1,5 +1,6 @@
 class LSTMParameters():
-    def __init__(self, train, test, gt, epochs, ncomponents, window, learnrate, iscuda, subname, numthread):
+    def __init__(self, encode, train, test, gt, epochs, ncomponents, window, learnrate, iscuda, subname, numthread):
+        self.encode = encode
         self.train = train
         self.test = test
         self.gt = gt
