@@ -11,3 +11,4 @@ class LSTMParameters():
         self.iscuda = iscuda
         self.subname = subname
         self.numthread = numthread
+        self.batchsize = batchsize

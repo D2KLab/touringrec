@@ -46,6 +46,7 @@ parser.add_argument('--learnrate', action='store', type=float, help='learning ra
 parser.add_argument('--iscuda', action='store_true', help='1 -> Use GPU, 0 -> use CPU')
 parser.add_argument('--subname', action='store', type=str, help='sub file name', default='submission')
 parser.add_argument('--numthread', action='store', type=int, help='sub file name', default=1)
+parser.add_argument('--batchsize', action='store', type=int, help='batch size', default=0)
 parser.add_argument('--actions', nargs='+')
 
 
@@ -62,7 +63,8 @@ param = LSTMParam.LSTMParameters(   args.encode,
                                     args.learnrate,
                                     args.iscuda,
                                     args.subname,
-                                    args.numthread)
+                                    args.numthread,
+                                    args.batchsize)
 
 
 #print("Reading train set " + param.train)
@@ -144,7 +146,10 @@ STEP 3: PREPARE NET INPUT
 '''
 
 #this splits the training set sessions into multiple mini-sessions
-sessions, categories, hotels_window = dsm.prepare_input(df_train)
+if param.batchsize == 0:
+    sessions, categories, hotels_window = dsm.prepare_input(df_train)
+else:
+    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train, param.batchsize)
 
 '''
 STEP 4: CREATE NETWORK
@@ -219,9 +224,19 @@ for epoch in range(1, num_epochs + 1):
   for index, session in enumerate(sessions):
     iter = iter + 1
 
-    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features)
-    category = categories[index]
-    category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
+    if param.batchsize == 0:
+        session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features)
+        category = categories[index]
+        category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
+    else:
+      max_session_len = 0
+      for si, single_session in enumerate(session):
+        if len(single_session) > max_session_len:
+          max_session_len = len(single_session)
+          
+      session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features)
+      category = categories[index]
+      category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
 
     
     output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
@@ -284,10 +299,12 @@ with open('scores.csv', mode='a') as score_file:
 
 #Saving loss
 with open(param.subname + '_loss.csv', mode='a') as loss_file:
-    file_writer = csv.writer(loss_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    file_writer.writerow(all_losses)
+    file_writer.writerow(['#Epochs'])
+    for loss in ajj_losses:
+        file_writer.writerow(loss)
 
 #Saving acc
 with open(param.subname + '_acc.csv', mode='a') as acc_file:
-    file_writer = csv.writer(acc_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    file_writer.writerow(all_acc)
+    file_writer.writerow(['#Epochs'])
+    for acc in all_acc:
+        file_writer.writerow(acc)
