@@ -156,7 +156,7 @@ STEP 4: CREATE NETWORK
 #DEFINE PARAMETERS
 input_dim = n_features
 output_dim = n_hotels
-hidden_dim = int(1/30 * (input_dim + output_dim))
+hidden_dim = int(1/5 * (input_dim + output_dim))
 print('The model is:')
 print('input_dim is:' + str(input_dim))
 print('hidden_dim is: ' + str(hidden_dim))
@@ -297,10 +297,12 @@ with open('scores.csv', mode='a') as score_file:
 
 #Saving loss
 with open(param.subname + '_loss.csv', mode='a') as loss_file:
-    file_writer = csv.writer(loss_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    file_writer.writerow(all_losses)
+    file_writer.writerow(['#Epochs'])
+    for loss in ajj_losses:
+        file_writer.writerow(loss)
 
 #Saving acc
 with open(param.subname + '_acc.csv', mode='a') as acc_file:
-    file_writer = csv.writer(acc_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    file_writer.writerow(all_acc)
+    file_writer.writerow(['#Epochs'])
+    for acc in all_acc:
+        file_writer.writerow(acc)
