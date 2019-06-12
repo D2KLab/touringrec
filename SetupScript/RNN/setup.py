@@ -96,23 +96,23 @@ STEP 1: IMPORTING and MANIPULATING DATASET
 df_encode = pd.read_csv(param.encode)
 df_encode = dsm.remove_single_actions(df_encode)
 df_encode = dsm.remove_nonitem_actions(df_encode)
-df_encode = dsm.reduce_df(df_encode, 80000)
+#df_encode = dsm.reduce_df(df_encode, 80000)
 
 #importing training set
 df_train = pd.read_csv(param.train)
 df_train = dsm.remove_single_actions(df_train)
 df_train =  dsm.remove_nonitem_actions(df_train)
-df_train = dsm.reduce_df(df_train, 10000)
+#df_train = dsm.reduce_df(df_train, 10000)
 
 #importing test set
 df_test = pd.read_csv(param.test)
 df_test = dsm.remove_single_actions(df_test)
 df_test = dsm.remove_nonitem_actions(df_test)
-df_test = dsm.reduce_df(df_test, 1000)
+#df_test = dsm.reduce_df(df_test, 1000)
 
 #importing ground truth
 df_gt = pd.read_csv(param.gt)
-df_gt = dsm.reduce_df(df_gt, 1000)
+#df_gt = dsm.reduce_df(df_gt, 1000)
 
 df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
 
@@ -298,13 +298,15 @@ with open('scores.csv', mode='a') as score_file:
 #f.send_telegram_message("End execution with score " + str(mrr))
 
 #Saving loss
-with open(param.subname + '_loss.csv', mode='a') as loss_file:
+with open(param.subname + '_loss.csv', mode='w') as loss_file:
+    file_writer = csv.writer(loss_file)
     file_writer.writerow(['#Epochs'])
-    for loss in ajj_losses:
-        file_writer.writerow(loss)
+    for loss in all_losses:
+        file_writer.writerow([loss])
 
 #Saving acc
 with open(param.subname + '_acc.csv', mode='a') as acc_file:
+    file_writer = csv.writer(acc_file)
     file_writer.writerow(['#Epochs'])
     for acc in all_acc:
-        file_writer.writerow(acc)
+        file_writer.writerow([acc])

@@ -26,8 +26,6 @@ print('Reading the training set')
 df_train = pd.read_csv('train_off.csv')
 df_train = f.get_df_percentage(df_train, percentage)
 
-df_train.to_csv('encode_' + percentage_s + '.csv')
-
 session_train, session_test = f.split_group_random(df_train, 0.8, 'session_id')
 
 f.split_group_csv(df_train, session_train, session_test, 'session_id', percentage=percentage_s)
@@ -35,6 +33,8 @@ f.split_group_csv(df_train, session_train, session_test, 'session_id', percentag
 df_test = pd.read_csv('gt_' + percentage_s + '.csv')
 df_cleaned = f.clean_dataset(df_test)
 df_cleaned.to_csv('test_' + percentage_s + '.csv', index= False)
+
+df_train = pd.read_csv('train_' + percentage_s + '.csv')
 
 #creating encode set by removing null clickouts from test set
 df_test_no_null = remove_null_clickout(df_cleaned)
