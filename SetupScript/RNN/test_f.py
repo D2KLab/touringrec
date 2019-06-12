@@ -38,10 +38,10 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
                             
     return list_to_space_string(ranked)
 
-def evaluate(model, session, hotel_dict, n_features, hotels_window):
+def evaluate(model, session, hotel_dict, n_features, hotels_window, max_window):
     """Just return an output list of hotel given a single session."""
     
-    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features)
+    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, max_window)
     
     output = model(session_tensor)
 
@@ -141,7 +141,7 @@ def score_submissions(subm_csv, gt_csv, objective_function):
 
     return mrr
 
-def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, subname="submission_default_name", isprint=False):
+def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, subname="submission_default_name", isprint=False):
     """Return the score obtained by the net on the test dataframe"""
 
     #Creating a NaN column for item recommendations
@@ -161,7 +161,7 @@ def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, subname="submis
                 hotels_window = action['impressions'].split('|')
 
                 if len(temp_session) != 0:
-                    df_test.loc[action_index, 'item_recommendations'] = evaluate(model, temp_session, hotel_dict, n_features, hotels_window)
+                    df_test.loc[action_index, 'item_recommendations'] = evaluate(model, temp_session, hotel_dict, n_features, hotels_window, max_window)
 
                 temp_session.append(action)
 

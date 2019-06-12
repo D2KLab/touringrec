@@ -48,6 +48,36 @@ def get_corpus(df):
 
   return splitted_sessions
 
+def extract_unique_meta(df_meta):
+    d = []
+    h_feat = df_meta['properties']
+    for properties in df_meta['properties']:
+      temp = properties.split('|')
+      for property in temp:
+          d.append(property)
+    prop_dict = set(d)
+    prop_dict = list(prop_dict)
+    return prop_dict
+
+def get_meta_dict(df_meta, hotel_list, meta_list):
+  #now I map every hotel with corresponding features
+  d = {}
+  for index, row in df_meta.iterrows():
+    key = row['item_id']
+    value = row["properties"]
+    temp = value.split('|')
+    h_features = []
+    for property in temp:
+      h_features.append(property)
+    d[str(key)] = h_features
+
+  for row in hotel_list:
+    key = row
+    if key not in d:
+      d[str(key)] = []
+      
+  return d
+
 #gets the training set and splits it in subsessions populated by the item of the action
 def prepare_input(df_train):
   training_set = []

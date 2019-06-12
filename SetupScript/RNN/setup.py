@@ -33,6 +33,7 @@ torch.manual_seed(1)
 parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
 parser.add_argument('--encode', action="store", type=str, help="--train encode.csv")
+parser.add_argument('--meta', action="store", type=str, help="--train metadata.csv")
 parser.add_argument('--train', action="store", type=str, help="--train train.csv")
 parser.add_argument('--test', action="store", type=str, help="--test test.csv")
 parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
@@ -54,6 +55,7 @@ parser.add_argument('--actions', nargs='+')
 args = parser.parse_args()
 
 param = LSTMParam.LSTMParameters(   args.encode,
+                                    args.meta,
                                     args.train, 
                                     args.test,
                                     args.gt,
@@ -98,6 +100,9 @@ df_encode = dsm.remove_single_actions(df_encode)
 df_encode = dsm.remove_nonitem_actions(df_encode)
 #df_encode = dsm.reduce_df(df_encode, 80000)
 
+#importing metadata set
+df_meta = pd.read_csv(param.meta)
+
 #importing training set
 df_train = pd.read_csv(param.train)
 df_train = dsm.remove_single_actions(df_train)
@@ -134,10 +139,28 @@ n_features = len(word2vec.wv['666856'])
 
 hotel_dict = word2vec.wv
 
+#extracting metadata features
+meta_list = dsm.extract_unique_meta(df_meta)
+meta_dict = dsm.get_meta_dict(df_meta, hotel_dict.index2word, meta_list)
+
+#getting maximum window size
+max_window = 0
+for window in hotels_window:
+  if len(window) > max_window:
+    max_window = len(window)
+max_window
+
+#Setting up feature numbers
 n_hotels = len(hotel_dict.index2word)
-n_features = len(word2vec.wv['666856'])
+n_features_w2vec = len(word2vec.wv['666856'])
+n_features_meta = len(meta_list)
+n_features_impression = max_window
+n_features = n_features_w2vec + n_features_meta + n_features_impression
 
 print('n_hotels is ' + str(n_hotels))
+print('n_features_w2vec is ' + str(n_features_w2vec))
+print('n_features_meta is ' + str(n_features_meta))
+print('n_features_impression is ' + str(n_features_impression))
 print('n_features is ' + str(n_features))
 
 
@@ -225,7 +248,7 @@ for epoch in range(1, num_epochs + 1):
     iter = iter + 1
 
     if param.batchsize == 0:
-        session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features)
+        session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, max_window)
         category = categories[index]
         category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
     else:
@@ -234,7 +257,7 @@ for epoch in range(1, num_epochs + 1):
         if len(single_session) > max_session_len:
           max_session_len = len(single_session)
           
-      session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features)
+      session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features, max_window)
       category = categories[index]
       category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
 
@@ -255,7 +278,7 @@ for epoch in range(1, num_epochs + 1):
       all_losses.append(current_loss / (plot_every * len(sessions)))
       print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
       print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
-      acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features)
+      acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window)
       print("Score: " + str(acc))
       all_acc.append(acc)
       current_loss = 0
@@ -279,7 +302,7 @@ plt.plot(all_acc)
 STEP 7: PREPARE TEST SET
 '''
 
-mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, param.subname, isprint=True)
+mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, param.subname, isprint=True)
 print("Final score: " + str(mrr))
 
 

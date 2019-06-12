@@ -73,28 +73,44 @@ def train(model, loss_fn, optimizer, category_tensor, line_tensor, iscuda):
 
 #functions for training phase
 
-def session_to_tensor(session, hotel_dict, n_features):
+def session_to_tensor(session, hotel_dict, n_features, max_window):
   tensor = torch.zeros(len(session), 1, n_features)
   
   for ai, action in enumerate(session):
-    tensor[ai][0] = hotel_to_tensor(action['reference'], hotel_dict, n_features)
+    tensor[ai][0] = hotel_to_tensor(action['reference'], hotel_dict, n_features, max_window)
   return tensor
 
-def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features):
+def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features, max_window):
   batch_dim  = len(session_list)
 
   tensor = torch.zeros(max_session_len, batch_dim, n_features)
   
   for si, session in enumerate(session_list):
     for ai, action in enumerate(session):
-      tensor[ai][si] = hotel_to_tensor(action['reference'], hotel_dict, n_features)
+      tensor[ai][si] = hotel_to_tensor(action['reference'], hotel_dict, n_features, max_window)
   return tensor
 
+def meta_to_index(meta, meta_list):
+    return meta_list.index(meta)
 
-def hotel_to_tensor(hotel, hotel_dict, n_features):
-  tensor = torch.zeros(n_features)
-  if hotel in hotel_dict: #-----------int
-    tensor = torch.from_numpy(hotel_dict[hotel])
+def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window):
+  tensor_w2vec = torch.zeros(n_features_w2vec)
+  tensor_meta = torch.zeros(n_features_meta)
+  tensor_window = torch.zeros(max_window)
+  
+  if hotel in hotel_dict:
+    tensor_w2vec = torch.from_numpy(hotel_dict[hotel])
+  
+  if hotel in meta_dict:
+    for mi, meta in enumerate(meta_dict[hotel]):
+      tensor_meta[meta_to_index(meta, meta_list)] = 1
+    
+  if hotel in hotels_window:
+    tensor_window[hotels_window.index(hotel)] = 1
+      
+  tensor = torch.cat((tensor_w2vec, tensor_meta), 0)
+  tensor = torch.cat((tensor, tensor_window), 0)
+    
   return tensor
 
 def hotel_to_category(hotel, hotel_dict, n_features):
