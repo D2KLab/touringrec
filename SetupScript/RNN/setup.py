@@ -183,7 +183,7 @@ STEP 4: CREATE NETWORK
 #DEFINE PARAMETERS
 input_dim = n_features
 output_dim = n_hotels
-hidden_dim = int(1/30 * (input_dim + output_dim))
+hidden_dim = int(1/50 * (input_dim + output_dim))
 print('The model is:')
 print('input_dim is:' + str(input_dim))
 print('hidden_dim is: ' + str(hidden_dim))
