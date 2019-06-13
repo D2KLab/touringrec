@@ -73,27 +73,27 @@ def train(model, loss_fn, optimizer, category_tensor, line_tensor, iscuda):
 
 #functions for training phase
 
-def session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window):
+def session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict):
   tensor = torch.zeros(len(session), 1, n_features)
   
   for ai, action in enumerate(session):
-    tensor[ai][0] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window, max_window)
+    tensor[ai][0] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window, max_window, meta_dict)
   return tensor
 
-def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features, hotels_window, max_window):
+def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features, hotels_window, max_window, meta_dcit):
   batch_dim  = len(session_list)
 
   tensor = torch.zeros(max_session_len, batch_dim, n_features)
   
   for si, session in enumerate(session_list):
     for ai, action in enumerate(session):
-      tensor[ai][si] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window, max_window)
+      tensor[ai][si] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window, max_window, meta_dict)
   return tensor
 
 def meta_to_index(meta, meta_list):
     return meta_list.index(meta)
 
-def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window):
+def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window, meta_dict):
   n_features_w2vec = 100
   n_features_meta = 157
   tensor_w2vec = torch.zeros(n_features_w2vec)

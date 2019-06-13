@@ -250,7 +250,7 @@ for epoch in range(1, num_epochs + 1):
     iter = iter + 1
 
     if param.batchsize == 0:
-        session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window)
+        session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict)
         category = categories[index]
         category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
     else:
@@ -259,7 +259,7 @@ for epoch in range(1, num_epochs + 1):
         if len(single_session) > max_session_len:
           max_session_len = len(single_session)
           
-      session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features, hotels_window, max_window)
+      session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features, hotels_window, max_window, meta_dict)
       category = categories[index]
       category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
 

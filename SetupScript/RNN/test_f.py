@@ -41,7 +41,7 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
 def evaluate(model, session, hotel_dict, n_features, hotels_window, max_window):
     """Just return an output list of hotel given a single session."""
     
-    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window)
+    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict)
     
     output = model(session_tensor)
 
