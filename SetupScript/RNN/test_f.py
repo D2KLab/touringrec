@@ -38,7 +38,7 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
                             
     return list_to_space_string(ranked)
 
-def evaluate(model, session, hotel_dict, n_features, hotels_window, max_window):
+def evaluate(model, session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
     """Just return an output list of hotel given a single session."""
     
     session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
