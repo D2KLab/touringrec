@@ -98,7 +98,7 @@ STEP 1: IMPORTING and MANIPULATING DATASET
 df_encode = pd.read_csv(param.encode)
 df_encode = dsm.remove_single_actions(df_encode)
 df_encode = dsm.remove_nonitem_actions(df_encode)
-#df_encode = dsm.reduce_df(df_encode, 80000)
+#df_encode = dsm.reduce_df(df_encode, 10000)
 
 #importing metadata set
 df_meta = pd.read_csv(param.meta)
@@ -107,17 +107,17 @@ df_meta = pd.read_csv(param.meta)
 df_train = pd.read_csv(param.train)
 df_train = dsm.remove_single_actions(df_train)
 df_train =  dsm.remove_nonitem_actions(df_train)
-#df_train = dsm.reduce_df(df_train, 10000)
+#df_train = dsm.reduce_df(df_train, 100)
 
 #importing test set
 df_test = pd.read_csv(param.test)
 df_test = dsm.remove_single_actions(df_test)
 df_test = dsm.remove_nonitem_actions(df_test)
-#df_test = dsm.reduce_df(df_test, 1000)
+#df_test = dsm.reduce_df(df_test, 100)
 
 #importing ground truth
 df_gt = pd.read_csv(param.gt)
-#df_gt = dsm.reduce_df(df_gt, 1000)
+#df_gt = dsm.reduce_df(df_gt, 100)
 
 df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
 
@@ -183,7 +183,7 @@ STEP 4: CREATE NETWORK
 #DEFINE PARAMETERS
 input_dim = n_features
 output_dim = n_hotels
-hidden_dim = int(1/10 * (input_dim + output_dim))
+hidden_dim = int(1/30 * (input_dim + output_dim))
 print('The model is:')
 print('input_dim is:' + str(input_dim))
 print('hidden_dim is: ' + str(hidden_dim))
