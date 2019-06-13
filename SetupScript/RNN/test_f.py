@@ -141,7 +141,7 @@ def score_submissions(subm_csv, gt_csv, objective_function):
 
     return mrr
 
-def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, subname="submission_default_name", isprint=False):
+def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window,, meta_dict, meta_list, subname="submission_default_name", isprint=False):
     """Return the score obtained by the net on the test dataframe"""
 
     #Creating a NaN column for item recommendations
