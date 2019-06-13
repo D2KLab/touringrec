@@ -41,7 +41,7 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
 def evaluate(model, session, hotel_dict, n_features, hotels_window, max_window):
     """Just return an output list of hotel given a single session."""
     
-    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict)
+    session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
     
     output = model(session_tensor)
 
@@ -161,7 +161,7 @@ def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, sub
                 hotels_window = action['impressions'].split('|')
 
                 if len(temp_session) != 0:
-                    df_test.loc[action_index, 'item_recommendations'] = evaluate(model, temp_session, hotel_dict, n_features, hotels_window, max_window)
+                    df_test.loc[action_index, 'item_recommendations'] = evaluate(model, temp_session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
 
                 temp_session.append(action)
 
