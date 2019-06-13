@@ -143,6 +143,18 @@ hotel_dict = word2vec.wv
 meta_list = dsm.extract_unique_meta(df_meta)
 meta_dict = dsm.get_meta_dict(df_meta, hotel_dict.index2word, meta_list)
 
+
+'''
+STEP 3: PREPARE NET INPUT
+'''
+
+#this splits the training set sessions into multiple mini-sessions
+if param.batchsize == 0:
+    sessions, categories, hotels_window = dsm.prepare_input(df_train)
+else:
+    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train, param.batchsize)
+
+
 #getting maximum window size
 max_window = 0
 for window in hotels_window:
@@ -163,16 +175,6 @@ print('n_features_meta is ' + str(n_features_meta))
 print('n_features_impression is ' + str(n_features_impression))
 print('n_features is ' + str(n_features))
 
-
-'''
-STEP 3: PREPARE NET INPUT
-'''
-
-#this splits the training set sessions into multiple mini-sessions
-if param.batchsize == 0:
-    sessions, categories, hotels_window = dsm.prepare_input(df_train)
-else:
-    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train, param.batchsize)
 
 '''
 STEP 4: CREATE NETWORK
