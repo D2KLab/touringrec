@@ -94,6 +94,8 @@ def meta_to_index(meta, meta_list):
     return meta_list.index(meta)
 
 def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window):
+  n_features_w2vec = 100
+  n_features_meta = 157
   tensor_w2vec = torch.zeros(n_features_w2vec)
   tensor_meta = torch.zeros(n_features_meta)
   tensor_window = torch.zeros(max_window)
