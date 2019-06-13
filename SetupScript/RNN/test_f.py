@@ -245,7 +245,7 @@ def prepare_test(df_test, df_gt):
   return test_sessions, test_hotels_window, test_clickout_index
   
   
-def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, subname="submission_default_name", isprint=False):
+def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False):
   """Return the score obtained by the net on the test dataframe"""
 
   test_dim = len(df_test)
@@ -255,7 +255,7 @@ def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clic
 
   for session_index, session in enumerate(sessions):
     if clickout_index[session_index] != []:
-      df_test.loc[clickout_index[session_index], 'item_recommendations'] = evaluate(model, session, hotel_dict, n_features, hotels_window[session_index])
+      df_test.loc[clickout_index[session_index], 'item_recommendations'] = evaluate(model, session, hotel_dict, n_features, hotels_window[session_index], max_window, meta_dict, meta_list)
 
   df_sub = get_submission_target(df_test)
 
