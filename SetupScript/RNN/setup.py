@@ -154,6 +154,7 @@ if param.batchsize == 0:
 else:
     sessions, categories, hotels_window = dsm.prepare_input_batched(df_train, param.batchsize)
 
+test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test, df_gt)
 
 #getting maximum window size
 max_window = 0
@@ -280,7 +281,8 @@ for epoch in range(1, num_epochs + 1):
       all_losses.append(current_loss / (plot_every * len(sessions)))
       print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
       print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
-      acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list)
+      #acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list)
+      acc = tst.test_accuracy_optimized(model, df_test, df_gt, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
       print("Score: " + str(acc))
       all_acc.append(acc)
       current_loss = 0
@@ -304,7 +306,8 @@ plt.plot(all_acc)
 STEP 7: PREPARE TEST SET
 '''
 
-mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
+#mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
+mrr = tst.test_accuracy_optimized(model, df_test, df_gt, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
 print("Final score: " + str(mrr))
 
 

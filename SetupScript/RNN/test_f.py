@@ -199,3 +199,75 @@ def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, met
 
     mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
     return mrr
+
+def prepare_test(df_test, df_gt):
+  #Creating a NaN column for item recommendations
+  df_test['item_recommendations'] = np.nan
+
+  test_dim = len(df_test)
+
+  temp_session = []
+  test_sessions = []
+
+  temp_clickout_index = []
+  test_clickout_index = []
+
+  hotels_window = []
+  test_hotels_window = []
+
+  i = 0
+  step = 0
+
+  #splitting in sessions while evaluating recommendations for NaN clickouts
+  for action_index, action in df_test.iterrows():
+      if(action['reference'] != 'unknown'):
+          if (action['action_type'] == 'clickout item') & math.isnan(float(action['reference'])):
+              hotels_window = action['impressions'].split('|')
+              temp_session.append(action)
+              temp_clickout_index.append(action_index)
+          else:
+              temp_session.append(action)
+
+      if(i < test_dim-1):
+          if action['session_id'] != df_test.iloc[[i + 1]]['session_id'].values[0]:
+              step = 0
+              test_sessions.append(temp_session)
+              test_hotels_window.append(hotels_window)
+              test_clickout_index.append(temp_clickout_index)
+              temp_session = []
+              hotels_window = []
+              temp_clickout_index = []
+
+
+      i = i+1  
+      step = step + 1
+        
+  return test_sessions, test_hotels_window, test_clickout_index
+  
+  
+def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, subname="submission_default_name", isprint=False):
+  """Return the score obtained by the net on the test dataframe"""
+
+  test_dim = len(df_test)
+
+  print_every = 500
+
+
+  for session_index, session in enumerate(sessions):
+    if clickout_index[session_index] != []:
+      df_test.loc[clickout_index[session_index], 'item_recommendations'] = evaluate(model, session, hotel_dict, n_features, hotels_window[session_index])
+
+  df_sub = get_submission_target(df_test)
+
+  #Removing unnecessary columns
+  df_sub = df_sub[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+
+  mask = df_sub["item_recommendations"].notnull()
+  df_sub = df_sub[mask]
+
+  # Saving df_sub
+  if isprint:
+      df_sub.to_csv('./' + subname + '.csv')
+
+  mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  return mrr
