@@ -39,6 +39,7 @@ parser.add_argument('--test', action="store", type=str, help="--test test.csv")
 parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
 #parser.add_argument('--metadata', action="store", type=str, help="Define the metadata file")
 #parser.add_argument('--localscore', action="store", type=int, help="0 -> Local score, 1 -> Official score")
+parser.add_argument('--ismeta', action='store_true', help='1 -> Use metadata, 0 -> dont use metadata')
 parser.add_argument('--epochs', action="store", type=int, help="Define the number of epochs")
 parser.add_argument('--ncomponents', action='store', type=int, help='item2vec: number of components')
 #parser.add_argument('--lossfunction', action='store', type=str, help='MF: define the loss function')
@@ -59,6 +60,7 @@ param = LSTMParam.LSTMParameters(   args.encode,
                                     args.train, 
                                     args.test,
                                     args.gt,
+                                    args.ismeta,
                                     args.epochs,
                                     args.ncomponents,
                                     args.window,
@@ -101,7 +103,9 @@ df_encode = dsm.remove_nonitem_actions(df_encode)
 #df_encode = dsm.reduce_df(df_encode, 10000)
 
 #importing metadata set
-df_meta = pd.read_csv(param.meta)
+df_meta = []
+if param.ismeta:
+    df_meta = pd.read_csv(param.meta)
 
 #importing training set
 df_train = pd.read_csv(param.train)
@@ -140,8 +144,11 @@ n_features = len(word2vec.wv['666856'])
 hotel_dict = word2vec.wv
 
 #extracting metadata features
-meta_list = dsm.extract_unique_meta(df_meta)
-meta_dict = dsm.get_meta_dict(df_meta, hotel_dict.index2word, meta_list)
+meta_list = []
+meta_dict = []
+if param.ismeta:
+    meta_list = dsm.extract_unique_meta(df_meta)
+    meta_dict = dsm.get_meta_dict(df_meta, hotel_dict.index2word, meta_list)
 
 
 '''
