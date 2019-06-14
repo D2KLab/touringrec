@@ -77,7 +77,7 @@ def session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window
   tensor = torch.zeros(len(session), 1, n_features)
   
   for ai, action in enumerate(session):
-    tensor[ai][0] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window, max_window, meta_dict_meta_list)
+    tensor[ai][0] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
   return tensor
 
 def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features, hotels_window, max_window, meta_dict, meta_list):
