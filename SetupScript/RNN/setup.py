@@ -332,8 +332,8 @@ file_exists = os.path.isfile('scores.csv')
 with open('scores.csv', mode='a') as score_file:
     file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     if not file_exists: # Write headers
-        file_writer.writerow(['#Epochs', '#Components', 'W2Vec window', 'Learn Rate', 'batchsize' 'Score'])
-    file_writer.writerow([str(param.epochs), str(param.ncomponents), str(param.window), str(param.learnrate), str(param.batchsize), str(mrr)])
+        file_writer.writerow(['Hidden dimension', '#Epochs', '#Components', 'W2Vec window', 'Learn Rate', 'batchsize' 'Score'])
+    file_writer.writerow([str(param.hiddendim), str(param.epochs), str(param.ncomponents), str(param.window), str(param.learnrate), str(param.batchsize), str(mrr)])
 #f.send_telegram_message("End execution with score " + str(mrr))
 
 #Saving loss

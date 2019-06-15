@@ -7,7 +7,7 @@ class LSTMParameters():
         self.gt = gt
         self.ismeta = ismeta
         self.isimpression = isimpression
-        seld.hiddendim = hiddendim
+        self.hiddendim = hiddendim
         self.epochs = epochs
         self.ncomponents = ncomponents
         self.window = window
