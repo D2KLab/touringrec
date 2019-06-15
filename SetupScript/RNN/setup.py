@@ -175,6 +175,7 @@ if param.isimpression:
     for window in hotels_window:
         if len(window) > max_window:
             max_window = len(window)
+    max_window = 25
 
 #Setting up feature numbers
 n_hotels = len(hotel_dict.index2word)
