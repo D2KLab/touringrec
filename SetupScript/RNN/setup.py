@@ -41,6 +41,7 @@ parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
 #parser.add_argument('--localscore', action="store", type=int, help="0 -> Local score, 1 -> Official score")
 parser.add_argument('--ismeta', action='store_true', help='Use metadata')
 parser.add_argument('--isimpression', action='store_true', help='Use impression list')
+parser.add_argument('--isdrop', action='store_true', help='Use dropout layer')
 parser.add_argument('--hiddendim', action='store', type=int, help='Set hidden dimension')
 parser.add_argument('--epochs', action="store", type=int, help="Define the number of epochs")
 parser.add_argument('--ncomponents', action='store', type=int, help='item2vec: number of components')
@@ -64,6 +65,8 @@ param = LSTMParam.LSTMParameters(   args.encode,
                                     args.gt,
                                     args.ismeta,
                                     args.isimpression,
+                                    args.isdrop,
+                                    args.hiddendim,
                                     args.epochs,
                                     args.ncomponents,
                                     args.window,
@@ -195,7 +198,7 @@ STEP 4: CREATE NETWORK
 input_dim = n_features
 output_dim = n_hotels
 #hidden_dim = int(1/100 * (input_dim + output_dim))
-hidde_dim = param.hiddendim
+hidden_dim = param.hiddendim
 print('The model is:')
 print('input_dim is:' + str(input_dim))
 print('hidden_dim is: ' + str(hidden_dim))
@@ -332,8 +335,8 @@ file_exists = os.path.isfile('scores.csv')
 with open('scores.csv', mode='a') as score_file:
     file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     if not file_exists: # Write headers
-        file_writer.writerow(['Hidden dimension', '#Epochs', '#Components', 'W2Vec window', 'Learn Rate', 'batchsize' 'Score'])
-    file_writer.writerow([str(param.hiddendim), str(param.epochs), str(param.ncomponents), str(param.window), str(param.learnrate), str(param.batchsize), str(mrr)])
+        file_writer.writerow(['Train set', 'Using impressions', 'Using meta', 'Hidden dimension', 'Dropout layer', '#Epochs', '#Components', 'W2Vec window', 'Learn Rate', 'batchsize' 'Score'])
+    file_writer.writerow([str(param.train), str(param.isimpression), str(param.ismeta), str(param.hiddendim), str(param.isdrop), str(param.epochs), str(param.ncomponents), str(param.window), str(param.learnrate), str(param.batchsize), str(mrr)])
 #f.send_telegram_message("End execution with score " + str(mrr))
 
 #Saving loss
