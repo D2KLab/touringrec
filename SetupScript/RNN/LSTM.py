@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import pandas as pd
-from setup import param
+#from setup import param
 
 class LSTMModel(nn.Module):
     def __init__(self, input_dim, hidden_dim, layer_dim, output_dim, iscuda, bias=True):
@@ -111,7 +111,7 @@ def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window, me
     for mi, meta in enumerate(meta_dict[hotel]):
       tensor_meta[meta_to_index(meta, meta_list)] = 1
     
-  if param.isimpression:  
+  if max_window != 0:  
     if hotel in hotels_window:
       tensor_window[hotels_window.index(hotel)] = 1
       
