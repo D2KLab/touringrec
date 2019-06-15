@@ -167,7 +167,7 @@ test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_tes
 
 #getting maximum window size
 max_window = 0
-if isimpression:
+if param.isimpression:
     for window in hotels_window:
         if len(window) > max_window:
             max_window = len(window)
