@@ -49,7 +49,7 @@ class LSTMModel(nn.Module):
 
         out = out[-1, :, :]
 
-        out = dropout_layer(out)
+        out = self.dropout_layer(out)
         
         out = self.fc(out)
     
