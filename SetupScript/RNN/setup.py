@@ -169,8 +169,8 @@ test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_tes
 max_window = 0
 if isimpression:
     for window in hotels_window:
-    if len(window) > max_window:
-        max_window = len(window)
+        if len(window) > max_window:
+            max_window = len(window)
 
 #Setting up feature numbers
 n_hotels = len(hotel_dict.index2word)
