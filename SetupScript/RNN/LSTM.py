@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import pandas as pd
+from setup import param
 
 class LSTMModel(nn.Module):
     def __init__(self, input_dim, hidden_dim, layer_dim, output_dim, iscuda, bias=True):
@@ -18,10 +19,11 @@ class LSTMModel(nn.Module):
                
         self.lstm = nn.LSTM(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim)  
         
-        self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 2)
+        #self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 2)
 
-        self.fc = nn.Linear(hidden_dim * 2, output_dim)
+        self.fc = nn.Linear(hidden_dim, output_dim)
     
+        self.dropout_layer = nn.Dropout(p=0.2)
     
     def forward(self, x):
         
@@ -43,9 +45,11 @@ class LSTMModel(nn.Module):
 
         out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
 
-        out = self.hidden_fc(out)
+        #out = self.hidden_fc(out)
 
         out = out[-1, :, :]
+
+        out = dropout_layer(out)
         
         out = self.fc(out)
     
@@ -94,7 +98,7 @@ def meta_to_index(meta, meta_list):
     return meta_list.index(meta)
 
 def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
-  n_features_w2vec = 100
+  n_features_w2vec = 100 #to be fixed
   n_features_meta = len(meta_list)
   tensor_w2vec = torch.zeros(n_features_w2vec)
   tensor_meta = torch.zeros(n_features_meta)
@@ -107,8 +111,9 @@ def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window, me
     for mi, meta in enumerate(meta_dict[hotel]):
       tensor_meta[meta_to_index(meta, meta_list)] = 1
     
-  if hotel in hotels_window:
-    tensor_window[hotels_window.index(hotel)] = 1
+  if param.isimpression:  
+    if hotel in hotels_window:
+      tensor_window[hotels_window.index(hotel)] = 1
       
   tensor = torch.cat((tensor_w2vec, tensor_meta), 0)
   tensor = torch.cat((tensor, tensor_window), 0)

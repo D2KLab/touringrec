@@ -39,7 +39,8 @@ parser.add_argument('--test', action="store", type=str, help="--test test.csv")
 parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
 #parser.add_argument('--metadata', action="store", type=str, help="Define the metadata file")
 #parser.add_argument('--localscore', action="store", type=int, help="0 -> Local score, 1 -> Official score")
-parser.add_argument('--ismeta', action='store_true', help='1 -> Use metadata, 0 -> dont use metadata')
+parser.add_argument('--ismeta', action='store_true', help='Use metadata')
+parser.add_argument('--isimpression', action='store_true', help='Use impression list')
 parser.add_argument('--epochs', action="store", type=int, help="Define the number of epochs")
 parser.add_argument('--ncomponents', action='store', type=int, help='item2vec: number of components')
 #parser.add_argument('--lossfunction', action='store', type=str, help='MF: define the loss function')
@@ -61,6 +62,7 @@ param = LSTMParam.LSTMParameters(   args.encode,
                                     args.test,
                                     args.gt,
                                     args.ismeta,
+                                    args.isimpression,
                                     args.epochs,
                                     args.ncomponents,
                                     args.window,
@@ -165,10 +167,10 @@ test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_tes
 
 #getting maximum window size
 max_window = 0
-for window in hotels_window:
-  if len(window) > max_window:
-    max_window = len(window)
-max_window
+if isimpression:
+    for window in hotels_window:
+    if len(window) > max_window:
+        max_window = len(window)
 
 #Setting up feature numbers
 n_hotels = len(hotel_dict.index2word)
