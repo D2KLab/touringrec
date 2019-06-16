@@ -175,8 +175,8 @@ if param.isimpression:
     for window in hotels_window:
         if len(window) > max_window:
             max_window = len(window)
-    if param.train == './train_1.csv':
-        max_window = 25
+    #if param.train == './train_1.csv':
+    max_window = 25
 
 #Setting up feature numbers
 n_hotels = len(hotel_dict.index2word)
