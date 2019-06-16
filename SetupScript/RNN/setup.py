@@ -175,7 +175,7 @@ if param.isimpression:
     for window in hotels_window:
         if len(window) > max_window:
             max_window = len(window)
-    if param.meta == './train_10.csv':
+    if param.meta == './train_1.csv':
         max_window = 25
 
 #Setting up feature numbers
