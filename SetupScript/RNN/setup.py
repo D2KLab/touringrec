@@ -349,7 +349,7 @@ with open(param.subname + '_loss.csv', mode='w') as loss_file:
         file_writer.writerow([loss])
 
 #Saving acc
-with open(param.subname + '_acc.csv', mode='a') as acc_file:
+with open(param.subname + '_acc.csv', mode='w') as acc_file:
     file_writer = csv.writer(acc_file)
     file_writer.writerow(['#Epochs'])
     for acc in all_acc:
