@@ -28,9 +28,9 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
     
     for hotel_id in hotels_window:
         if hotel_id not in ranked_hotels:
-            ranked_hotels[hotel_id] = 0
+            ranked_hotels[hotel_id] = -9999
 
-    ranked_hotels = sorted(ranked_hotels.items(), key=itemgetter(1))
+    ranked_hotels = sorted(ranked_hotels.items(), key=itemgetter(1), reverse = True)
     ranked = []
 
     for tup in ranked_hotels:
