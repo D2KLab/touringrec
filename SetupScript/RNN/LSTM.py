@@ -45,7 +45,7 @@ class LSTMModel(nn.Module):
 
         out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
 
-        out = self.hidden_fc(out)
+        out = F.relu(self.hidden_fc(out))
 
         out = out[-1, :, :]
 
