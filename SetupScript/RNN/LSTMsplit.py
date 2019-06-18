@@ -22,9 +22,7 @@ class LSTMModel(nn.Module):
         
         self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 10)
 
-        self.hidden_fc2 = nn.Linear(hidden_dim * 10, hidden_dim * 100)
-
-        self.fc = nn.Linear(hidden_dim * 10, output_dim)
+        self.fc = nn.Linear(hidden_dim, output_dim)
     
         self.dropout_layer = nn.Dropout(p=0.2)
     
@@ -48,11 +46,11 @@ class LSTMModel(nn.Module):
 
         out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
 
+        #out = F.relu(self.hidden_fc(out))
+
         out = out[-1, :, :]
 
-        out = F.relu(self.hidden_fc(out))
-
-        out = self.dropout_layer(out)
+        #out = self.dropout_layer(out)
         
         out = self.fc(out)
     
@@ -101,26 +99,27 @@ def meta_to_index(meta, meta_list):
     return meta_list.index(meta)
 
 def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list, price_dict, n_features_prices):
-  n_features_w2vec = 100 #to be fixed
+  n_features_w2vec = 0 #to be fixed
   n_features_meta = len(meta_list)
+  n_features_prices = 0
   tensor_w2vec = torch.zeros(n_features_w2vec)
   tensor_meta = torch.zeros(n_features_meta)
   tensor_window = torch.zeros(max_window)
   tensor_prices = torch.zeros(n_features_prices)
   
-  if hotel in hotel_dict:
-    tensor_w2vec = torch.from_numpy(hotel_dict[hotel])
+  #if hotel in hotel_dict:
+    #tensor_w2vec = torch.from_numpy(hotel_dict[hotel])
   
-  if hotel in meta_dict:
-    for mi, meta in enumerate(meta_dict[hotel]):
-      tensor_meta[meta_to_index(meta, meta_list)] = 1
+  #if hotel in meta_dict:
+    #for mi, meta in enumerate(meta_dict[hotel]):
+        #tensor_meta[meta_to_index(meta, meta_list)] = 1
     
   if max_window != 0:  
     if hotel in hotels_window:
       tensor_window[hotels_window.index(hotel)] = 1
 
-  if hotel in price_dict:
-    tensor_prices[price_dict.index(hotel)] = 1
+  #if hotel in price_dict:
+    #tensor_prices[price_dict.index(hotel)] = 1
       
   tensor = torch.cat((tensor_w2vec, tensor_meta), 0)
   tensor = torch.cat((tensor, tensor_window), 0)

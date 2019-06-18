@@ -20,10 +20,10 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import normalize
 from collections import defaultdict
 
-import ds_manipulation as dsm
+import ds_manipulationsplit as dsm
 import w2vec as w2v
-import test_f as tst
-import LSTM as lstm
+import test_fsplit as tst
+import LSTMsplit as lstm
 import LSTMParameters as LSTMParam
 
 import argparse
@@ -46,7 +46,7 @@ parser.add_argument('--isdrop', action='store_true', help='Use dropout layer')
 parser.add_argument('--hiddendim', action='store', type=int, help='Set hidden dimension')
 parser.add_argument('--epochs', action="store", type=int, help="Define the number of epochs")
 parser.add_argument('--ncomponents', action='store', type=int, help='item2vec: number of components')
-parser.add_argument('--npricecat', action='store', type=int, help='prices: number of cateogories', default = 0)
+parser.add_argument('--npricecat', action='store', type=int, help='prices: number of cateogories')
 #parser.add_argument('--lossfunction', action='store', type=str, help='MF: define the loss function')
 parser.add_argument('--window', action='store', type=int, help='item2vec: window length')
 parser.add_argument('--learnrate', action='store', type=float, help='learning rate for the model')
@@ -149,7 +149,7 @@ STEP 2: ENCODING TO CREATE DICTIONARY
 #w2vec item encoding
 from gensim.models import Word2Vec
 
-word2vec = Word2Vec(corpus, min_count=1, window=param.window, sg=1, size = param.ncomponents)
+word2vec = Word2Vec(corpus, min_count=1, window=param.window, sg=1)
 
 n_features = len(word2vec.wv['666856'])
 
@@ -193,7 +193,7 @@ n_features_meta = len(meta_list)
 n_features_impression = max_window
 n_features_prices = param.npricecat
 n_features = n_features_w2vec + n_features_meta + n_features_impression + n_features_prices
-
+n_features = 25
 print('n_hotels is ' + str(n_hotels))
 print('n_features_w2vec is ' + str(n_features_w2vec))
 print('n_features_meta is ' + str(n_features_meta))
