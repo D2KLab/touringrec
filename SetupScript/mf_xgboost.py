@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
 import functions as f
 from lightfm import LightFM
 from scipy import sparse
@@ -12,7 +13,8 @@ import dataset_clean as dsc
 from sklearn.preprocessing import OneHotEncoder
 import time
 from lightfm.evaluation import reciprocal_rank
-import xgboost
+import xgboost as xgb
+from sklearn.model_selection import train_test_split
 
     
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
@@ -41,19 +43,50 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, user_features = u_features, hotel_dic = hotel_dict, user_dic = user_dict)
     df_train_xg = get_lightFM_features(df_train_clickout, mf_model, user_dict, hotel_dict)
-    print(df_train_xg.head(30))
 
-    #xg_boost_training(df_train)
+    xg_model = xg_boost_training(df_train_xg)
+
+    df_test_xg = get_lightFM_features(df_test_user, mf_model, user_dict, hotel_dict, is_test = True)
+
+    #df_out = generate_submission()
     #df_train_xg = df_train_xg.apply(lambda x: get_lfm_features(x, user_dict, hotel_dict, mf_model, item_f=hotel_features), axis=1)    
     #df_out.to_csv(subm_csv, index=False)
     return df_train_xg
 
+def xg_boost_training(train):
+    df_train, df_val = train_test_split(train, test_size=0.2)
+    cols = ['user_id', 'session_id', 'timestamp', 'step', 'item_id', 'label']
+    xgtrain = xgb.DMatrix(df_train.drop(cols, axis=1), df_train.label)
+    xgval = xgb.DMatrix(df_val.drop(cols, axis=1), df_val.label)
+    params = {
+        'objective':'binary:logistic', 
+        'eta':0.1, 
+        'booster':'gbtree',
+        'max_depth':7,         
+        'nthread':50,  
+        'seed':1,    
+        'eval_metric':'auc',
+    }
 
-def get_lightFM_features(df, mf_model, user_dict, hotel_dict):
+    model = xgb.train(
+        params=list(params.items()),  
+        early_stopping_rounds=30, 
+        verbose_eval=10, 
+        dtrain=xgtrain,
+        evals=[(xgtrain, 'train'), (xgval, 'test')],
+        num_boost_round=300,
+    )
+    xgb.plot_importance(model)
+    plt.show()
+    return model
+
+
+def get_lightFM_features(df, mf_model, user_dict, hotel_dict, is_test = False):
     df_train_xg = f.explode_position(df, 'impressions')
     df_train_xg = df_train_xg[['user_id', 'session_id', 'timestamp', 'step', 'impressions', 'reference', 'position']]
     df_train_xg = df_train_xg.rename(columns={'impressions':'item_id'})
-    df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
+    if(is_test == False):
+        df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
     df_train_xg['user_id_enc'] = df_train_xg['user_id'].map(user_dict)
     df_train_xg['item_id_enc'] = df_train_xg['item_id'].map(hotel_dict)
     df_train_xg_not_null = df_train_xg[~df_train_xg['item_id_enc'].isnull()]
@@ -73,21 +106,10 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict):
     #df_train_xg['lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
     df_train_xg = pd.concat([df_train_xg_not_null, df_train_xg_null], ignore_index=True, sort=False)
     df_train_xg = df_train_xg.sort_values(by=['user_id', 'session_id', 'timestamp', 'step'], ascending=False)
+    cols = ['reference', 'user_id_enc', 'item_id_enc']
+    df_train_xg = df_train_xg.drop(cols, axis=1)
     return df_train_xg
 
-
-def get_label(r):
-    if(str(r.item_id) == r.reference):
-        return 1
-    else:
-        return 0
-def split_no_info_hotel(df):
-    print('Inizio' + str(df.shape[0]))
-    df_info = df[df['user_id'] != 'no_data']
-    df_info = df_info[df_info['item_id'] != 'no_data']
-    print('Fine' + str(df_info.shape[0]))
-    df_no_info = df[(df['user_id'] == 'no_data') | (df['item_id'] == 'no_data')]
-    return df_info, df_no_info
 
 def get_hotel_position(reference, impressions):
     list_impressions = impressions.split('|')
