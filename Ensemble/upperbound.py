@@ -34,14 +34,6 @@ df_rnn = df_rnn[MERGE_COLS + ['item_recommendations']]
 df_gt = df_gt[MERGE_COLS + ['reference']]
 
 df_merged = (
-    df_mf
-    .merge(df_rnn,suffixes=('_mf', '_rnn'),
-           left_on=MERGE_COLS,
-           right_on=MERGE_COLS,
-           how="left")
-    )
-
-df_merged = (
     df_merged
     .merge(df_gt,
            left_on=MERGE_COLS,

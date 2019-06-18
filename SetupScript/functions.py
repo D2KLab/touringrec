@@ -27,6 +27,7 @@ def get_submission_target(df):
 
     return df_out
 
+
 def get_interaction_actions(df, actions = None,clean_null=False):
     """ Return a dataset where all the actions are related to interaction between user and item.
     actions -> list of user/item interactions to select
@@ -119,19 +120,42 @@ def explode(df_in, col_expl, flag_conversion = True):
 
     df = df_in.copy()
     df.loc[:, col_expl] = df[col_expl].apply(string_to_array)
-
+    print(df.head())
     df_out = pd.DataFrame(
         {col: np.repeat(df[col].values,
                         df[col_expl].str.len())
          for col in df.columns.drop(col_expl)}
     )
-
+    print(df_out)
     df_out.loc[:, col_expl] = np.concatenate(df[col_expl].values)
     if(flag_conversion):
         df_out.loc[:, col_expl] = df_out[col_expl].apply(int)
 
     return df_out
 
+def get_position(l):
+    pos = []
+    for i in range(0,len(l)):
+        pos.append(i)
+    return pos
+
+def explode_position(df_in, col_expl, flag_conversion = True):
+    """Explode column col_expl of array type into multiple rows."""
+
+    df = df_in.copy()
+    df.loc[:, col_expl] = df[col_expl].apply(string_to_array)
+    df.loc[:, 'position'] = df[col_expl].apply(get_position)
+    df_out = pd.DataFrame(
+        {col: np.repeat(df[col].values,
+                        df[col_expl].str.len())
+         for col in df.columns.drop(col_expl)}
+    )
+    df_out.loc[:, col_expl] = np.concatenate(df[col_expl].values)
+    df_out.loc[:, 'position'] = np.concatenate(df['position'].values)
+    if(flag_conversion):
+        df_out.loc[:, col_expl] = df_out[col_expl].apply(int)
+
+    return df_out
     
 def read_into_df(file):
     """Read csv file into data frame."""

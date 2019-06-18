@@ -18,41 +18,103 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     hotel_prices_file = kwargs.get('file_metadata', None)
     subm_csv = 'submission_matrixfactorization.csv'
 
-
     # Clean the dataset
     df_train = f.get_interaction_actions(df_train, actions = parameters.listactions)
     df_test_cleaned = f.get_interaction_actions(df_test, actions = parameters.listactions, clean_null = True)
     df_test_cleaned = remove_null_clickout(df_test_cleaned)
-    df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True)
-    df_test_user = f.get_submission_target(df_test)
-    
-    u_features, user_dict, nation_dict = generate_user_features(df_train)
-    df_test_user, df_test_nation = split_one_action(df_test)
+    user_dict = create_user_dict(pd.concat([df_train, df_test_cleaned]))
 
     if hotel_prices_file != None:
-        hotel_features, hotel_dict = get_hotel_prices(hotel_prices_file, df_train)
+        hotel_features, hotel_dict = get_hotel_prices(hotel_prices_file, pd.concat([df_train, df_test_cleaned]))
     else:
         hotel_features = None
+    df_train_clickout, df_train_no_clickout = split_clickout(df_train)
 
-    df_out_user, df_missed = generate_prediction_per_user(df_train, df_test_user, parameters, item_features = hotel_features, user_features = u_features, nation_dic = nation_dict, hotel_dic = hotel_dict, user_dic = user_dict)
-    #df_missed = pd.DataFrame()
-    #df_out_user = pd.DataFrame()
-    print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
-    #print(df_missed.head())
-    df_out_nation = complete_prediction(df_test_nation, df_missed)
-    #df_out_nation, df_missed = generate_prediction_per_nation(df_train, df_test_nation, df_missed=df_missed, epochs = epochs, n_comp = ncomponents, lossf = lossfunction, mfk = mfk, item_features = hotel_features, nation_dict = nation_dict, hotel_dict = hotel_dict)
-    #print('There are #' + str(df_missed.shape[0]) + ' items with no predictions')
-    #print(df_missed.head())
+    df_test_user = f.get_submission_target(df_test)
+    u_features = generate_user_features(df_train, user_dict)
+    df_train = pd.concat([df_train_no_clickout, df_test_cleaned], ignore_index=True)
+    df_test_user, df_test_nation = split_one_action(df_test)
 
-    df_out = pd.concat([df_out_user, df_out_nation], ignore_index=True)
-    #print(f"Writing {subm_csv}...")
-    df_out.to_csv(subm_csv, index=False)
-    return df_out
+
+
+    mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, user_features = u_features, hotel_dic = hotel_dict, user_dic = user_dict)
+
+    df_train_xg = f.explode_position(df_train_clickout, 'impressions')
+    df_train_xg = df_train_xg[['user_id', 'session_id', 'timestamp', 'step', 'impressions', 'reference', 'position']]
+    df_train_xg = df_train_xg.rename(columns={'impressions':'item_id'})
+    df_train_xg['user_id'] = df_train_xg['user_id'].map(user_dict)
+    df_train_xg['item_id'] = df_train_xg['item_id'].map(hotel_dict)
+    df_train_xg = df_train_xg[~df_train_xg['item_id'].isnull()]
+    df_train_xg['user_id'] = df_train_xg['user_id'].apply(int)
+    df_train_xg['item_id'] = df_train_xg['item_id'].apply(int)
+    #df_train_xg = df_train_xg.fillna('no_data')
+    #df_train_xg_cleaned, df_train_xg_errors = split_no_info_hotel(df_train_xg)
+    df_train_xg['score'] = mf_model.predict(np.array(df_train_xg['user_id']), np.array(df_train_xg['item_id']), num_threads=4)
+    df_train_xg['user_bias'] = mf_model.user_biases[df_train_xg['user_id']]
+    df_train_xg['item_bias'] = mf_model.item_biases[df_train_xg['item_id']]
+    user_embeddings = mf_model.user_embeddings[df_train_xg.user_id]
+    item_embeddings = mf_model.item_embeddings[df_train_xg.item_id]
+    df_train_xg['lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
+    df_train_xg['label'] = df_train_xg.apply(lambda row: 1 if str(row.item_id) == str(row.reference) else 0, axis=1)
+
+    #df_train_xg = df_train_xg.apply(lambda x: get_lfm_features(x, user_dict, hotel_dict, mf_model, item_f=hotel_features), axis=1)    
+    #df_out.to_csv(subm_csv, index=False)
+    print(df_train_xg.head())
+    return df_train_xg
+
+
+def split_no_info_hotel(df):
+    print('Inizio' + str(df.shape[0]))
+    df_info = df[df['user_id'] != 'no_data']
+    df_info = df_info[df_info['item_id'] != 'no_data']
+    print('Fine' + str(df_info.shape[0]))
+    df_no_info = df[(df['user_id'] == 'no_data') | (df['item_id'] == 'no_data')]
+    return df_info, df_no_info
 
 def get_hotel_position(reference, impressions):
     list_impressions = impressions.split('|')
     return list_impressions.index(reference)
-    
+
+def get_lfm_features(row, user_d, item_d, model, item_f = None):
+    item_x = []
+    try:
+        user_x = user_d[row.user_id]
+    except KeyError:
+        score =-999
+    try:
+        item_x.append(item_d[row.item_id])
+        score = model.predict(user_x, item_x, item_features=item_f, num_threads=4)
+        score = score[0]
+    except KeyError:
+        score = -999
+    row['light_fm_score'] = score
+    if(row.item_id == int(row.reference)):
+        label = 1
+    else:
+        label = 0
+    row['label'] = label
+    return row
+
+def split_clickout(df):
+    print('Size iniziale: ' + str(df.shape[0]))
+    df_clickout = get_clickouts(df)
+    df_no_clickout = get_no_clickout(df)
+    print('There are #: ' + str(df_clickout.shape[0]) + ' clickout actions')
+    print('There are #: ' + str(df_no_clickout.shape[0]) + ' no clickout actions')
+    return df_clickout, df_no_clickout
+
+def get_clickouts(df_test):
+    df_test['timestamp_max'] = df_test.groupby(['user_id'])['timestamp'].transform(max)
+    df_clickout = df_test[(df_test['timestamp_max'] == df_test['timestamp']) & (df_test['action_type'] == 'clickout item')]
+    del df_clickout['timestamp_max']
+    return df_clickout
+
+def get_no_clickout(df):
+    df['timestamp_max'] = df.groupby(['user_id'])['timestamp'].transform(max)
+    df_no_clickout = df[~(df['timestamp_max'] == df['timestamp']) & (df['action_type'] == 'clickout item')]
+    del df_no_clickout['timestamp_max']
+    return df_no_clickout
+
 
 def complete_prediction(df_test_nation, df_missed):
     #print('Start predicting the single action clickout')
@@ -69,11 +131,10 @@ def fill_recs(imp):
     l = imp.split('|')
     return f.list_to_space_string(l)
 
-def generate_user_features(df):
+def generate_user_features(df, user_dict):
     df['present'] = 1
-    df_user_features = df.drop_duplicates(subset='user_id', keep='first')
     #print('# of duplicates: ' + str(starting_user - df_user_features.shape[0]))
-    df_user_features = df_user_features[['user_id', 'platform', 'present']]
+    df_user_features = df[['user_id', 'platform', 'present']]
     #print('First elements of the dataset')
     #print(df_user_features.head())
     #print('Create dictionaries')
@@ -99,48 +160,18 @@ def generate_user_features(df):
 
 
 
-def generate_prediction_per_user(df_train, df_test_user, params, item_features = None, user_features = None, nation_dic = None, hotel_dic = None, user_dic = None):
+def train_mf_model(df_train, params, item_features = None, user_features = None, hotel_dic = None, user_dic = None):
 
-    """
-        Expected input:
-            - df_train = df concatenates train + test
-            - df_test_user = df without single action clickout to predict
-        Expected output:
-            - df_out_user = df with recommended items for each user in the df_test_user
-            - df_missed 
-    """
-    #print('Start predicting item for user')
-    #Create user dictionary
     df_interactions = get_n_interaction(df_train, weight_dic = params.actionsweights)
     if user_dic == None:
+        print('Null user dictionary. Creating it...')
         user_dic = create_user_dict(df_interactions)
     if hotel_dic == None:
+        print('Null hotel dictionary. Creating it...')
         hotel_dic = create_item_dict(df_interactions)
     interaction_matrix = f.create_sparse_interaction_matrix(df_interactions, user_dic, hotel_dic)
     mf_model = runMF(interaction_matrix, params, n_jobs = 4, item_f = item_features, user_f = user_features)
-    """
-    for tag in (u'AU', u'BR', u'GB'):
-        tag_id = nation_dic.get(tag)
-        similars = get_similar_tags(mf_model, tag_id)
-        print('Similar tag for ' + tag)
-        for tid in similars:
-            # Iterating over values 
-            for nat, id in nation_dic.items(): 
-                if (id == tid):
-                    print(nat, ":", id) 
-    """
-    before = df_test_user.shape[0]
-    df_test_user = df_test_user[df_test_user['user_id'].isin(list(user_dic.keys()))]
-    #print("User missed: " + str(before - df_test_user.shape[0]))
-    #print('Calculate submissions per user')
-    df_test_user['item_recommendations'] = df_test_user.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix, x.impressions, x.user_id, user_dic, hotel_dic, hotel_features=item_features), axis=1)
-    df_missed = df_test_user[df_test_user['item_recommendations'] == ""]
-    df_test_user = df_test_user[df_test_user['item_recommendations'] != ""]
-    #print('No prediction for #' + str(df_missed.shape[0]) + 'users')
-    #print(df_missed.head())
-    df_out_user = df_test_user[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
-
-    return df_out_user, df_missed
+    return mf_model
 
 """
 def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None, nation_dict = None, hotel_dict = None):
@@ -199,6 +230,7 @@ def generate_prices_sparse_matrix(df, features_col='intervals'):
     csr = csr_matrix((data, (row, col)), shape=(n_items, n_features))
 
     return csr, hotel_dict
+
 def get_hotel_prices(metadata_file, interactions, n_categories = 2000):
     """
     Required Input -
@@ -253,10 +285,14 @@ def split_one_action(df_test):
         - df_no_single_action = dataframe without clickout at step 1 to predict
         - df_single_action = dataframe with only clickout at step 1 to predict
     """
+    df_int = f.get_interaction_actions(df_test)
+    n_action_session = df_int.groupby('session_id').size().reset_index(name='n_actions')
     df_test = f.get_submission_target(df_test)
+    df_test = (df_test.merge(n_action_session, left_on='session_id', right_on='session_id', how="left"))
+    print(df_test.head())
     df_no_single_action = remove_single_actions(df_test)
     df_single_action = get_single_actions(df_test)
-    #print('Total item of test set: ' + str(df_test.shape[0]) + ' No single action: #' + str(df_no_single_action.shape[0]) + ' Only single actions: #' + str(df_single_action.shape[0]))
+    print('Total item of test set: ' + str(df_test.shape[0]) + ' No single action: #' + str(df_no_single_action.shape[0]) + ' Only single actions: #' + str(df_single_action.shape[0]))
     return df_no_single_action, df_single_action
 
 
@@ -297,11 +333,11 @@ def encode_actions(action, dic):
     
 
 def remove_single_actions(df):
-    df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1) & (df['reference'].isnull())].index)
+    df = df.drop(df[(df['action_type'] == "clickout item") & (df['n_actions'] == 1) & (df['reference'].isnull())].index)
     return df
 
 def get_single_actions(df):
-    df = df[(df['action_type'] == "clickout item") & (df['step'] == 1) & (df['reference'].isnull())]
+    df = df[(df['action_type'] == "clickout item") & (df['n_actions'] == 1) & (df['reference'].isnull())]
     return df
 
 def runMF(interactions, params, n_jobs = 4, item_f = None, user_f = None):

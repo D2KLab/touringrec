@@ -5,6 +5,7 @@ import functions as f
 import base_solution as bs
 import matrix_factorization_metadata as mf_metadata
 import matrix_factorization as mf
+import mf_xgboost as mf_xg
 import sys as sys
 import argparse
 import csv
@@ -74,7 +75,8 @@ solutions = {
     "basesolution": bs.get_rec_base,
     "basesolution_nation": bs.get_rec_nation,
     "matrixfactorization_metadata": mf_metadata.get_rec_matrix,
-    "matrixfactorization": mf.get_rec_matrix
+    "matrixfactorization": mf.get_rec_matrix,
+    "mf_xgboost": mf_xg.get_rec_matrix,
 }
 
 params = MF_Parameters(epochs, ncomponents, lossfunction, mfk, learningrate, learningschedule, useralpha, itemalpha, rho, epsilon, maxsampled, actions_weights, list_actions)
@@ -96,10 +98,17 @@ verboseprint("Executing the solution " + algorithm)
 
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
-
+    
 df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, parameters = params)
-#Computing score
+# df_test = f.get_submission_target(df_test)
+# df_test = df_test.rename(columns={'impressions':'item_recommendations'})
+# df_test['item_recommendations'] = df_test['item_recommendations'].apply(lambda x: " ".join(x.split('|')))
+# df_rec = df_test[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+# print(df_rec.head())
+# #Computing score
+# algorithm = 'order_based'
 subm_csv = 'submission_' + algorithm + '.csv'
+df_rec.to_csv(subm_csv)
 if localscore == 1:
     mrr = f.score_submissions(subm_csv, gt, f.get_reciprocal_ranks)
     print("End execution with score " + str(mrr))
