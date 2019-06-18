@@ -12,6 +12,8 @@ import dataset_clean as dsc
 from sklearn.preprocessing import OneHotEncoder
 import time
 from lightfm.evaluation import reciprocal_rank
+import xgboost
+
     
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
@@ -38,31 +40,47 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
 
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, user_features = u_features, hotel_dic = hotel_dict, user_dic = user_dict)
+    df_train_xg = get_lightFM_features(df_train_clickout, mf_model, user_dict, hotel_dict)
+    print(df_train_xg.head(30))
 
-    df_train_xg = f.explode_position(df_train_clickout, 'impressions')
-    df_train_xg = df_train_xg[['user_id', 'session_id', 'timestamp', 'step', 'impressions', 'reference', 'position']]
-    df_train_xg = df_train_xg.rename(columns={'impressions':'item_id'})
-    df_train_xg['user_id'] = df_train_xg['user_id'].map(user_dict)
-    df_train_xg['item_id'] = df_train_xg['item_id'].map(hotel_dict)
-    df_train_xg = df_train_xg[~df_train_xg['item_id'].isnull()]
-    df_train_xg['user_id'] = df_train_xg['user_id'].apply(int)
-    df_train_xg['item_id'] = df_train_xg['item_id'].apply(int)
-    #df_train_xg = df_train_xg.fillna('no_data')
-    #df_train_xg_cleaned, df_train_xg_errors = split_no_info_hotel(df_train_xg)
-    df_train_xg['score'] = mf_model.predict(np.array(df_train_xg['user_id']), np.array(df_train_xg['item_id']), num_threads=4)
-    df_train_xg['user_bias'] = mf_model.user_biases[df_train_xg['user_id']]
-    df_train_xg['item_bias'] = mf_model.item_biases[df_train_xg['item_id']]
-    user_embeddings = mf_model.user_embeddings[df_train_xg.user_id]
-    item_embeddings = mf_model.item_embeddings[df_train_xg.item_id]
-    df_train_xg['lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
-    df_train_xg['label'] = df_train_xg.apply(lambda row: 1 if str(row.item_id) == str(row.reference) else 0, axis=1)
-
+    #xg_boost_training(df_train)
     #df_train_xg = df_train_xg.apply(lambda x: get_lfm_features(x, user_dict, hotel_dict, mf_model, item_f=hotel_features), axis=1)    
     #df_out.to_csv(subm_csv, index=False)
-    print(df_train_xg.head())
     return df_train_xg
 
 
+def get_lightFM_features(df, mf_model, user_dict, hotel_dict):
+    df_train_xg = f.explode_position(df, 'impressions')
+    df_train_xg = df_train_xg[['user_id', 'session_id', 'timestamp', 'step', 'impressions', 'reference', 'position']]
+    df_train_xg = df_train_xg.rename(columns={'impressions':'item_id'})
+    df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
+    df_train_xg['user_id_enc'] = df_train_xg['user_id'].map(user_dict)
+    df_train_xg['item_id_enc'] = df_train_xg['item_id'].map(hotel_dict)
+    df_train_xg_not_null = df_train_xg[~df_train_xg['item_id_enc'].isnull()]
+    df_train_xg_null = df_train_xg[df_train_xg['item_id_enc'].isnull()]
+    df_train_xg_not_null['user_id_enc'] = df_train_xg_not_null['user_id_enc'].apply(int)
+    df_train_xg_not_null['item_id_enc'] = df_train_xg_not_null['item_id_enc'].apply(int)
+    #df_train_xg = df_train_xg.fillna('no_data')
+    #df_train_xg_cleaned, df_train_xg_errors = split_no_info_hotel(df_train_xg)
+    df_train_xg_not_null['score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), num_threads=4)
+    df_train_xg_null['score'] = -999
+    df_train_xg_not_null['user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
+    df_train_xg_null['user_bias'] = mf_model.user_biases[df_train_xg_null['user_id_enc']]
+    df_train_xg_not_null['item_bias'] = mf_model.item_biases[df_train_xg_not_null['item_id_enc']]
+    df_train_xg_null['item_bias'] = -999
+    #user_embeddings = mf_model.user_embeddings[df_train_xg.user_id_enc]
+    #item_embeddings = mf_model.item_embeddings[df_train_xg.item_id_enc]
+    #df_train_xg['lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
+    df_train_xg = pd.concat([df_train_xg_not_null, df_train_xg_null], ignore_index=True, sort=False)
+    df_train_xg = df_train_xg.sort_values(by=['user_id', 'session_id', 'timestamp', 'step'], ascending=False)
+    return df_train_xg
+
+
+def get_label(r):
+    if(str(r.item_id) == r.reference):
+        return 1
+    else:
+        return 0
 def split_no_info_hotel(df):
     print('Inizio' + str(df.shape[0]))
     df_info = df[df['user_id'] != 'no_data']
