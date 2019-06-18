@@ -83,6 +83,14 @@ def convert_string_to_list(df, col, new_col):
 
     return df
   
+def read_into_df(file):
+    """Read csv file into data frame."""
+    df = (
+        pd.read_csv(file)
+            .set_index(['user_id', 'session_id', 'timestamp', 'step'])
+    )
+
+    return df
 
 def score_submissions_no_csv(df_subm, df_gt, objective_function):
     """Return score calculated on given submission dataframe"""
@@ -109,10 +117,10 @@ def score_submissions(subm_csv, gt_csv, objective_function):
     """Score submissions with given objective function."""
 
     #print(f"Reading ground truth data {gt_csv} ...")
-    df_gt = f.read_into_df(gt_csv)
+    df_gt = read_into_df(gt_csv)
 
     #print(f"Reading submission data {subm_csv} ...")
-    df_subm = f.read_into_df(subm_csv)
+    df_subm = read_into_df(subm_csv)
     #print('Submissions')
     #print(df_subm.head(10))
 
@@ -157,8 +165,8 @@ def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, subname="submis
 
                 temp_session.append(action)
 
-        else:
-            temp_session.append(action)
+            else:
+                temp_session.append(action)
 
         if(i < test_dim-1):
             if action['session_id'] != df_test.iloc[[i + 1]]['session_id'].values[0]:

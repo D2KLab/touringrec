@@ -80,6 +80,17 @@ def session_to_tensor(session, hotel_dict, n_features):
     tensor[ai][0] = hotel_to_tensor(action['reference'], hotel_dict, n_features)
   return tensor
 
+def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features):
+  batch_dim  = len(session_list)
+
+  tensor = torch.zeros(max_session_len, batch_dim, n_features)
+  
+  for si, session in enumerate(session_list):
+    for ai, action in enumerate(session):
+      tensor[ai][si] = hotel_to_tensor(action['reference'], hotel_dict, n_features)
+  return tensor
+
+
 def hotel_to_tensor(hotel, hotel_dict, n_features):
   tensor = torch.zeros(n_features)
   if hotel in hotel_dict: #-----------int
@@ -88,11 +99,16 @@ def hotel_to_tensor(hotel, hotel_dict, n_features):
 
 def hotel_to_category(hotel, hotel_dict, n_features):
   tensor = torch.zeros(1)
-
   if hotel in hotel_dict.index2word:
     tensor = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
+  return tensor
 
-  
+def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
+  batch_size = len(hotel_list)
+  tensor = torch.zeros(batch_size)
+  for hi, hotel in enumerate(hotel_list):
+    if hotel in hotel_dict.index2word:
+      tensor[hi] = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
   return tensor
 
 def category_from_output(output, hotel_dict):
