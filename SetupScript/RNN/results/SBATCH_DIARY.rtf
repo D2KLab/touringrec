@@ -1,65 +1,386 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
-{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red180\green36\blue25;
-\red0\green0\blue0;\red200\green20\blue201;}
-{\*\expandedcolortbl;;\csgenericrgb\c0\c0\c0;\csgray\c100000;\cssrgb\c76409\c21698\c12524;
-\csgray\c0;\cssrgb\c83396\c23075\c82664;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww25400\viewh16000\viewkind0
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+{\rtf1\ansi\deff3\adeflang1025
+{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\froman\fprq2\fcharset2 Symbol;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\froman\fprq2\fcharset0 Liberation Serif{\*\falt Times New Roman};}{\f4\froman\fprq2\fcharset0 Liberation Sans{\*\falt Arial};}{\f5\froman\fprq2\fcharset0 Menlo-Regular;}{\f6\froman\fprq2\fcharset0 Helvetica{\*\falt Arial};}{\f7\fnil\fprq2\fcharset0 Lohit Devanagari;}{\f8\fnil\fprq2\fcharset0 Menlo-Regular;}{\f9\fnil\fprq2\fcharset0 Helvetica{\*\falt Arial};}{\f10\fnil\fprq2\fcharset0 Liberation Serif{\*\falt Times New Roman};}}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;\red200\green20\blue201;\red180\green36\blue25;}
+{\stylesheet{\s0\snext0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033 Normal;}
+{\s15\sbasedon0\snext16\nowidctlpar\hyphpar0\sb240\sa120\keepn\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f4\fs28 Heading;}
+{\s16\sbasedon0\snext16\sl276\slmult1\nowidctlpar\hyphpar0\sb0\sa140\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24 Text Body;}
+{\s17\sbasedon16\snext17\sl276\slmult1\nowidctlpar\hyphpar0\sb0\sa140\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24 List;}
+{\s18\sbasedon0\snext18\nowidctlpar\hyphpar0\sb120\sa120\cf0\i\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24 Caption;}
+{\s19\sbasedon0\snext19\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24 Index;}
+}{\*\generator LibreOffice/6.2.4.2$Linux_X86_64 LibreOffice_project/20$Build-2}{\info{\creatim\yr0\mo0\dy0\hr0\min0}{\revtim\yr2019\mo6\dy18\hr13\min29}{\printim\yr0\mo0\dy0\hr0\min0}}{\*\userprops}\deftab720
+\hyphauto0\viewscale100
+{\*\pgdsctbl
+{\pgdsc0\pgdscuse451\pgwsxn11906\pghsxn16838\marglsxn1440\margrsxn1440\margtsxn1440\margbsxn1440\pgdscnxt0 Default Style;}}
+\formshade{\*\pgdscno0}\paperh16838\paperw11906\margl1440\margr1440\margt1440\margb1440\sectd\sbknone\sectunlocked1\pgndec\pgwsxn11906\pghsxn16838\marglsxn1440\margrsxn1440\margtsxn1440\margbsxn1440\ftnbj\ftnstart1\ftnrstcont\ftnnar\aenddoc\aftnrstcont\aftnstart1\aftnnrlc
+{\*\ftnsep\chftnsep}\pgndec\pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+#1}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--encode}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./encode_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--meta}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./item_metadata.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--train}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./train_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--test}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./test_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--gt}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./gt_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isimpression}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isdrop}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--hiddendim}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+1000}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--epochs}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+50}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--ncomponents}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+100}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--window}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+3}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--learnrate}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ 0.001 }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--iscuda}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--subname}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ rnn_1%_sub }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--numthread}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+4}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--batchsize}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+16}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
 
-\f0\fs22 \cf2 \cb3 \CocoaLigature0 #1\cf4 \
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_1.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_1.csv \cf6 --test\cf5  ./test_1.csv \cf6 --gt\cf5  ./gt_1.csv \cf6 --isimpression\cf5  \cf6 --isdrop\cf5  \cf6 --hiddendim\cf5  \cf4 1000\cf5  \cf6 --epochs\cf5  \cf4 50\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_1%_sub \cf6 --numthread\cf5  \cf4 4\cf5  \cf6 --batchsize\cf5  \cf4 16\
-\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803{\dbch\af9\rtlch \ltrch\loch\loch\f6\hich\af6
+#2}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--encode}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./encode_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--meta}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./item_metadata.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--train}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./train_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--test}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./test_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--gt}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./gt_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isimpression}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isdrop}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--hiddendim}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+1000}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--epochs}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+20}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--ncomponents}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+100}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--window}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+3}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--learnrate}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ 0.001 }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--iscuda}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--subname}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ rnn_10%_sub }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+\u8212\'97numthread}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+2}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--batchsize}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+64 }
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
 
-\f1\fs24 \cf0 \cb1 \CocoaLigature1 #2
-\f0\fs22 \cf5 \cb3 \CocoaLigature0 \
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_10.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_10.csv \cf6 --test\cf5  ./test_10.csv \cf6 --gt\cf5  ./gt_10.csv \cf6 --isimpression\cf5  \cf6 --isdrop\cf5  \cf6 --hiddendim\cf5  \cf4 1000\cf5  \cf6 --epochs\cf5  \cf4 20\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_10%_sub \cf6 \'97numthread\cf5  \cf4 2\cf5  \cf6 --batchsize\cf5  \cf4 64 \
-\
-\cf2 #3\cf4 \
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_1.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_1.csv \cf6 --test\cf5  ./test_1.csv \cf6 --gt\cf5  ./gt_1.csv \cf6 --isimpression\cf5  \cf6 --isdrop\cf5  \cf6 --hiddendim\cf5  \cf4 1500\cf5  \cf6 --epochs\cf5  \cf4 50\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_1%_sub \cf6 --numthread\cf5  \cf4 4\cf5  \cf6 --batchsize\cf5  \cf4 16\
-\
-\cf2 #4\cf4 \
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_1.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_1.csv \cf6 --test\cf5  ./test_1.csv \cf6 --gt\cf5  ./gt_1.csv \cf6 --isimpression\cf5  \cf6 --isdrop\cf5  \cf6 --hiddendim\cf5  \cf4 200\cf5  \cf6 --epochs\cf5  \cf4 50\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_1%_sub \cf6 --numthread\cf5  \cf4 4\cf5  \cf6 --batchsize\cf5  \cf4 16\
-\
-\cf2 #5\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+#3}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--encode}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./encode_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--meta}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./item_metadata.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--train}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./train_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--test}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./test_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--gt}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./gt_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isimpression}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isdrop}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--hiddendim}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+1500}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--epochs}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+50}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--ncomponents}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+100}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--window}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+3}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--learnrate}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ 0.001 }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--iscuda}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--subname}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ rnn_1%_sub }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--numthread}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+4}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--batchsize}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+16}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
 
-\f1\fs24 \cf0 \cb1 \CocoaLigature1 SBATCH: 
-\f0\fs22 \cf5 \cb3 \CocoaLigature0 91010\cf4 \
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_1.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_1.csv \cf6 --test\cf5  ./test_1.csv \cf6 --gt\cf5  ./gt_1.csv \cf6 --isimpression\cf5  \cf6 --isdrop\cf5  \cf6 --hiddendim\cf5  \cf4 200\cf5  \cf6 --epochs\cf5  \cf4 50\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_1%_sub \cf6 --numthread\cf5  \cf4 4\cf5  \cf6 --batchsize\cf5  \cf4 16\
-\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+#4}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--encode}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./encode_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--meta}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./item_metadata.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--train}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./train_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--test}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./test_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--gt}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./gt_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isimpression}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isdrop}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--hiddendim}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+200}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--epochs}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+50}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--ncomponents}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+100}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--window}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+3}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--learnrate}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ 0.001 }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--iscuda}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--subname}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ rnn_1%_sub }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--numthread}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+4}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--batchsize}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+16}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
 
-\f1\fs24 \cf0 \cb1 \CocoaLigature1 #6\
-SBATCH: 
-\f0\fs22 \cf5 \cb3 \CocoaLigature0 91000\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_10.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_10.csv \cf6 --test\cf5  ./test_10.csv \cf6 --gt\cf5  ./gt_10.csv \cf6 --isimpression\cf5  \cf6 --isdrop\cf5  \cf6 --hiddendim\cf5  \cf4 1000\cf5  \cf6 --epochs\cf5  \cf4 20\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_10%_sub \cf6 \'97numthread\cf5  \cf4 2\cf5  \cf6 --batchsize\cf5  \cf4 32\
-\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+#5}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803{\dbch\af9\rtlch \ltrch\loch\loch\f6\hich\af6
+SBATCH: }{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+91010}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--encode}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./encode_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--meta}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./item_metadata.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--train}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./train_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--test}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./test_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--gt}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./gt_1.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isimpression}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isdrop}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--hiddendim}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+200}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--epochs}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+50}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--ncomponents}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+100}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--window}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+3}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--learnrate}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ 0.001 }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--iscuda}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--subname}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ rnn_1%_sub }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--numthread}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+4}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--batchsize}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+16}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
 
-\f1\fs24 \cf0 \cb1 \CocoaLigature1 #7\
-SBATCH: 
-\f0\fs22 \cf5 \cb3 \CocoaLigature0 91011\cf4 \
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_10.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_10.csv \cf6 --test\cf5  ./test_10.csv \cf6 --gt\cf5  ./gt_10.csv \cf6 --isimpression\cf5  \cf6 --isdrop\cf5  \cf6 --hiddendim\cf5  \cf4 200\cf5  \cf6 --epochs\cf5  \cf4 20\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_10%_sub \cf6 --numthread\cf5  \cf4 2\cf5  \cf6 --batchsize\cf5  \cf4 16\
-\
-#\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803{\dbch\af9\rtlch \ltrch\loch\loch\f6\hich\af6
+#6}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803{\dbch\af9\rtlch \ltrch\loch\loch\f6\hich\af6
+SBATCH: }{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+91000}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--encode}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./encode_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--meta}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./item_metadata.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--train}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./train_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--test}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./test_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--gt}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./gt_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isimpression}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isdrop}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--hiddendim}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+1000}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--epochs}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+20}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--ncomponents}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+100}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--window}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+3}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--learnrate}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ 0.001 }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--iscuda}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--subname}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ rnn_10%_sub }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+\u8212\'97numthread}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+2}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--batchsize}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+32}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
 
-\f1\fs24 \cf0 \cb1 \CocoaLigature1 SBATCH: 
-\f0\fs22 \cf5 \cb3 \CocoaLigature0 91192\cf4 \
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_10.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_10.csv \cf6 --test\cf5  ./test_10.csv \cf6 --gt\cf5  ./gt_10.csv \cf6 --isimpression\cf5  \cf6 --hiddendim\cf5  \cf4 150\cf5  \cf6 --epochs\cf5  \cf4 20\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_10%_sub \cf6 --numthread\cf5  \cf4 2\cf5  \cf6 --batchsize\cf5  \cf4 32\
-\
-#\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803{\dbch\af9\rtlch \ltrch\loch\loch\f6\hich\af6
+#7}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803{\dbch\af9\rtlch \ltrch\loch\loch\f6\hich\af6
+SBATCH: }{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+91011}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--encode}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./encode_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--meta}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./item_metadata.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--train}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./train_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--test}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./test_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--gt}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ ./gt_10.csv }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isimpression}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--isdrop}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--hiddendim}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+200}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--epochs}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+20}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--ncomponents}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+100}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--window}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+3}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--learnrate}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ 0.001 }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--iscuda}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--subname}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ rnn_10%_sub }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--numthread}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+2}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf17\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+--batchsize}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+ }{\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+16}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf18\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
 
-\f1\fs24 \cf0 \cb1 \CocoaLigature1 SBATCH: 
-\f0\fs22 \cf5 \cb3 \CocoaLigature0 91193\
-added mid fc layer + relu\cf4 \
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
-\cf5 python setup.py \cf6 --encode\cf5  ./encode_10.csv \cf6 --meta\cf5  ./item_metadata.csv \cf6 --train\cf5  ./train_10.csv \cf6 --test\cf5  ./test_10.csv \cf6 --gt\cf5  ./gt_10.csv \cf6 --isimpression\cf5  \cf6 --hiddendim\cf5  \cf4 150\cf5  \cf6 --epochs\cf5  \cf4 20\cf5  \cf6 --ncomponents\cf5  \cf4 100\cf5  \cf6 --window\cf5  \cf4 3\cf5  \cf6 --learnrate\cf5  0.001 \cf6 --iscuda\cf5  \cf6 --subname\cf5  rnn_10%_sub \cf6 --numthread\cf5  \cf4 2\cf5  \cf6 --batchsize\cf5  \cf4 32}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+#}{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+8}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+SBATCH 95320}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py --encode ./encode_10.csv --meta ./item_metadata.csv --train ./train_10.csv --test ./test_10.csv --gt ./gt_10.csv --isimpression --hiddendim 150 --epochs 20 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_10%_sub --numthread 2 --batchsize 32}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf1\rtlch \ltrch\loch
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf1\rtlch \ltrch\loch
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\cf1\rtlch \ltrch\loch
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+#}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+SBATCH 95321}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe1081\dbch\af10\afs24\alang1033\loch\f3\fs24\lang1033\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720{\cf1\dbch\af8\rtlch \ltrch\loch\fs22\loch\f5\hich\af5
+python setup.py --encode ./encode_10.csv --meta ./item_metadata.csv --train ./train_10.csv --test ./test_10.csv --gt ./gt_10.csv --isimpression --hiddendim 200 --epochs 30 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_10%_sub --numthread 2 --batchsize 32}
+\par }
