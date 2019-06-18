@@ -42,16 +42,37 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
 
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, user_features = u_features, hotel_dic = hotel_dict, user_dic = user_dict)
+    print('Get training set for XGBoost')
     df_train_xg = get_lightFM_features(df_train_clickout, mf_model, user_dict, hotel_dict)
-
+    print('Generate model for XGBoost')
     xg_model = xg_boost_training(df_train_xg)
-
+    print('Get feature for test set')
     df_test_xg = get_lightFM_features(df_test_user, mf_model, user_dict, hotel_dict, is_test = True)
+    
+    df_out = generate_submission(df_test_xg, xg_model)
+    print('Generated submissions: ')
+    print(df_out.head())
+    df_out_nation = complete_prediction(df_test_nation)
+    df_out = pd.concat([df_out, df_out_nation])
+    df_out.to_csv(subm_csv, index=False)
+    return df_out
 
-    #df_out = generate_submission()
-    #df_train_xg = df_train_xg.apply(lambda x: get_lfm_features(x, user_dict, hotel_dict, mf_model, item_f=hotel_features), axis=1)    
-    #df_out.to_csv(subm_csv, index=False)
-    return df_train_xg
+def generate_submission(df, xg_model):
+    df = df.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: calculate_rank(x, xg_model))
+    print(df.head())
+    df = df[['user_id', 'session_id', 'timestamp', 'step', 'item_recommendations']]
+    return df
+
+def calculate_rank(group, model):
+    df_test = group[['position', 'score', 'user_bias', 'item_bias']]
+    xgtest = xgb.DMatrix(df_test)
+    prediction = model.predict(xgtest)
+    dic_pred = dict(zip(group['item_id'].apply(str), prediction))
+    sorted_x = sorted(dic_pred.items(), key=operator.itemgetter(1), reverse = True)
+    sorted_items = list(map(lambda x:x[0], sorted_x))
+    df = group.iloc[0]
+    df['item_recommendations'] = " ".join(sorted_items)
+    return df
 
 def xg_boost_training(train):
     df_train, df_val = train_test_split(train, test_size=0.2)
@@ -76,8 +97,8 @@ def xg_boost_training(train):
         evals=[(xgtrain, 'train'), (xgval, 'test')],
         num_boost_round=300,
     )
-    xgb.plot_importance(model)
-    plt.show()
+    #xgb.plot_importance(model)
+    #plt.show()
     return model
 
 
@@ -156,13 +177,8 @@ def get_no_clickout(df):
     return df_no_clickout
 
 
-def complete_prediction(df_test_nation, df_missed):
-    #print('Start predicting the single action clickout')
-    #print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
-    df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True, sort=False)
-    #print('Fill submissions')
+def complete_prediction(df_test_nation):
     df_test_nation['item_recommendations'] = df_test_nation.apply(lambda x: fill_recs(x.impressions), axis=1)
-    df_missed = df_test_nation[df_test_nation['item_recommendations'] == ""]
     #print('No prediction for #' + str(df_missed.shape[0]) + 'items')
     df_out_nation = df_test_nation[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
     return df_out_nation
