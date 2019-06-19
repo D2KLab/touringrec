@@ -43,15 +43,15 @@ def get_corpus(df):
 
     if session_id != action['session_id']:
       splitted_sessions.append(temp_session)
-      splitted_sessions = splitted_sessions + impressions
+      #splitted_sessions = splitted_sessions + impressions
       temp_session = []
-      impressions = []
+      #impressions = []
 
     temp_session.append(action['reference'])
     session_id = action['session_id']
     
-    if action['action_type'] == 'clickout item':
-      impressions.append(action['impressions'].split('|')[:8])
+    #if action['action_type'] == 'clickout item':
+      #impressions.append(action['impressions'].split('|')[:8])
 
   return splitted_sessions
 
