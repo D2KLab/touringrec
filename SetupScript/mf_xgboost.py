@@ -99,8 +99,6 @@ def xg_boost_training(train):
         evals=[(xgtrain, 'train'), (xgval, 'test')],
         num_boost_round=300,
     )
-    xgb
-
     #xgb.plot_importance(model)
     #xgb.plot_tree(model)
     #plt.show()
@@ -114,8 +112,12 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
         df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
     df_train_xg['user_id_enc'] = df_train_xg['user_id'].map(user_dict)
     df_train_xg['item_id_enc'] = df_train_xg['item_id'].map(hotel_dict)
-    df_train_xg_not_null = df_train_xg[~df_train_xg['item_id_enc'].isnull()]
-    df_train_xg_null = df_train_xg[df_train_xg['item_id_enc'].isnull()]
+    df_train_xg_not_null_it = df_train_xg[~df_train_xg['item_id_enc'].isnull()]
+    df_train_xg_not_null_us = df_train_xg[~df_train_xg['user_id_enc'].isnull()]
+    df_train_xg_not_null = pd.concat([df_train_xg_not_null_it, df_train_xg_not_null_us], ignore_index=True, sort=False)
+    df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull()) | (df_train_xg['user_id_enc'].isnull())]
+    print('Utenti nulli')
+    print(df_train_xg[df_train_xg['user_id_enc'].isnull()].head())
     print('There are # ' + str(df_train_xg_not_null.shape[0]) + ' not null pairs')
     print('There are # ' + str(df_train_xg_null.shape[0]) + ' null pairs')
     df_train_xg_not_null.loc[:,'user_id_enc'] = df_train_xg_not_null['user_id_enc'].apply(int)
@@ -125,7 +127,7 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     df_train_xg_not_null.loc[:,'score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), item_features=item_f, user_features=user_f, num_threads=4)
     df_train_xg_null.loc[:,'score'] = -999
     df_train_xg_not_null.loc[:,'user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
-    df_train_xg_null.loc[:,'user_bias'] = mf_model.user_biases[df_train_xg_null['user_id_enc']]
+    df_train_xg_null.loc[:,'user_bias'] = -999
     df_train_xg_not_null.loc[:,'item_bias'] = mf_model.item_biases[df_train_xg_not_null['item_id_enc']]
     df_train_xg_null.loc[:,'item_bias'] = -999
     user_embeddings = mf_model.user_embeddings[df_train_xg_not_null.user_id_enc]
