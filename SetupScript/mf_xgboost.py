@@ -34,7 +34,6 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
         hotel_features = None
     df_train_clickout, df_train_no_clickout = split_clickout(df_train)
 
-    df_test_user = f.get_submission_target(df_test)
     u_features = generate_user_features(df_train, user_dict)
     df_train = pd.concat([df_train_no_clickout, df_test_cleaned], ignore_index=True)
     df_test_user, df_test_nation = split_one_action(df_test)
@@ -44,6 +43,8 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, user_features = u_features, hotel_dic = hotel_dict, user_dic = user_dict)
     print('Get training set for XGBoost')
     df_train_xg = get_lightFM_features(df_train_clickout, mf_model, user_dict, hotel_dict)
+    print('LightFM Features: ')
+    print(df_train_xg.head())
     print('Generate model for XGBoost')
     xg_model = xg_boost_training(df_train_xg)
     print('Get feature for test set')
@@ -58,21 +59,22 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     return df_out
 
 def generate_submission(df, xg_model):
-    df = df.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: calculate_rank(x, xg_model))
+    df = df.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: calculate_rank(x, xg_model)).reset_index(name='item_recommendations')
     print(df.head())
     df = df[['user_id', 'session_id', 'timestamp', 'step', 'item_recommendations']]
     return df
 
 def calculate_rank(group, model):
-    df_test = group[['position', 'score', 'user_bias', 'item_bias']]
+    cols = ['user_id', 'session_id', 'timestamp', 'step', 'item_id']
+    df_test = group.drop(cols, axis=1)
     xgtest = xgb.DMatrix(df_test)
     prediction = model.predict(xgtest)
     dic_pred = dict(zip(group['item_id'].apply(str), prediction))
     sorted_x = sorted(dic_pred.items(), key=operator.itemgetter(1), reverse = True)
     sorted_items = list(map(lambda x:x[0], sorted_x))
-    df = group.iloc[0]
-    df['item_recommendations'] = " ".join(sorted_items)
-    return df
+    #df = group.iloc[0]
+    #df['item_recommendations'] = " ".join(sorted_items)
+    return " ".join(sorted_items)
 
 def xg_boost_training(train):
     df_train, df_val = train_test_split(train, test_size=0.2)
@@ -97,8 +99,10 @@ def xg_boost_training(train):
         evals=[(xgtrain, 'train'), (xgval, 'test')],
         num_boost_round=300,
     )
-    #xgb.plot_importance(model)
-    #plt.show()
+    xgb
+
+    xgb.plot_importance(model)
+    plt.show()
     return model
 
 
@@ -112,19 +116,24 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, is_test = False):
     df_train_xg['item_id_enc'] = df_train_xg['item_id'].map(hotel_dict)
     df_train_xg_not_null = df_train_xg[~df_train_xg['item_id_enc'].isnull()]
     df_train_xg_null = df_train_xg[df_train_xg['item_id_enc'].isnull()]
-    df_train_xg_not_null['user_id_enc'] = df_train_xg_not_null['user_id_enc'].apply(int)
-    df_train_xg_not_null['item_id_enc'] = df_train_xg_not_null['item_id_enc'].apply(int)
+    print('There are # ' + str(df_train_xg_not_null.shape[0]) + ' not null pairs')
+    print('There are # ' + str(df_train_xg_null.shape[0]) + ' null pairs')
+    df_train_xg_not_null.loc[:,'user_id_enc'] = df_train_xg_not_null['user_id_enc'].apply(int)
+    df_train_xg_not_null.loc[:,'item_id_enc'] = df_train_xg_not_null['item_id_enc'].apply(int)
     #df_train_xg = df_train_xg.fillna('no_data')
     #df_train_xg_cleaned, df_train_xg_errors = split_no_info_hotel(df_train_xg)
-    df_train_xg_not_null['score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), num_threads=4)
-    df_train_xg_null['score'] = -999
+    df_train_xg_not_null.loc[:,'score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), num_threads=4)
+    df_train_xg_null.loc[:,'score'] = -999
     df_train_xg_not_null['user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
     df_train_xg_null['user_bias'] = mf_model.user_biases[df_train_xg_null['user_id_enc']]
     df_train_xg_not_null['item_bias'] = mf_model.item_biases[df_train_xg_not_null['item_id_enc']]
     df_train_xg_null['item_bias'] = -999
-    #user_embeddings = mf_model.user_embeddings[df_train_xg.user_id_enc]
-    #item_embeddings = mf_model.item_embeddings[df_train_xg.item_id_enc]
-    #df_train_xg['lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
+    user_embeddings = mf_model.user_embeddings[df_train_xg_not_null.user_id_enc]
+    item_embeddings = mf_model.item_embeddings[df_train_xg_not_null.item_id_enc]
+    df_train_xg_not_null['lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
+    df_train_xg_null['lightfm_dot_product'] = -999
+    df_train_xg_not_null['lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
+    df_train_xg_null['lightfm_prediction'] = -999
     df_train_xg = pd.concat([df_train_xg_not_null, df_train_xg_null], ignore_index=True, sort=False)
     df_train_xg = df_train_xg.sort_values(by=['user_id', 'session_id', 'timestamp', 'step'], ascending=False)
     cols = ['reference', 'user_id_enc', 'item_id_enc']
@@ -229,21 +238,6 @@ def train_mf_model(df_train, params, item_features = None, user_features = None,
     mf_model = runMF(interaction_matrix, params, n_jobs = 4, item_f = item_features, user_f = user_features)
     return mf_model
 
-"""
-def generate_prediction_per_nation(df_train, df_test_nation, df_missed = pd.DataFrame(), epochs = 30, n_comp = 10, lossf = 'warp-kos', mfk = 200, action_weights = None, item_features = None, nation_dict = None, hotel_dict = None):
-    print('Start predicting the single action clickout')
-    df_interactions_nations = get_n_interaction(df_train, user_col='platform', weight_dic = action_weights)
-    interaction_matrix_nation = f.create_sparse_interaction_matrix(df_interactions_nations, nation_dict, hotel_dict, user_col='platform')
-    mf_model = runMF(interactions = interaction_matrix_nation,k = mfk, n_components = n_comp, loss = lossf, epoch = epochs, n_jobs = 4, item_f = item_features)
-    print('Add the #' + str(df_missed.shape[0]) + ' items missed before')
-    df_test_nation = pd.concat([df_test_nation, df_missed], ignore_index=True)
-    print('Calculate submissions per nation')
-    df_test_nation['item_recommendations'] = df_test_nation.apply(lambda x: sample_recommendation_user(mf_model, interaction_matrix_nation, x.impressions, x.platform, nation_dict, hotel_dict, complete = True, hotel_features=item_features), axis=1)
-    df_missed = df_test_nation[df_test_nation['item_recommendations'] == ""]
-    print('No prediction for #' + str(df_missed.shape[0]) + 'items')
-    df_out_nation = df_test_nation[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
-    return df_out_nation, df_missed
-"""
 def get_similar_tags(model, tag_id):
     # Define similarity as the cosine of the angle
     # between the tag latent vectors

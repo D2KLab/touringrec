@@ -108,7 +108,6 @@ df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, param
 # #Computing score
 # algorithm = 'order_based'
 subm_csv = 'submission_' + algorithm + '.csv'
-df_rec.to_csv(subm_csv)
 if localscore == 1:
     mrr = f.score_submissions(subm_csv, gt, f.get_reciprocal_ranks)
     print("End execution with score " + str(mrr))
