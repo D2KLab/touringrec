@@ -7,6 +7,8 @@ from datetime import datetime
 from sklearn.preprocessing import OneHotEncoder
 from scipy.sparse import coo_matrix
 import math
+import csv
+import os
 
 def int_array_to_string_list(array):
     l = []
@@ -157,6 +159,26 @@ def explode_position(df_in, col_expl, flag_conversion = True):
 
     return df_out
     
+def explode_position_scalable(df_in, col_expl, flag_conversion = True):
+    """Explode column col_expl of array type into multiple rows."""
+    
+    n = 10000  #chunk row size
+    list_df = [df_in[i:i+n] for i in range(0,df_in.shape[0],n)]
+    # Handle the first alone to have the correct headers
+    df_x = explode_position(list_df[0], 'impressions')
+    df_x = df_x.rename(columns={'impressions':'item_id'})
+    df_x.to_csv('exploded.csv', index=False)
+    list_df.pop(0)
+    for df_x in list_df:
+        df_x = explode_position(df_x, 'impressions')
+        df_x = df_x.rename(columns={'impressions':'item_id'})
+        df_x.to_csv('exploded.csv', mode='a', header=False, index=False)
+
+    df_out = pd.read_csv('exploded.csv')
+
+    os.remove('exploded.csv')
+    return df_out
+
 def read_into_df(file):
     """Read csv file into data frame."""
     df = (
