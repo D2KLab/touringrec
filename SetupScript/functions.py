@@ -162,7 +162,7 @@ def explode_position(df_in, col_expl, flag_conversion = True):
 def explode_position_scalable(df_in, col_expl, flag_conversion = True):
     """Explode column col_expl of array type into multiple rows."""
     
-    n = 10000  #chunk row size
+    n = 600000  #chunk row size
     list_df = [df_in[i:i+n] for i in range(0,df_in.shape[0],n)]
     # Handle the first alone to have the correct headers
     df_x = explode_position(list_df[0], 'impressions')

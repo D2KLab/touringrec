@@ -34,21 +34,21 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
         hotel_features = None
     df_train_clickout, df_train_no_clickout = split_clickout(df_train)
 
-    u_features = generate_user_features(df_train, user_dict)
+    #u_features = generate_user_features(df_train, user_dict)
     df_train = pd.concat([df_train_no_clickout, df_test_cleaned], ignore_index=True)
     df_test_user, df_test_nation = split_one_action(df_test)
 
 
 
-    mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, user_features = u_features, hotel_dic = hotel_dict, user_dic = user_dict)
+    mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, hotel_dic = hotel_dict, user_dic = user_dict)
     print('Get training set for XGBoost')
-    df_train_xg = get_lightFM_features(df_train_clickout, mf_model, user_dict, hotel_dict, user_f = u_features, item_f=hotel_features)
+    df_train_xg = get_lightFM_features(df_train_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
     print('LightFM Features: ')
     print(df_train_xg.head())
     print('Generate model for XGBoost')
     xg_model = xg_boost_training(df_train_xg)
     print('Get feature for test set')
-    df_test_xg = get_lightFM_features(df_test_user, mf_model, user_dict, hotel_dict, item_f=hotel_features, user_f=u_features, is_test = True)
+    df_test_xg = get_lightFM_features(df_test_user, mf_model, user_dict, hotel_dict, item_f=hotel_features, is_test = True)
     
     df_out = generate_submission(df_test_xg, xg_model)
     print('Generated submissions: ')
@@ -68,7 +68,7 @@ def calculate_rank(group, model):
     cols = ['user_id', 'session_id', 'timestamp', 'step', 'item_id']
     df_test = group.drop(cols, axis=1)
     xgtest = xgb.DMatrix(df_test)
-    prediction = model.predict(xgtest)
+    prediction = model.predict(xgtest, ntree_limit=model.best_ntree_limit)
     dic_pred = dict(zip(group['item_id'].apply(str), prediction))
     sorted_x = sorted(dic_pred.items(), key=operator.itemgetter(1), reverse = True)
     sorted_items = list(map(lambda x:x[0], sorted_x))
@@ -101,7 +101,8 @@ def xg_boost_training(train):
     )
     xgb
 
-    xgb.plot_importance(model)
+    #xgb.plot_importance(model)
+    xgboost.plot_tree(model)
     plt.show()
     return model
 
@@ -121,7 +122,7 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     df_train_xg_not_null.loc[:,'item_id_enc'] = df_train_xg_not_null['item_id_enc'].apply(int)
     #df_train_xg = df_train_xg.fillna('no_data')
     #df_train_xg_cleaned, df_train_xg_errors = split_no_info_hotel(df_train_xg)
-    df_train_xg_not_null.loc[:,'score'] = mf_model.predict((df_train_xg_not_null['user_id_enc'], df_train_xg_not_null['item_id_enc']), item_features=item_f, user_features=user_f, num_threads=4)
+    df_train_xg_not_null.loc[:,'score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), item_features=item_f, user_features=user_f, num_threads=4)
     df_train_xg_null.loc[:,'score'] = -999
     df_train_xg_not_null['user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
     df_train_xg_null['user_bias'] = mf_model.user_biases[df_train_xg_null['user_id_enc']]
@@ -220,7 +221,7 @@ def generate_user_features(df, user_dict):
     csr = csr_matrix((data, (row, col)), shape=(n_user, n_nations))
     #print(csr.toarray())
 
-    return csr, user_dict, nation_dict
+    return csr
 
 
 
@@ -404,7 +405,7 @@ def runMF(interactions, params, n_jobs = 4, item_f = None, user_f = None):
     print('Starting building a model')
     #x = sparse.csr_matrix(interactions.values)
     model = LightFM(no_components= params.ncomponents, loss=params.lossfunction, k=params.mfk, learning_schedule=params.learningschedule, learning_rate=params.learningrate, user_alpha=1e-6, item_alpha=1e-6)
-    model.fit(interactions,epochs=params.epochs,num_threads = n_jobs, item_features=item_f)
+    model.fit(interactions,epochs=params.epochs,num_threads = n_jobs, item_features=item_f, user_features=user_f)
     return model
 
 def runMF_loss(interactions, test_interactions, n_components=30, loss='warp', k=15, epochs=30, n_jobs = 4, item_f = None):
