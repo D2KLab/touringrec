@@ -15,7 +15,7 @@ import time
 from lightfm.evaluation import reciprocal_rank
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
-
+#import graphviz
     
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
@@ -102,8 +102,8 @@ def xg_boost_training(train):
     xgb
 
     #xgb.plot_importance(model)
-    xgboost.plot_tree(model)
-    plt.show()
+    #xgb.plot_tree(model)
+    #plt.show()
     return model
 
 
@@ -124,16 +124,16 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     #df_train_xg_cleaned, df_train_xg_errors = split_no_info_hotel(df_train_xg)
     df_train_xg_not_null.loc[:,'score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), item_features=item_f, user_features=user_f, num_threads=4)
     df_train_xg_null.loc[:,'score'] = -999
-    df_train_xg_not_null['user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
-    df_train_xg_null['user_bias'] = mf_model.user_biases[df_train_xg_null['user_id_enc']]
-    df_train_xg_not_null['item_bias'] = mf_model.item_biases[df_train_xg_not_null['item_id_enc']]
-    df_train_xg_null['item_bias'] = -999
+    df_train_xg_not_null.loc[:,'user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
+    df_train_xg_null.loc[:,'user_bias'] = mf_model.user_biases[df_train_xg_null['user_id_enc']]
+    df_train_xg_not_null.loc[:,'item_bias'] = mf_model.item_biases[df_train_xg_not_null['item_id_enc']]
+    df_train_xg_null.loc[:,'item_bias'] = -999
     user_embeddings = mf_model.user_embeddings[df_train_xg_not_null.user_id_enc]
     item_embeddings = mf_model.item_embeddings[df_train_xg_not_null.item_id_enc]
-    df_train_xg_not_null['lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
-    df_train_xg_null['lightfm_dot_product'] = -999
-    df_train_xg_not_null['lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
-    df_train_xg_null['lightfm_prediction'] = -999
+    df_train_xg_not_null.loc[:,'lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
+    df_train_xg_null.loc[:,'lightfm_dot_product'] = -999
+    df_train_xg_not_null.loc[:,'lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
+    df_train_xg_null.loc[:,'lightfm_prediction'] = -999
     df_train_xg = pd.concat([df_train_xg_not_null, df_train_xg_null], ignore_index=True, sort=False)
     df_train_xg = df_train_xg.sort_values(by=['user_id', 'session_id', 'timestamp', 'step'], ascending=False)
     cols = ['reference', 'user_id_enc', 'item_id_enc']
