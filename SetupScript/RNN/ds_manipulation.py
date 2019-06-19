@@ -43,15 +43,15 @@ def get_corpus(df):
 
     if session_id != action['session_id']:
       splitted_sessions.append(temp_session)
-      #splitted_sessions = splitted_sessions + impressions
+      splitted_sessions = splitted_sessions + impressions
       temp_session = []
-      #impressions = []
+      impressions = []
 
     temp_session.append(action['reference'])
     session_id = action['session_id']
     
-    #if action['action_type'] == 'clickout item':
-      #impressions.append(action['impressions'].split('|')[:8])
+    if action['action_type'] == 'clickout item':
+      impressions.append(action['impressions'].split('|')[:8])
 
   return splitted_sessions
 
@@ -148,10 +148,14 @@ def prepare_input_batched(df_train, batch_size):
     #training_set.concatenate(sub_sessions)
     #category_set.concatenate(categories)
     #hotels_window_set.concatenate(hotels_window)
-    training_set = training_set + sub_sessions
-    category_set = category_set + categories
-    hotels_window_set = hotels_window_set + hotels_window
-  
+    #training_set = training_set + sub_sessions
+    #category_set = category_set + categories
+    #hotels_window_set = hotels_window_set + hotels_window
+    for si, session in enumerate(training_set):
+      temp_session_batched.append(session)
+      temp_category_batched.append(category_set[si])
+      temp_hotel_window_batched.append(hotels_window_set[si])
+    
   temp_session_batched = []
   temp_category_batched = []
   temp_hotel_window_batched = []
