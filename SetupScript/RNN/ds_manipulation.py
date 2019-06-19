@@ -151,10 +151,10 @@ def prepare_input_batched(df_train, batch_size):
     #training_set = training_set + sub_sessions
     #category_set = category_set + categories
     #hotels_window_set = hotels_window_set + hotels_window
-    for si, session in enumerate(training_set):
-      temp_session_batched.append(session)
-      temp_category_batched.append(category_set[si])
-      temp_hotel_window_batched.append(hotels_window_set[si])
+    if(len(sub_sessions) != 0):
+      training_set.append(sub_sessions[-1])
+      category_set.append(categories[-1])
+      hotels_window_set.append(hotels_window[-1])
     
   temp_session_batched = []
   temp_category_batched = []
