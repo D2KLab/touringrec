@@ -112,9 +112,7 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
         df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
     df_train_xg['user_id_enc'] = df_train_xg['user_id'].map(user_dict)
     df_train_xg['item_id_enc'] = df_train_xg['item_id'].map(hotel_dict)
-    df_train_xg_not_null_it = df_train_xg[~df_train_xg['item_id_enc'].isnull()]
-    df_train_xg_not_null_us = df_train_xg[~df_train_xg['user_id_enc'].isnull()]
-    df_train_xg_not_null = pd.concat([df_train_xg_not_null_it, df_train_xg_not_null_us], ignore_index=True, sort=False)
+    df_train_xg_not_null = df_train_xg[(~df_train_xg['item_id_enc'].isnull()) & (~df_train_xg['user_id_enc'].isnull())]
     df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull()) | (df_train_xg['user_id_enc'].isnull())]
     print('Utenti nulli')
     print(df_train_xg[df_train_xg['user_id_enc'].isnull()].head())
