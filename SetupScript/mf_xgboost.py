@@ -132,9 +132,9 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     df_train_xg['user_id_enc'] = df_train_xg['user_id'].map(user_dict)
     df_train_xg['item_id_enc'] = df_train_xg['item_id'].map(hotel_dict)
     df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull())]
-    df_train_xg_not_null = df_train_xg[~(df_train_xg['item_id_enc'].isnull())]
-    #df_train_xg_not_null = df_train_xg[(~df_train_xg['item_id_enc'].isnull()) & (~df_train_xg['user_id_enc'].isnull())]
-    #df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull()) | (df_train_xg['user_id_enc'].isnull())]
+    #df_train_xg_not_null = df_train_xg[~(df_train_xg['item_id_enc'].isnull())]
+    df_train_xg_not_null = df_train_xg[(~df_train_xg['item_id_enc'].isnull()) & (~df_train_xg['user_id_enc'].isnull())]
+    df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull()) | (df_train_xg['user_id_enc'].isnull())]
     print('Utenti nulli')
     print(df_train_xg[df_train_xg['user_id_enc'].isnull()].head())
     print('There are # ' + str(df_train_xg_not_null.shape[0]) + ' not null pairs')
