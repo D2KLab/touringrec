@@ -15,34 +15,40 @@ import time
 from lightfm.evaluation import reciprocal_rank
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
-#import graphviz
+import graphviz
     
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
+    df_inner_train = pd.read_csv('train_inner_10.csv')
+    df_inner_gt = pd.read_csv('gt_inner_10.csv')
     subm_csv = 'submission_mf_xgboost.csv'
 
     # Clean the dataset
-    df_train = f.get_interaction_actions(df_train, actions = parameters.listactions)
+    df_inner_train = f.get_interaction_actions(df_inner_train, actions = parameters.listactions)
+    
+    #df_train = f.get_interaction_actions(df_train, actions = parameters.listactions)
+    df_inner_gt = f.get_interaction_actions(df_inner_gt, actions=parameters.listactions)
+    df_inner_gt = remove_single_clickout_actions(df_inner_gt)
+    df_inner_gt_clickout, df_inner_gt_no_clickout = split_clickout(df_inner_gt)
+
+
     df_test_cleaned = f.get_interaction_actions(df_test, actions = parameters.listactions, clean_null = True)
     df_test_cleaned = remove_null_clickout(df_test_cleaned)
-    user_dict = create_user_dict(pd.concat([df_train, df_test_cleaned]))
+    df_train = pd.concat([df_inner_train, df_inner_gt_no_clickout, df_test_cleaned])
+    user_dict = create_user_dict(df_train)
 
     if hotel_prices_file != None:
-        hotel_features, hotel_dict = get_hotel_prices(hotel_prices_file, pd.concat([df_train, df_test_cleaned]))
+        hotel_features, hotel_dict = get_hotel_prices(hotel_prices_file, df_train)
     else:
         hotel_features = None
-    df_train_clickout, df_train_no_clickout = split_clickout(df_train)
 
     #u_features = generate_user_features(df_train, user_dict)
-    df_train = pd.concat([df_train_no_clickout, df_test_cleaned], ignore_index=True)
     df_test_user, df_test_nation = split_one_action(df_test)
-
-
 
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, hotel_dic = hotel_dict, user_dic = user_dict)
     print('Get training set for XGBoost')
-    df_train_xg = get_lightFM_features(df_train_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
+    df_train_xg = get_lightFM_features(df_inner_gt_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
     print('LightFM Features: ')
     print(df_train_xg.head())
     print('Generate model for XGBoost')
@@ -76,6 +82,19 @@ def calculate_rank(group, model):
     #df['item_recommendations'] = " ".join(sorted_items)
     return " ".join(sorted_items)
 
+def remove_single_clickout_actions(df):
+    print('Initial size: ' + str(df.shape[0]))
+    n_action_session = df.groupby('session_id').size().reset_index(name='n_actions')
+    print(n_action_session.head())
+    df = (df.merge(n_action_session, left_on='session_id', right_on='session_id', how="left"))
+    print(df.head())
+    # df['step_max'] = df.groupby(['session_id'])['step'].transform(max)
+    # print(df.head())
+    df = df.drop(df[(df["action_type"] == "clickout item") & (df['n_actions'] == 1)].index)
+    print('Final size: ' + str(df.shape[0]))
+    del df['n_actions']
+    return df
+
 def xg_boost_training(train):
     df_train, df_val = train_test_split(train, test_size=0.2)
     cols = ['user_id', 'session_id', 'timestamp', 'step', 'item_id', 'label']
@@ -100,8 +119,8 @@ def xg_boost_training(train):
         num_boost_round=300,
     )
     #xgb.plot_importance(model)
-    #xgb.plot_tree(model)
-    #plt.show()
+    xgb.plot_tree(model)
+    plt.show()
     return model
 
 
@@ -112,8 +131,10 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
         df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
     df_train_xg['user_id_enc'] = df_train_xg['user_id'].map(user_dict)
     df_train_xg['item_id_enc'] = df_train_xg['item_id'].map(hotel_dict)
-    df_train_xg_not_null = df_train_xg[(~df_train_xg['item_id_enc'].isnull()) & (~df_train_xg['user_id_enc'].isnull())]
-    df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull()) | (df_train_xg['user_id_enc'].isnull())]
+    df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull())]
+    df_train_xg_not_null = df_train_xg[~(df_train_xg['item_id_enc'].isnull())]
+    #df_train_xg_not_null = df_train_xg[(~df_train_xg['item_id_enc'].isnull()) & (~df_train_xg['user_id_enc'].isnull())]
+    #df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull()) | (df_train_xg['user_id_enc'].isnull())]
     print('Utenti nulli')
     print(df_train_xg[df_train_xg['user_id_enc'].isnull()].head())
     print('There are # ' + str(df_train_xg_not_null.shape[0]) + ' not null pairs')
@@ -174,15 +195,15 @@ def split_clickout(df):
     return df_clickout, df_no_clickout
 
 def get_clickouts(df_test):
-    df_test['timestamp_max'] = df_test.groupby(['user_id'])['timestamp'].transform(max)
-    df_clickout = df_test[(df_test['timestamp_max'] == df_test['timestamp']) & (df_test['action_type'] == 'clickout item')]
-    del df_clickout['timestamp_max']
+    df_test['step_max'] = df_test.groupby(['user_id'])['step'].transform(max)
+    df_clickout = df_test[(df_test['step_max'] == df_test['step']) & (df_test['action_type'] == 'clickout item')]
+    del df_clickout['step_max']
     return df_clickout
 
 def get_no_clickout(df):
-    df['timestamp_max'] = df.groupby(['user_id'])['timestamp'].transform(max)
-    df_no_clickout = df[~(df['timestamp_max'] == df['timestamp']) & (df['action_type'] == 'clickout item')]
-    del df_no_clickout['timestamp_max']
+    df['step_max'] = df.groupby(['user_id'])['step'].transform(max)
+    df_no_clickout = df[(~(df['step_max'] == df['step'])) | (~(df['action_type'] == 'clickout item'))]
+    del df_no_clickout['step_max']
     return df_no_clickout
 
 
@@ -256,7 +277,8 @@ def get_similar_tags(model, tag_id):
 def remove_null_clickout(df):
     """
     Remove all the occurences where the clickout reference is set to null (Item to predict)
-    """
+    """   
+
     df = df.drop(df[(df['action_type'] == "clickout item") & (df['reference'].isnull())].index)
     return df
 
@@ -344,6 +366,7 @@ def split_one_action(df_test):
     df_single_action = get_single_actions(df_test)
     print('Total item of test set: ' + str(df_test.shape[0]) + ' No single action: #' + str(df_no_single_action.shape[0]) + ' Only single actions: #' + str(df_single_action.shape[0]))
     return df_no_single_action, df_single_action
+
 
 
 def get_n_interaction(df, user_col='user_id', weight_dic = None):
