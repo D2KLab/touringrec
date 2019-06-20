@@ -214,18 +214,22 @@ model = lstm.LSTMModel(input_dim, hidden_dim, layer_dim, output_dim, param.iscud
 if param.iscuda:
     model = model.cuda()
 
-#WEIGHT INIT
-model.lstm.weight_hh_l0.data.fill_(0)
-x = 1
-nn.init.uniform_(model.fc.weight, -x, x)
-nn.init.uniform_(model.fc.bias, -x, x)
+# WEIGHT INIT LSTM
+#model.lstm.weight_hh_l0.data.fill_(0)
+#x = 1
+#nn.init.uniform_(model.fc.weight, -x, x)
+#nn.init.uniform_(model.fc.bias, -x, x)
+
+# WEIGHT INIT GRU???
+# TODO
 
 '''
 STEP 5: LEARNING PHASE
 '''
 
 #LOSS FUNCTION
-loss_fn = torch.nn.CrossEntropyLoss()
+#loss_fn = torch.nn.CrossEntropyLoss()
+loss_fn = torch.nn.NLLLoss()
 
 if param.iscuda:
     loss_fn = loss_fn.cuda()
@@ -258,6 +262,10 @@ def timeSince(since):
 
 start = time.time()
 
+# Training results for xgboost
+training_results_hotels = {}
+training_results_scores = {}
+
 for epoch in range(1, num_epochs + 1):
   #model.train()
   iter = 0
@@ -286,12 +294,23 @@ for epoch in range(1, num_epochs + 1):
 
     current_loss += loss
       
-    if iter % print_every == 0:
-        guess, guess_i = lstm.category_from_output(output, hotel_dict)
+    #if iter % print_every == 0:
+        #guess, guess_i = lstm.category_from_output(output, hotel_dict) # to be defined
 
-        correct = '✓' if guess == category else '✗ (%s)' % category
+        #correct = '✓' if guess == category else '✗ (%s)' % category
         #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[0]['session_id'], guess, correct))
 
+    # Try printing batched results
+    for category_i, category_v in enumerate(category):
+      #print(guess_i)
+      #print(guess_v)
+      #print(category)
+      if guess[category_i] == category_v:
+        count_correct = count_correct + 1
+        
+      if iter % print_every == 0:
+        correct = '✓' if guess[category_i] == category_v else '✗ (%s)' % category_v
+        print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[category_i][0]['session_id'], guess[category_i], correct))
         
   # Add current loss avg to list of losses
   if epoch % plot_every == 0:

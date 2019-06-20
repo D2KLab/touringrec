@@ -17,14 +17,22 @@ class LSTMModel(nn.Module):
          
         # Number of hidden layers
         self.layer_dim = layer_dim
-               
-        self.lstm = nn.LSTM(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim)  
-        
-        self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 10)
 
-        self.fc = nn.Linear(hidden_dim * 10, output_dim)
+        # Layers
+
+        #self.lstm = nn.LSTM(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim)  
+      
+        self.gru = nn.GRU(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim, dropout = 0.2)
+
+        #self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 10)
+
+        self.fc = nn.Linear(hidden_dim, output_dim)
     
-        self.dropout_layer = nn.Dropout(p=0.2)
+        self.softmax = nn.Softmax(dim = 1)
+
+        self.logsoftmax = nn.LogSoftmax(dim = 1)
+
+        #self.dropout_layer = nn.Dropout(p=0.2)
     
     def forward(self, x):
         
@@ -44,16 +52,22 @@ class LSTMModel(nn.Module):
         if self.iscuda:
           x = x.cuda()
 
-        out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
+        #out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
 
-        out = F.relu(self.hidden_fc(out))
+        out, hn = self.gru(x, h0.detach())
+
+        #out = F.relu(self.hidden_fc(out))
 
         out = out[-1, :, :]
 
-        out = self.dropout_layer(out)
+        out = self.softmax(out)
+
+        #out = self.dropout_layer(out)
         
         out = self.fc(out)
     
+        out = self.logsoftmax(out)
+
         return out
 
 
@@ -135,9 +149,31 @@ def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
       tensor[hi] = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
   return tensor
 
-def category_from_output(output, hotel_dict):
-  top_n, top_i = output.data.topk(1) # Tensor out of Variable with .data
-  category_i = int(top_i[0][0])
-  #print(output)
-  return hotel_dict.index2word[category_i], category_i
+'''def category_from_output(output, hotel_dict):
+  #top_n, top_i = output.data.topk(1) # Tensor out of Variable with .data
+  #category_i = int(top_i[0][0])
   
+  category_score, category_i = torch.max(output, 1)
+  
+  #print(output)
+  return hotel_dict.index2word[category_i], category_i'''
+  
+# Version for batched results
+def category_from_output(output):
+  #top_n, top_i = output.data.topk(1) # Tensor out of Variable with .data
+  #category_i = int(top_i[0][0])
+  
+  
+  category_score, category_i = torch.max(output, 1)
+  
+  categories = []
+  
+  #print(output)
+  #print(category_score)
+  #print(category_i)
+  
+  for cat_i, cat in enumerate(category_i):
+    categories.append(hotel_dict.index2word[cat])
+  
+  #print(output)
+  return categories, category_i

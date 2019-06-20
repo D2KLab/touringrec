@@ -30,6 +30,7 @@ def reduce_df(df, dim):
   df = df.head(dim)
   return pd.DataFrame(df)
 
+#get corpus for w2vec encoding
 def get_corpus(df):
   session_id = ''
   temp_session = []
@@ -43,8 +44,20 @@ def get_corpus(df):
       splitted_sessions.append(temp_session)
       temp_session = []
 
+    # uncomment this and comment line underneat for shirinking multiple sequential occurrences
+    # of hotel to 1 
+    '''if len(temp_session) != 0:  
+      if action['reference'] != temp_session[-1]:
+        temp_session.append(action['reference'])
+    else:
+      temp_session.append(action['reference'])'''
+
     temp_session.append(action['reference'])
     session_id = action['session_id']
+
+    # uncomment this to include impression list in the corpus
+    '''if action['action_type'] == 'clickout item':
+      impressions.append(action['impressions'].split('|'))'''
 
   return splitted_sessions
 
@@ -100,18 +113,21 @@ def prepare_input(df_train):
         hotels_window.append(action['impressions'].split('|'))
       else:
         temp_session.append(action)
-        
-    #training_set.concatenate(sub_sessions)
-    #category_set.concatenate(categories)
-    #hotels_window_set.concatenate(hotels_window)
-    training_set = training_set + sub_sessions
+
+    if(len(sub_sessions) != 0):
+      training_set.append(sub_sessions[-1])
+      category_set.append(categories[-1])
+      hotels_window_set.append(hotels_window[-1])
+
+    # Uncomment this for splitting a single session into multiple clickouts
+    '''training_set = training_set + sub_sessions
     category_set = category_set + categories
-    hotels_window_set = hotels_window_set + hotels_window
+    hotels_window_set = hotels_window_set + hotels_window'''
     
     
   return training_set, category_set, hotels_window_set
 
-  #gets the training set and splits it in subsessions populated by the item of the action
+# gets the training set and splits it in subsessions populated by the item of the action
 def prepare_input_batched(df_train, batch_size):
   training_set = []
   category_set = []
@@ -138,12 +154,15 @@ def prepare_input_batched(df_train, batch_size):
       else:
         temp_session.append(action)
         
-    #training_set.concatenate(sub_sessions)
-    #category_set.concatenate(categories)
-    #hotels_window_set.concatenate(hotels_window)
-    training_set = training_set + sub_sessions
+    # Uncomment this for splitting a single session into multiple clickouts(comment if underneats)
+    '''training_set = training_set + sub_sessions
     category_set = category_set + categories
-    hotels_window_set = hotels_window_set + hotels_window
+    hotels_window_set = hotels_window_set + hotels_window'''
+
+    if(len(sub_sessions) != 0):
+      training_set.append(sub_sessions[-1])
+      category_set.append(categories[-1])
+      hotels_window_set.append(hotels_window[-1])
   
   temp_session_batched = []
   temp_category_batched = []
