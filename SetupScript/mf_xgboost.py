@@ -20,8 +20,8 @@ from sklearn.model_selection import train_test_split
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
-    df_inner_train = pd.read_csv('train.csv')
-    df_inner_gt = pd.read_csv('gt.csv')
+    df_inner_train = pd.read_csv('train_inner_10.csv')
+    df_inner_gt = pd.read_csv('gt_inner_10.csv')
     subm_csv = 'submission_mf_xgboost.csv'
     df_inner_gt = clean_dataset_error(df_inner_gt)
     df_inner_train = clean_dataset_error(df_inner_train)
@@ -108,7 +108,7 @@ def xg_boost_training(train):
     params = {
         'objective':'binary:logistic', 
         'eta':0.1, 
-        'booster':'gbtree',
+        'booster':'dart',
         'max_depth':7,         
         'nthread':50,  
         'seed':1,    
