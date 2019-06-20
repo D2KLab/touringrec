@@ -15,13 +15,13 @@ import time
 from lightfm.evaluation import reciprocal_rank
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
-import graphviz
+#import graphviz
     
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
-    df_inner_train = pd.read_csv('train_inner_10.csv')
-    df_inner_gt = pd.read_csv('gt_inner_10.csv')
+    df_inner_train = pd.read_csv('train.csv')
+    df_inner_gt = pd.read_csv('gt.csv')
     subm_csv = 'submission_mf_xgboost.csv'
 
     # Clean the dataset
@@ -119,8 +119,8 @@ def xg_boost_training(train):
         num_boost_round=300,
     )
     #xgb.plot_importance(model)
-    xgb.plot_tree(model)
-    plt.show()
+    #xgb.plot_tree(model)
+    #plt.show()
     return model
 
 
