@@ -1,0 +1,3 @@
+INFO: localdir at /scratch/98760.gcrepaldi
+INFO: your job will run on local system.
+slurmstepd: error: *** JOB 98760 ON compute-1-14 CANCELLED AT 2019-06-19T17:58:32 ***
