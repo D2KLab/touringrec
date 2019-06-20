@@ -23,7 +23,8 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_inner_train = pd.read_csv('train.csv')
     df_inner_gt = pd.read_csv('gt.csv')
     subm_csv = 'submission_mf_xgboost.csv'
-    df_test = clean_dataset_error(df_test)
+    df_inner_gt = clean_dataset_error(df_inner_gt)
+    df_inner_train = clean_dataset_error(df_inner_train)
     # Clean the dataset
     df_inner_train = f.get_interaction_actions(df_inner_train, actions = parameters.listactions)
     
@@ -140,7 +141,9 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     #df_train_xg_not_null = df_train_xg[(~df_train_xg['item_id_enc'].isnull()) & (~df_train_xg['user_id_enc'].isnull())]
     #df_train_xg_null = df_train_xg[(df_train_xg['item_id_enc'].isnull()) | (df_train_xg['user_id_enc'].isnull())]
     print('Utenti nulli')
-    print(df_train_xg[df_train_xg['user_id_enc'].isnull()].head())
+    df_user_null = df_train_xg[df_train_xg['user_id_enc'].isnull()]
+    df_user_null = df_user_null['user_id'].drop_duplicates()
+    print(df_user_null) 
     print('There are # ' + str(df_train_xg_not_null.shape[0]) + ' not null pairs')
     print('There are # ' + str(df_train_xg_null.shape[0]) + ' null pairs')
     df_train_xg_not_null.loc[:,'user_id_enc'] = df_train_xg_not_null['user_id_enc'].apply(int)
