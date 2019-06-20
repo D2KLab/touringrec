@@ -29,6 +29,7 @@ import LSTMParameters as LSTMParam
 import argparse
 
 #python3 python3 setup.py --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --epochs 10 --ncomponents 100 --window 3 --learnrate 0.001
+#python3 setup.py --encode ./encode_1.csv --meta ./item_metadata.csv --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --hiddendim 100 --epochs 20 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_1%_sub --numthread 2 --batchsize 16
 torch.manual_seed(1)
 
 parser = argparse.ArgumentParser()
@@ -246,7 +247,7 @@ num_epochs = param.epochs
 plot_every = 1
 
 n_iters = len(sessions) * num_epochs
-print_every = 100
+print_every = 1000
 
 # Keep track of losses and acc for plotting
 current_loss = 0
@@ -266,62 +267,80 @@ start = time.time()
 training_results_hotels = {}
 training_results_scores = {}
 
-for epoch in range(1, num_epochs + 1):
-  #model.train()
-  iter = 0
-  
-  print(str(len(sessions)) + ' sessions to be computed')
-  
-  for index, session in enumerate(sessions):
-    iter = iter + 1
+with open('rnn_train_sub_xgb.csv', mode='w') as rnn_train_sub_xgb:
+    file_writer = csv.writer(rnn_train_sub_xgb)
+    file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
-    if param.batchsize == 0:
-        session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
-        category = categories[index]
-        category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
-    else:
-      max_session_len = 0
-      for si, single_session in enumerate(session):
-        if len(single_session) > max_session_len:
-          max_session_len = len(single_session)
-          
-      session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features, hotels_window, max_window, meta_dict, meta_list)
-      category = categories[index]
-      category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
-
-    
-    output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
-
-    current_loss += loss
-      
-    #if iter % print_every == 0:
-        #guess, guess_i = lstm.category_from_output(output, hotel_dict) # to be defined
-
-        #correct = '✓' if guess == category else '✗ (%s)' % category
-        #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[0]['session_id'], guess, correct))
-
-    # Try printing batched results
-    for category_i, category_v in enumerate(category):
-      #print(guess_i)
-      #print(guess_v)
-      #print(category)
-      if guess[category_i] == category_v:
-        count_correct = count_correct + 1
+    for epoch in range(1, num_epochs + 1):
+        #model.train()
+        iter = 0
         
-      if iter % print_every == 0:
-        correct = '✓' if guess[category_i] == category_v else '✗ (%s)' % category_v
-        print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[category_i][0]['session_id'], guess[category_i], correct))
+        count_correct = 0
+        count_correct_windowed = 0
+
+        print(str(len(sessions) * param.batchsize) + ' sessions to be computed')
         
-  # Add current loss avg to list of losses
-  if epoch % plot_every == 0:
-      all_losses.append(current_loss / (plot_every * len(sessions)))
-      print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
-      print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
-      #acc = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list)
-      acc = tst.test_accuracy_optimized(model, df_test, df_gt, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
-      print("Score: " + str(acc))
-      all_acc.append(acc)
-      current_loss = 0
+        for index, session in enumerate(sessions):
+            iter = iter + 1
+
+            if param.batchsize == 0:
+                session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
+                category = categories[index]
+                category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
+            else:
+                max_session_len = 0
+                for si, single_session in enumerate(session):
+                    if len(single_session) > max_session_len:
+                        max_session_len = len(single_session)
+                
+                session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features, hotels_window, max_window, meta_dict, meta_list)
+                category = categories[index]
+                hotel_window = hotels_window[index]
+                category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
+
+            
+            output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
+
+            current_loss += loss
+            
+            guess, guess_i = lstm.category_from_output(output, hotel_dict)
+            guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
+        
+            for batch_i, category_v in enumerate(category):
+                if guess[batch_i] == category_v:
+                    count_correct = count_correct + 1
+
+                if iter % print_every == 0:
+                    print('Non-Windowed results:')
+                    correct = '✓' if guess[batch_i] == category_v else '✗ (%s)' % category_v
+                    print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess[batch_i], correct))
+
+                if guess_windowed_list[batch_i][0] == category_v:
+                    count_correct_windowed = count_correct_windowed + 1
+
+                if iter % print_every == 0:
+                    print('Windowed results:')
+                    correct = '✓' if guess_windowed_list[batch_i][0] == category_v else '✗ (%s)' % category_v
+                    print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
+
+                if epoch == num_epochs:   
+                    for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
+                        # Write single hotel score
+                        file_writer.writerow([str(session[batch_i][0]['session_id']), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])]) 
+                    
+                
+        # Add current loss avg to list of losses
+        if epoch % plot_every == 0:
+            all_losses.append(current_loss / (plot_every * len(sessions)))
+            print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
+            print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
+            print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
+            print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
+            #acc = test_accuracy(model, df_test, df_gt)
+            acc = tst.test_accuracy_optimized(model, df_test, df_gt, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
+            print("Score: " + str(acc))
+            all_acc.append(acc)
+            current_loss = 0
 
 
 '''
@@ -353,11 +372,11 @@ STEP 8: SAVING SUBMISSION
 
 #Computing score
 #print("End execution with score " + str(mrr))
-file_exists = os.path.isfile('scores.csv')
-with open('scores.csv', mode='a') as score_file:
+file_exists = os.path.isfile('classification_scores.csv')
+with open('classification_scores.csv', mode='a') as score_file:
     file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     if not file_exists: # Write headers
-        file_writer.writerow(['Train set', 'Using impressions', 'Using meta', 'Hidden dimension', 'Dropout layer', '#Epochs', '#Components', 'W2Vec window', 'Learn Rate', 'batchsize' 'Score'])
+        file_writer.writerow(['Train set', 'Using impressions', 'Using meta', 'Hidden dimension', 'Dropout layer', '#Epochs', '#Components', 'W2Vec window', 'Learn Rate', 'batchsize', 'Score'])
     file_writer.writerow([str(param.train), str(param.isimpression), str(param.ismeta), str(param.hiddendim), str(param.isdrop), str(param.epochs), str(param.ncomponents), str(param.window), str(param.learnrate), str(param.batchsize), str(mrr)])
 #f.send_telegram_message("End execution with score " + str(mrr))
 
