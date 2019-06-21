@@ -217,13 +217,46 @@ def get_reciprocal_ranks(ps):
     else:
         return 0.0
 
+def get_popularity(df):
+    """Get number of clicks that each item received in the df."""
 
+    mask = df["action_type"] == "clickout item"
+    #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "interaction item info") | (df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
+    #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
+    df_clicks = df[mask]
+    df_item_clicks = (
+        df_clicks
+        .groupby("reference")
+        .size()
+        .reset_index(name="n_clicks")
+        .transform(lambda x: x.astype(int))
+    )
+
+    return df_item_clicks
+
+
+def get_popularity_dictionary(df):
+    """Get number of clicks that each item received in the df."""
+
+    mask = df["action_type"] == "clickout item"
+    #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "interaction item info") | (df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
+    #mask = (df["action_type"] == "clickout item") | (df["action_type"] == "interaction item rating") | (df["action_type"] == "interaction item image") | (df["action_type"] == "interaction item deals")
+    df_clicks = df[mask]
+    df_item_clicks = (
+        df_clicks
+        .groupby("reference")
+        .size()
+        .reset_index(name="n_clicks")
+        .transform(lambda x: x.astype(int))
+    )
+    d = dict(zip(df_item_clicks.reference, df_item_clicks.n_clicks))
+    return d
 def score_submissions(subm_csv, gt_csv, objective_function):
     """Score submissions with given objective function."""
 
     #print(f"Reading ground truth data {gt_csv} ...")
     df_gt = read_into_df(gt_csv)
-
+    print(df_gt.head())
     #print(f"Reading submission data {subm_csv} ...")
     df_subm = read_into_df(subm_csv)
     #print('Submissions')

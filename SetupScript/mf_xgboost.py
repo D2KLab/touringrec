@@ -36,6 +36,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     df_test_cleaned = f.get_interaction_actions(df_test, actions = parameters.listactions, clean_null = True)
     df_test_cleaned = remove_null_clickout(df_test_cleaned)
+    dic_pop = f.get_popularity_dictionary(pd.concat([df_train, df_test_cleaned], ignore_index=True, sort=False))
     df_train = pd.concat([df_inner_train, df_inner_gt_no_clickout, df_test_cleaned])
     user_dict = create_user_dict(df_train)
 
@@ -52,11 +53,15 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_train_xg = get_lightFM_features(df_inner_gt_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
     print('LightFM Features: ')
     print(df_train_xg.head())
+    df_train_xg['popularity'] = df_train_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
+    #df_train_xg = df_train_xg.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: add_popularity(x.item, dic_pop)).reset_index(name='item_recommendations')
+    print('Aggiunta della popolarita')
+    print(df_train_xg.head())
     print('Generate model for XGBoost')
     xg_model = xg_boost_training(df_train_xg)
     print('Get feature for test set')
     df_test_xg = get_lightFM_features(df_test_user, mf_model, user_dict, hotel_dict, item_f=hotel_features, is_test = True)
-    
+    df_test_xg['popularity'] = df_test_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
     df_out = generate_submission(df_test_xg, xg_model)
     print('Generated submissions: ')
     print(df_out.head())
@@ -64,6 +69,13 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_out = pd.concat([df_out, df_out_nation])
     df_out.to_csv(subm_csv, index=False)
     return df_out
+
+def add_popularity(item, dictionary):
+    if item in dictionary:
+        pop = dictionary.get(item)
+    else:
+        pop = -999
+    return pop
 
 def generate_submission(df, xg_model):
     df = df.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: calculate_rank(x, xg_model)).reset_index(name='item_recommendations')
@@ -108,7 +120,7 @@ def xg_boost_training(train):
     params = {
         'objective':'binary:logistic', 
         'eta':0.1, 
-        'booster':'dart',
+        'booster':'gbtree',
         'max_depth':7,         
         'nthread':50,  
         'seed':1,    
