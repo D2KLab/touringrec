@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd
 import torch
 
+def reference_to_str(df):
+  df.apply(lambda x: str(x['reference']), axis=1)
+  return df
+
 def remove_single_actions(df):
   df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1)].index)
   return df
@@ -20,7 +24,29 @@ def remove_test_single_actions(df_test, df_gt):
       df_gt = df_gt.drop(df_gt[df_gt['session_id'] == action['session_id']].index)
       #df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1)].index)
     
-  return df_test, df_gt  
+  return df_test, df_gt 
+
+def remove_single_actions_opt(df):
+  df_sessions = df.groupby('session_id')
+
+  for group_name, df_group in df_sessions:
+    session_len = 0
+
+    #for action_index, action in df_group.iterrows():
+    #  session_len = session_len + 1
+    
+    session_len = len(df_group)
+
+    if session_len == 1:
+      for action_index, action in df_group.iterrows():
+        df = df.drop(df[df['session_id'] == action['session_id']].index)
+      
+      #df = df.drop(df[df['session_id'] == action['session_id']].index)
+      #df_gt = df_gt.drop(df_gt[df_gt['session_id'] == action['session_id']].index)
+      
+      #df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1)].index)
+    
+  return df 
   
 def remove_nonitem_actions(df):
   df = df.drop(df[(df['action_type'] != 'interaction item image') & (df['action_type'] != 'interaction item deals') & (df['action_type'] != 'clickout item') & (df['action_type'] != 'search for item')].index)
