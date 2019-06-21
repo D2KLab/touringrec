@@ -3,7 +3,7 @@ import pandas as pd
 import torch
 
 def reference_to_str(df):
-  df.apply(lambda x: str(x['reference']), axis=1)
+  df['reference'] = df.apply(lambda x: str(x['reference']), axis=1)
   return df
 
 def remove_single_actions(df):
