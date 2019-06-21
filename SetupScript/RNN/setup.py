@@ -136,26 +136,26 @@ if param.ismeta:
 #corpus = dsm.get_corpus(df_encode)
 
 df_train_inner = pd.read_csv('./train_inner_10.csv')
-#df_train_inner = dsm.remove_single_actions(df_train_inner)
-df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
+df_train_inner = dsm.remove_single_actions(df_train_inner)
+#df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
 df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
-df_train_inner = dsm.reference_to_str(df_train_inner)
+#df_train_inner = dsm.reference_to_str(df_train_inner)
 
 df_test_inner = pd.read_csv('./test_inner_10.csv')
-#df_test_inner = dsm.remove_single_actions(df_test_inner)
-df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
+df_test_inner = dsm.remove_single_actions(df_test_inner)
+#df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
-df_test_inner = dsm.reference_to_str(df_test_inner)
+#df_test_inner = dsm.reference_to_str(df_test_inner)
 
 df_gt_inner = pd.read_csv('./gt_inner_10.csv')
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
 df_test_dev = pd.read_csv('./test_10.csv')
-#df_test_dev = dsm.remove_single_actions(df_test_dev)
-df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
+df_test_dev = dsm.remove_single_actions(df_test_dev)
+#df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
-df_test_dev = dsm.reference_to_str(df_test_dev)
+#df_test_dev = dsm.reference_to_str(df_test_dev)
 
 df_gt_dev = pd.read_csv('./gt_10.csv')
 
@@ -163,7 +163,7 @@ df_gt_dev = pd.read_csv('./gt_10.csv')
 
 
 df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
-
+df_corpus = dsm.reference_to_str(df_corpus)
 
 corpus = dsm.get_corpus(df_corpus)
 
