@@ -122,7 +122,7 @@ def xg_boost_training(train):
         'eta':0.1, 
         'booster':'gbtree',
         'max_depth':7,         
-        'nthread':4,  
+        'nthread':50,  
         'seed':1,    
         'eval_metric':'auc',
     }
