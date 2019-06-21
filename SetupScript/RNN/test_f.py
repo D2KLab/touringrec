@@ -308,7 +308,7 @@ def evaluate_classification(model, session, hotel_dict, n_features, hotels_windo
 
     return output
   
-def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False):
+def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False, dev = False):
   """Return the score obtained by the net on the test dataframe"""
 
   test_dim = len(df_test)
@@ -316,8 +316,12 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hote
   print_every = 500
   
   #missed_target = 0
+  if dev:
+    fname = 'rnn_test_sub_xgb_dev.csv'
+  else:
+    fname = 'rnn_test_sub_xgb_inner.csv'  
 
-  with open('rnn_test_sub_xgb.csv', mode='w') as test_xgb_sub:
+  with open(fname, mode='w') as test_xgb_sub:
     
     file_writer = csv.writer(test_xgb_sub)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])          

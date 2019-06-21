@@ -105,9 +105,9 @@ STEP 1: IMPORTING and MANIPULATING DATASET
 '''
 
 #importing encode set
-df_encode = pd.read_csv(param.encode)
-df_encode = dsm.remove_single_actions(df_encode)
-df_encode = dsm.remove_nonitem_actions(df_encode)
+#df_encode = pd.read_csv(param.encode)
+#df_encode = dsm.remove_single_actions(df_encode)
+#df_encode = dsm.remove_nonitem_actions(df_encode)
 #df_encode = dsm.reduce_df(df_encode, 10000)
 
 #importing metadata set
@@ -116,25 +116,49 @@ if param.ismeta:
     df_meta = pd.read_csv(param.meta)
 
 #importing training set
-df_train = pd.read_csv(param.train)
-df_train = dsm.remove_single_actions(df_train)
-df_train =  dsm.remove_nonitem_actions(df_train)
+#df_train = pd.read_csv(param.train)
+#df_train = dsm.remove_single_actions(df_train)
+#df_train =  dsm.remove_nonitem_actions(df_train)
 #df_train = dsm.reduce_df(df_train, 100)
 
 #importing test set
-df_test = pd.read_csv(param.test)
-df_test = dsm.remove_single_actions(df_test)
-df_test = dsm.remove_nonitem_actions(df_test)
+#df_test = pd.read_csv(param.test)
+#df_test = dsm.remove_single_actions(df_test)
+#df_test = dsm.remove_nonitem_actions(df_test)
 #df_test = dsm.reduce_df(df_test, 100)
 
 #importing ground truth
-df_gt = pd.read_csv(param.gt)
+#df_gt = pd.read_csv(param.gt)
 #df_gt = dsm.reduce_df(df_gt, 100)
 
-df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
+#df_test, df_gt = dsm.remove_test_single_actions(df_test, df_gt)
 
-corpus = dsm.get_corpus(df_encode)
+#corpus = dsm.get_corpus(df_encode)
 
+df_train_inner = pd.read_csv('./train_inner_10.csv')
+df_train_inner = dsm.remove_single_actions(df_train_inner)
+df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
+
+df_test_inner = pd.read_csv('./test_inner_10.csv')
+df_test_inner = dsm.remove_single_actions(df_test_inner)
+df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
+
+df_gt_inner = pd.read_csv('./gt_inner_10.csv')
+
+df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
+
+df_test_dev = pd.read_csv('./test_10.csv')
+df_test_dev = dsm.remove_single_actions(df_test_dev)
+df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
+
+df_gt_dev = pd.read_csv('./gt_10.csv')
+
+df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
+
+
+df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev])
+
+corpus = dsm.get_corpus(df_corpus)
 
 '''
 STEP 2: ENCODING TO CREATE DICTIONARY
@@ -165,11 +189,11 @@ STEP 3: PREPARE NET INPUT
 
 #this splits the training set sessions into multiple mini-sessions
 if param.batchsize == 0:
-    sessions, categories, hotels_window = dsm.prepare_input(df_train)
+    sessions, categories, hotels_window = dsm.prepare_input(df_train_inner)
 else:
-    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train, param.batchsize)
+    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train_inner, param.batchsize)
 
-test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test, df_gt)
+test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_inner, df_gt_inner)
 
 #getting maximum window size
 max_window = 0
@@ -267,7 +291,7 @@ start = time.time()
 training_results_hotels = {}
 training_results_scores = {}
 
-with open('rnn_train_sub_xgb.csv', mode='w') as rnn_train_sub_xgb:
+with open('rnn_train_sub_xgb_inner.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
@@ -336,8 +360,7 @@ with open('rnn_train_sub_xgb.csv', mode='w') as rnn_train_sub_xgb:
             print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
             print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
             print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
-            #acc = test_accuracy(model, df_test, df_gt)
-            acc = tst.test_accuracy_optimized(model, df_test, df_gt, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
+            acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
             print("Score: " + str(acc))
             all_acc.append(acc)
             current_loss = 0
@@ -350,11 +373,11 @@ STEP 6: PLOTTING RESULTS
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
-plt.figure()
-plt.plot(all_losses)
+#plt.figure()
+#plt.plot(all_losses)
 
-plt.figure()
-plt.plot(all_acc)
+#plt.figure()
+#plt.plot(all_acc)
 
 
 '''
@@ -362,9 +385,13 @@ STEP 7: PREPARE TEST SET
 '''
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-mrr = tst.test_accuracy_optimized(model, df_test, df_gt, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-print("Final score: " + str(mrr))
+mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
+print("Final score for inner: " + str(mrr))
 
+test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
+
+mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
+print("Final score for dev: " + str(mrr))
 
 '''
 STEP 8: SAVING SUBMISSION
