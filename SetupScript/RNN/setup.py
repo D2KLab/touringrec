@@ -156,7 +156,9 @@ df_gt_dev = pd.read_csv('./gt_10.csv')
 df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
 
 
-df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev])
+df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
+
+print(df_corpus)
 
 corpus = dsm.get_corpus(df_corpus)
 
