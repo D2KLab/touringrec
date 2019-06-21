@@ -159,7 +159,7 @@ df_test_dev = dsm.reference_to_str(df_test_dev)
 
 df_gt_dev = pd.read_csv('./gt_10.csv')
 
-d#f_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
+#df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
 
 
 df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
