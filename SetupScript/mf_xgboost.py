@@ -133,8 +133,9 @@ def xg_boost_training(train):
         'objective':'binary:logistic', 
         'eta':0.1, 
         'booster':'gbtree',
+        'predictor': 'cpu_predictor',
         'max_depth':7,         
-        'nthread':50,  
+        'nthread':4,  
         'seed':1,    
         'eval_metric':'auc',
     }
@@ -147,6 +148,7 @@ def xg_boost_training(train):
         evals=[(xgtrain, 'train'), (xgval, 'test')],
         num_boost_round=300,
     )
+
     #xgb.plot_importance(model)
     #xgb.plot_tree(model)
     #plt.show()
