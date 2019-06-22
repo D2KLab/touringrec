@@ -21,6 +21,10 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
     subm_csv = 'submission_mf_xgboost.csv'
+    df_train = clean_dataset_error(df_train)
+    df_inner_gt = clean_dataset_error(df_inner_gt)
+    df_inner_train = clean_dataset_error(df_inner_train)
+    df_test = clean_dataset_error(df_test)
 
     # Clean the dataset
     df_train = f.get_interaction_actions(df_train, actions = parameters.listactions)
@@ -58,6 +62,10 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_out.to_csv(subm_csv, index=False)
     return df_out
 
+def clean_dataset_error(df):
+    df = df[df['user_id'] != '3473ULL51OOW']
+    return df
+    
 def generate_submission(df, xg_model):
     df = df.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: calculate_rank(x, xg_model)).reset_index(name='item_recommendations')
     print(df.head())
