@@ -23,8 +23,10 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_inner_train = pd.read_csv('train_inner.csv')
     df_inner_gt = pd.read_csv('gt_inner.csv')
     subm_csv = 'submission_mf_xgboost.csv'
+    df_train = clean_dataset_error(df_train)
     df_inner_gt = clean_dataset_error(df_inner_gt)
     df_inner_train = clean_dataset_error(df_inner_train)
+    df_test = clean_dataset_error(df_test)
     # Clean the dataset
     df_inner_train = f.get_interaction_actions(df_inner_train, actions = parameters.listactions)
     
@@ -51,6 +53,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, hotel_dic = hotel_dict, user_dic = user_dict)
     print('Get training set for XGBoost')
     df_train_xg = get_lightFM_features(df_inner_gt_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
+    df_train_xg = get_RNN_features(df_train_xg, 'rnn_test_sub_xgb_inner.csv')
     print('LightFM Features: ')
     print(df_train_xg.head())
     df_train_xg['popularity'] = df_train_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
@@ -61,6 +64,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     xg_model = xg_boost_training(df_train_xg)
     print('Get feature for test set')
     df_test_xg = get_lightFM_features(df_test_user, mf_model, user_dict, hotel_dict, item_f=hotel_features, is_test = True)
+    df_test_xg = get_RNN_features(df_test_xg, 'rnn_test_sub_xgb_dev.csv')
     df_test_xg['popularity'] = df_test_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
     df_out = generate_submission(df_test_xg, xg_model)
     print('Generated submissions: ')
@@ -76,6 +80,14 @@ def add_popularity(item, dictionary):
     else:
         pop = -999
     return pop
+
+def get_RNN_features(df, filename):
+    df_rnn = pd.read_csv(filename)
+    df = (df.merge(df_rnn, left_on=['session_id', 'item_id'], right_on=['session_id', 'hotel_id'], how="left", suffixes=('_mf', '_rnn')))
+    print(df.head())
+    return df
+
+
 
 def generate_submission(df, xg_model):
     df = df.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: calculate_rank(x, xg_model)).reset_index(name='item_recommendations')
@@ -170,10 +182,10 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     df_train_xg_null.loc[:,'item_bias'] = -999
     user_embeddings = mf_model.user_embeddings[df_train_xg_not_null.user_id_enc]
     item_embeddings = mf_model.item_embeddings[df_train_xg_not_null.item_id_enc]
-    df_train_xg_not_null.loc[:,'lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
-    df_train_xg_null.loc[:,'lightfm_dot_product'] = -999
-    df_train_xg_not_null.loc[:,'lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
-    df_train_xg_null.loc[:,'lightfm_prediction'] = -999
+    #df_train_xg_not_null.loc[:,'lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
+    #df_train_xg_null.loc[:,'lightfm_dot_product'] = -999
+    #df_train_xg_not_null.loc[:,'lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
+    #df_train_xg_null.loc[:,'lightfm_prediction'] = -999
     df_train_xg = pd.concat([df_train_xg_not_null, df_train_xg_null], ignore_index=True, sort=False)
     df_train_xg = df_train_xg.sort_values(by=['user_id', 'session_id', 'timestamp', 'step'], ascending=False)
     cols = ['reference', 'user_id_enc', 'item_id_enc']
