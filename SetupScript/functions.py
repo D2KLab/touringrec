@@ -141,11 +141,25 @@ def get_position(l):
         pos.append(i)
     return pos
 
-def explode_position(df_in, col_expl, flag_conversion = True):
+def space_to_array(s):
+    """Convert pipe separated string to array."""
+
+    if isinstance(s, str):
+        out = s.split(' ')
+    elif math.isnan(s):
+        out = []
+    else:
+        raise ValueError("Value must be either string of nan")
+    return out
+
+def explode_position(df_in, col_expl, flag_conversion = True, pipe_type='|'):
     """Explode column col_expl of array type into multiple rows."""
 
     df = df_in.copy()
-    df.loc[:, col_expl] = df[col_expl].apply(string_to_array)
+    if(pipe_type== '|'):
+        df.loc[:, col_expl] = df[col_expl].apply(string_to_array)
+    elif(pipe_type==' '):
+        df.loc[:, col_expl] = df[col_expl].apply(space_to_array)
     df.loc[:, 'position'] = df[col_expl].apply(get_position)
     df_out = pd.DataFrame(
         {col: np.repeat(df[col].values,
@@ -158,20 +172,28 @@ def explode_position(df_in, col_expl, flag_conversion = True):
         df_out.loc[:, col_expl] = df_out[col_expl].apply(int)
 
     return df_out
+
+def remove_null_clickout(df):
+    """
+    Remove all the occurences where the clickout reference is set to null (Item to predict)
+    """   
+
+    df = df.drop(df[(df['action_type'] == "clickout item") & (df['reference'].isnull())].index)
+    return df
     
-def explode_position_scalable(df_in, col_expl, flag_conversion = True):
+def explode_position_scalable(df_in, col_expl, pipe='|'):
     """Explode column col_expl of array type into multiple rows."""
     
     n = 600000  #chunk row size
     list_df = [df_in[i:i+n] for i in range(0,df_in.shape[0],n)]
     # Handle the first alone to have the correct headers
-    df_x = explode_position(list_df[0], 'impressions')
-    df_x = df_x.rename(columns={'impressions':'item_id'})
+    df_x = explode_position(list_df[0], col_expl, flag_conversion=False, pipe_type=pipe)
+    df_x = df_x.rename(columns={col_expl:'item_id'})
     df_x.to_csv('exploded.csv', index=False)
     list_df.pop(0)
     for df_x in list_df:
-        df_x = explode_position(df_x, 'impressions')
-        df_x = df_x.rename(columns={'impressions':'item_id'})
+        df_x = explode_position(df_x, col_expl, flag_conversion=False, pipe_type=pipe)
+        df_x = df_x.rename(columns={col_expl:'item_id'})
         df_x.to_csv('exploded.csv', mode='a', header=False, index=False)
 
     df_out = pd.read_csv('exploded.csv')

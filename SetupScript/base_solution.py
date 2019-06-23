@@ -137,8 +137,9 @@ def get_rec_nation(df_train, df_test, **kwargs):
     w_base = kwargs.get('w_base', 0.01)
     f.send_telegram_message("Starting base solution by nation with w_nation = " + str(w_nation) + " and w_base: " + str(w_base))
 
-    subm_csv = "submission_popular.csv"
-
+    subm_csv = "submission_basesolution_nation.csv"
+    df_test_cleaned = f.remove_null_clickout(df_test)
+    df_train = pd.concat([df_train, df_test_cleaned], ignore_index=True, sort=False)
     print("Get popular items...")
     df_popular = get_popularity(df_train)
     print("Dataset of popular starts with:")
@@ -163,8 +164,7 @@ def get_rec_nation(df_train, df_test, **kwargs):
 
 def get_rec_base(df_train, df_test, **kwargs):
 
-    subm_csv = "submission_popular.csv"
-
+    subm_csv = "submission_basesolution.csv"
     print("Get popular items...")
     df_popular = get_popularity(df_train)
     print("Dataset of popular starts with:")

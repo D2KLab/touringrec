@@ -37,8 +37,8 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
 
     df_test_cleaned = f.get_interaction_actions(df_test, actions = parameters.listactions, clean_null = True)
-    df_test_cleaned = remove_null_clickout(df_test_cleaned)
-    dic_pop = f.get_popularity_dictionary(pd.concat([df_train, df_test_cleaned], ignore_index=True, sort=False))
+    df_test_cleaned = f.remove_null_clickout(df_test_cleaned)
+    #dic_pop = f.get_popularity_dictionary(pd.concat([df_train, df_test_cleaned], ignore_index=True, sort=False))
     df_train = pd.concat([df_inner_train, df_inner_gt_no_clickout, df_test_cleaned])
     user_dict = create_user_dict(df_train)
 
@@ -56,7 +56,8 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     #df_train_xg = get_RNN_features(df_train_xg, 'rnn_test_sub_xgb_inner.csv')
     print('LightFM Features: ')
     print(df_train_xg.head())
-    df_train_xg['popularity'] = df_train_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
+    #df_train_xg['popularity'] = df_train_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
+    df_train_xg = get_most_popular_ranking(df_train_xg, sub_filename='submission_basesolution_nation_inner.csv')
     #df_train_xg = df_train_xg.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: add_popularity(x.item, dic_pop)).reset_index(name='item_recommendations')
     print('Aggiunta della popolarita')
     print(df_train_xg.head())
@@ -65,7 +66,8 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     print('Get feature for test set')
     df_test_xg = get_lightFM_features(df_test_user, mf_model, user_dict, hotel_dict, item_f=hotel_features, is_test = True)
     #df_test_xg = get_RNN_features(df_test_xg, 'rnn_test_sub_xgb_dev.csv')
-    df_test_xg['popularity'] = df_test_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
+    #df_test_xg['popularity'] = df_test_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
+    df_train_xg = get_most_popular_ranking(df_train_xg, sub_filename='submission_basesolution_nation.csv')
     df_out = generate_submission(df_test_xg, xg_model)
     print('Generated submissions: ')
     print(df_out.head())
@@ -184,10 +186,10 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     df_train_xg_null.loc[:,'item_bias'] = -999
     user_embeddings = mf_model.user_embeddings[df_train_xg_not_null.user_id_enc]
     item_embeddings = mf_model.item_embeddings[df_train_xg_not_null.item_id_enc]
-    #df_train_xg_not_null.loc[:,'lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
-    #df_train_xg_null.loc[:,'lightfm_dot_product'] = -999
-    #df_train_xg_not_null.loc[:,'lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
-    #df_train_xg_null.loc[:,'lightfm_prediction'] = -999
+    df_train_xg_not_null.loc[:,'lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
+    df_train_xg_null.loc[:,'lightfm_dot_product'] = -999
+    df_train_xg_not_null.loc[:,'lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
+    df_train_xg_null.loc[:,'lightfm_prediction'] = -999
     df_train_xg = pd.concat([df_train_xg_not_null, df_train_xg_null], ignore_index=True, sort=False)
     df_train_xg = df_train_xg.sort_values(by=['user_id', 'session_id', 'timestamp', 'step'], ascending=False)
     cols = ['reference', 'user_id_enc', 'item_id_enc']
@@ -198,6 +200,21 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
 def get_hotel_position(reference, impressions):
     list_impressions = impressions.split('|')
     return list_impressions.index(reference)
+
+def get_most_popular_ranking(df, sub_filename='submission_basesolution_nation.csv'):
+    session_list = df['session_id'].drop_duplicates()
+    df_sub_nation = pd.read_csv(sub_filename)
+    print(df_sub_nation.head())
+    print(str(df_sub_nation.shape[0]))
+    df_sub_nation = df_sub_nation[df_sub_nation['session_id'].isin(session_list.values)]
+    print(str(df_sub_nation.shape[0]))
+    df_sub_nation = f.explode_position_scalable(df_sub_nation, 'item_recommendations', pipe=' ')
+    df_sub_nation = df_sub_nation.rename(columns={'position':'mp_rank'})
+    print(df_sub_nation.head())
+    df = (df.merge(df_sub_nation, left_on=['user_id', 'session_id', 'item_id', 'timestamp', 'step'], right_on=['user_id', 'session_id', 'item_id', 'timestamp', 'step'], how="left"))
+    df = df.fillna(-999)
+    print(df.head())
+    return df_sub_nation
 
 def get_lfm_features(row, user_d, item_d, model, item_f = None):
     item_x = []
@@ -307,13 +324,6 @@ def get_similar_tags(model, tag_id):
     return most_similar
 
 
-def remove_null_clickout(df):
-    """
-    Remove all the occurences where the clickout reference is set to null (Item to predict)
-    """   
-
-    df = df.drop(df[(df['action_type'] == "clickout item") & (df['reference'].isnull())].index)
-    return df
 
 def generate_prices_sparse_matrix(df, features_col='intervals'):
     df['present'] = 1
