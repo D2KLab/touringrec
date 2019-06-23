@@ -87,6 +87,18 @@ def get_corpus(df):
 
   return splitted_sessions
 
+def get_hotel_list(df_train, df_test):
+  df_merged = pd.concat([df_train, df_test], ignore_index = True)
+  df_merged = remove_nonitem_actions(df_merged)
+  hotel_list = []
+  for action_i, action in df_merged.iterrows():
+    if math.isnan(float(action['reference'])):
+      i = 1
+    else:
+      hotel_list.append(action['reference'])
+  hotel_list = list(set(hotel_list))
+  return hotel_list
+
 def extract_unique_meta(df_meta):
     d = []
     h_feat = df_meta['properties']

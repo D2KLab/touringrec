@@ -142,12 +142,12 @@ def hotel_to_category(hotel, hotel_dict, n_features):
     tensor = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
   return tensor
 
-def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
+def hotels_to_category_batch(hotel_list, hotel_list, n_hotels):
   batch_size = len(hotel_list)
   tensor = torch.zeros(batch_size)
   for hi, hotel in enumerate(hotel_list):
-    if hotel in hotel_dict.index2word:
-      tensor[hi] = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
+    if hotel in hotel_list:
+      tensor[hi] = torch.tensor([hotel_list.index(hotel)], dtype=torch.long)
   return tensor
 
 '''def category_from_output(output, hotel_dict):

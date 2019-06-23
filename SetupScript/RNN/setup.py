@@ -135,26 +135,26 @@ if param.ismeta:
 
 #corpus = dsm.get_corpus(df_encode)
 
-df_train_inner = pd.read_csv('./train.csv')
+df_train_inner = pd.read_csv('./train_1.csv')
 df_train_inner = dsm.remove_single_actions(df_train_inner)
 #df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
-df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
+#df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
 #df_train_inner = dsm.reference_to_str(df_train_inner)
 
-df_test_inner = pd.read_csv('./test.csv')
+df_test_inner = pd.read_csv('./test_1.csv')
 df_test_inner = dsm.remove_single_actions(df_test_inner)
 #df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
-df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
+#df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 #df_test_inner = dsm.reference_to_str(df_test_inner)
 
-df_gt_inner = pd.read_csv('./gt.csv')
+df_gt_inner = pd.read_csv('./gt_1.csv')
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
-df_test_dev = pd.read_csv('./test_off.csv')
+#df_test_dev = pd.read_csv('./test_off.csv')
 df_test_dev = dsm.remove_single_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
-df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
+#df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 #df_test_dev = dsm.reference_to_str(df_test_dev)
 
 #df_gt_dev = pd.read_csv('./gt_10.csv')
@@ -166,6 +166,8 @@ df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index
 df_corpus = dsm.reference_to_str(df_corpus)
 
 corpus = dsm.get_corpus(df_corpus)
+
+hotel_list = dsm.get_hotel_list(df_train, df_test)
 
 '''
 STEP 2: ENCODING TO CREATE DICTIONARY
@@ -294,11 +296,7 @@ def timeSince(since):
 
 start = time.time()
 
-# Training results for xgboost
-training_results_hotels = {}
-training_results_scores = {}
-
-with open('rnn_train_sub_xgb_inner.csv', mode='w') as rnn_train_sub_xgb:
+with open('rnn_train_sub_xgb_inner_' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
@@ -327,7 +325,7 @@ with open('rnn_train_sub_xgb_inner.csv', mode='w') as rnn_train_sub_xgb:
                 session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features, hotels_window, max_window, meta_dict, meta_list)
                 category = categories[index]
                 hotel_window = hotels_window[index]
-                category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
+                category_tensor = lstm.hotels_to_category_batch(category, hotel_list, n_hotels)
 
             
             output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
@@ -370,9 +368,9 @@ with open('rnn_train_sub_xgb_inner.csv', mode='w') as rnn_train_sub_xgb:
             print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
             #print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
             #print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
-            #acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
-            #print("Score: " + str(acc))
-            #all_acc.append(acc)
+            acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
+            print("Score: " + str(acc))
+            all_acc.append(acc)
             current_loss = 0
 
 
