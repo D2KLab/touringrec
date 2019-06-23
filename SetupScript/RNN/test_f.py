@@ -19,7 +19,7 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
     ranked_hotels = {}
     hotel_i = 0
     
-    for hotel_v in output_arr:
+    '''for hotel_v in output_arr:
         hotel_id = hotel_dict.index2word[hotel_i]
 
         if hotel_id in hotels_window:
@@ -28,7 +28,16 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
     
     for hotel_id in hotels_window:
         if hotel_id not in ranked_hotels:
-            ranked_hotels[hotel_id] = -9999
+            ranked_hotels[hotel_id] = -9999'''
+    
+    ranked_hotels = {}
+    for hotelw_i, hotelw in enumerate(window):
+      if hotelw in hotel_list:
+        hotel_i = hotel_dict.index2word.index(hotelw)
+        #hotel_i = hotel_list.index(hotelw)  # This is for using hotel list
+        ranked_hotels[hotelw] = output_arr[0][hotel_i]
+      else:
+        ranked_hotels[hotelw] = -9999
 
     ranked_hotels = sorted(ranked_hotels.items(), key=itemgetter(1), reverse = True)
     ranked = []

@@ -135,29 +135,29 @@ if param.ismeta:
 
 #corpus = dsm.get_corpus(df_encode)
 
-df_train_inner = pd.read_csv('./train_inner_10.csv')
+df_train_inner = pd.read_csv('./train.csv')
 df_train_inner = dsm.remove_single_actions(df_train_inner)
 #df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
 df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
 #df_train_inner = dsm.reference_to_str(df_train_inner)
 
-df_test_inner = pd.read_csv('./test_inner_10.csv')
+df_test_inner = pd.read_csv('./test.csv')
 df_test_inner = dsm.remove_single_actions(df_test_inner)
 #df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 #df_test_inner = dsm.reference_to_str(df_test_inner)
 
-df_gt_inner = pd.read_csv('./gt_inner_10.csv')
+df_gt_inner = pd.read_csv('./gt.csv')
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
-df_test_dev = pd.read_csv('./test_10.csv')
+df_test_dev = pd.read_csv('./test_off.csv')
 df_test_dev = dsm.remove_single_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 #df_test_dev = dsm.reference_to_str(df_test_dev)
 
-df_gt_dev = pd.read_csv('./gt_10.csv')
+#df_gt_dev = pd.read_csv('./gt_10.csv')
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
 
@@ -334,30 +334,33 @@ with open('rnn_train_sub_xgb_inner.csv', mode='w') as rnn_train_sub_xgb:
 
             current_loss += loss
             
-            guess, guess_i = lstm.category_from_output(output, hotel_dict)
-            guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
+            #guess, guess_i = lstm.category_from_output(output, hotel_dict)
+            #guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
         
             for batch_i, category_v in enumerate(category):
-                if guess[batch_i] == category_v:
-                    count_correct = count_correct + 1
+                #if guess[batch_i] == category_v:
+                #    count_correct = count_correct + 1
 
-                if iter % print_every == 0:
-                    print('Non-Windowed results:')
-                    correct = '✓' if guess[batch_i] == category_v else '✗ (%s)' % category_v
-                    print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess[batch_i], correct))
+                #if iter % print_every == 0:
+                    #print('Non-Windowed results:')
+                    #correct = '✓' if guess[batch_i] == category_v else '✗ (%s)' % category_v
+                    #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess[batch_i], correct))
 
-                if guess_windowed_list[batch_i][0] == category_v:
-                    count_correct_windowed = count_correct_windowed + 1
+                #if guess_windowed_list[batch_i][0] == category_v:
+                #    count_correct_windowed = count_correct_windowed + 1
 
-                if iter % print_every == 0:
-                    print('Windowed results:')
-                    correct = '✓' if guess_windowed_list[batch_i][0] == category_v else '✗ (%s)' % category_v
-                    print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
+                #if iter % print_every == 0:
+                    #print('Windowed results:')
+                    #correct = '✓' if guess_windowed_list[batch_i][0] == category_v else '✗ (%s)' % category_v
+                    #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
 
                 if epoch == num_epochs:   
                     for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
                         # Write single hotel score
-                        file_writer.writerow([str(session[batch_i][0]['session_id']), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])]) 
+                        guess, guess_i = lstm.category_from_output(output, hotel_dict)
+                        guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
+ 
+                        file_writer.writerow([str(session[batch_i][0]['session_id']), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
                     
                 
         # Add current loss avg to list of losses
@@ -365,11 +368,11 @@ with open('rnn_train_sub_xgb_inner.csv', mode='w') as rnn_train_sub_xgb:
             all_losses.append(current_loss / (plot_every * len(sessions)))
             print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
             print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
-            print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
-            print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
-            acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
-            print("Score: " + str(acc))
-            all_acc.append(acc)
+            #print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
+            #print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
+            #acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
+            #print("Score: " + str(acc))
+            #all_acc.append(acc)
             current_loss = 0
 
 
@@ -392,13 +395,13 @@ STEP 7: PREPARE TEST SET
 '''
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
-print("Final score for inner: " + str(mrr))
+#mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
+#print("Final score for inner: " + str(mrr))
 
-test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
+#test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
 
-mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
-print("Final score for dev: " + str(mrr))
+#mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
+#print("Final score for dev: " + str(mrr))
 
 '''
 STEP 8: SAVING SUBMISSION
