@@ -35,7 +35,7 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
       if hotelw in hotel_dict:
         hotel_i = hotel_dict.index2word.index(hotelw)
         #hotel_i = hotel_list.index(hotelw)  # This is for using hotel list
-        ranked_hotels[hotelw] = output_arr[0][hotel_i]
+        ranked_hotels[hotelw] = output_arr[hotel_i]
       else:
         ranked_hotels[hotelw] = -9999
 
