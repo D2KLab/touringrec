@@ -152,7 +152,7 @@ df_gt_inner = pd.read_csv('./gt_1.csv')
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
 #df_test_dev = pd.read_csv('./test_off.csv')
-df_test_dev = dsm.remove_single_actions(df_test_dev)
+#df_test_dev = dsm.remove_single_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 #df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 #df_test_dev = dsm.reference_to_str(df_test_dev)
@@ -162,12 +162,12 @@ df_test_dev = dsm.remove_single_actions(df_test_dev)
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
 
 
-df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
+df_corpus = pd.concat([df_train_inner, df_test_inner], ignore_index=True)
 df_corpus = dsm.reference_to_str(df_corpus)
 
 corpus = dsm.get_corpus(df_corpus)
 
-hotel_list = dsm.get_hotel_list(df_train, df_test)
+hotel_list = dsm.get_hotel_list(df_train_inner, df_test_inner)
 
 '''
 STEP 2: ENCODING TO CREATE DICTIONARY
@@ -183,6 +183,7 @@ n_features = len(word2vec.wv['666856'])
 #hotel_dict = w2v.normalize_word2vec(word2vec.wv)
 
 hotel_dict = word2vec.wv
+
 
 #extracting metadata features
 meta_list = []
@@ -353,11 +354,11 @@ with open('rnn_train_sub_xgb_inner_' + param.subname + '.csv', mode='w') as rnn_
                     #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
 
                 if epoch == num_epochs:   
+                    guess, guess_i = lstm.category_from_output(output, hotel_list)
+                    guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_list, pickfirst = False)
+ 
                     for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
                         # Write single hotel score
-                        guess, guess_i = lstm.category_from_output(output, hotel_dict)
-                        guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
- 
                         file_writer.writerow([str(session[batch_i][0]['session_id']), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
                     
                 
@@ -368,7 +369,7 @@ with open('rnn_train_sub_xgb_inner_' + param.subname + '.csv', mode='w') as rnn_
             print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
             #print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
             #print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
-            acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
+            acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, hotel_list, n_features, max_window, meta_dict, meta_list)
             print("Score: " + str(acc))
             all_acc.append(acc)
             current_loss = 0

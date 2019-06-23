@@ -12,7 +12,7 @@ def list_to_space_string(l):
     s = " ".join(l)
     return s
 
-def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
+def recommendations_from_output(output, hotel_dict, hotel_list, hotels_window, n_features):
     i = 0
     window_dict = {}
     output_arr = np.asarray(output[0].cpu().detach().numpy())
@@ -31,11 +31,11 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
             ranked_hotels[hotel_id] = -9999'''
     
     ranked_hotels = {}
-    for hotelw_i, hotelw in enumerate(window):
-      if hotelw in hotel_dict:
-        hotel_i = hotel_dict.index2word.index(hotelw)
-        #hotel_i = hotel_list.index(hotelw)  # This is for using hotel list
-        ranked_hotels[hotelw] = output_arr[0][hotel_i]
+    for hotelw_i, hotelw in enumerate(hotels_window):
+      if hotelw in hotel_list:
+        #hotel_i = hotel_dict.index2word.index(hotelw)
+        hotel_i = hotel_list.index(hotelw)  # This is for using hotel list
+        ranked_hotels[hotelw] = output_arr[hotel_i]
       else:
         ranked_hotels[hotelw] = -9999
 
@@ -47,14 +47,14 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
                             
     return list_to_space_string(ranked)
 
-def evaluate(model, session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
+def evaluate(model, session, hotel_dict, hotel_list, n_features, hotels_window, max_window, meta_dict, meta_list):
     """Just return an output list of hotel given a single session."""
     
     session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
     
     output = model(session_tensor)
 
-    output = recommendations_from_output(output, hotel_dict, hotels_window, n_features)
+    output = recommendations_from_output(output, hotel_dict, hotel_list, hotels_window, n_features)
 
     return output
   
@@ -150,7 +150,7 @@ def score_submissions(subm_csv, gt_csv, objective_function):
 
     return mrr
 
-def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False):
+def test_accuracy(model, df_test, df_gt, hotel_dict, hotel_list, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False):
     """Return the score obtained by the net on the test dataframe"""
 
     #Creating a NaN column for item recommendations
@@ -170,7 +170,7 @@ def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, met
                 hotels_window = action['impressions'].split('|')
 
                 if len(temp_session) != 0:
-                    df_test.loc[action_index, 'item_recommendations'] = evaluate(model, temp_session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
+                    df_test.loc[action_index, 'item_recommendations'] = evaluate(model, temp_session, hotel_dict, hotel_list, n_features, hotels_window, max_window, meta_dict, meta_list)
 
                 temp_session.append(action)
 
@@ -230,10 +230,13 @@ def prepare_test(df_test, df_gt):
   #splitting in sessions while evaluating recommendations for NaN clickouts
   for action_index, action in df_test.iterrows():
       if(action['reference'] != 'unknown'):
-          if (action['action_type'] == 'clickout item') & math.isnan(float(action['reference'])):
+          if (action['action_type'] == 'clickout item'):
+            if math.isnan(float(action['reference'])):
               hotels_window = action['impressions'].split('|')
               temp_session.append(action)
               temp_clickout_index.append(action_index)
+            else:
+              temp_session.append(action)
           else:
               temp_session.append(action)
 
@@ -254,7 +257,7 @@ def prepare_test(df_test, df_gt):
   return test_sessions, test_hotels_window, test_clickout_index
   
   
-def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False):
+def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, hotel_list, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False):
   """Return the score obtained by the net on the test dataframe"""
 
   test_dim = len(df_test)
@@ -264,7 +267,7 @@ def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clic
 
   for session_index, session in enumerate(sessions):
     if clickout_index[session_index] != []:
-      df_test.loc[clickout_index[session_index], 'item_recommendations'] = evaluate(model, session, hotel_dict, n_features, hotels_window[session_index], max_window, meta_dict, meta_list)
+      df_test.loc[clickout_index[session_index], 'item_recommendations'] = evaluate(model, session, hotel_dict, hotel_list, n_features, hotels_window[session_index], max_window, meta_dict, meta_list)
 
   df_sub = get_submission_target(df_test)
 

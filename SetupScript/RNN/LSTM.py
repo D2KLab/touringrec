@@ -142,10 +142,10 @@ def hotel_to_category(hotel, hotel_dict, n_features):
     tensor = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
   return tensor
 
-def hotels_to_category_batch(hotel_list, hotel_list, n_hotels):
-  batch_size = len(hotel_list)
+def hotels_to_category_batch(hotel_w, hotel_list, n_hotels):
+  batch_size = len(hotel_w)
   tensor = torch.zeros(batch_size)
-  for hi, hotel in enumerate(hotel_list):
+  for hi, hotel in enumerate(hotel_w):
     if hotel in hotel_list:
       tensor[hi] = torch.tensor([hotel_list.index(hotel)], dtype=torch.long)
   return tensor
@@ -160,7 +160,7 @@ def hotels_to_category_batch(hotel_list, hotel_list, n_hotels):
   return hotel_dict.index2word[category_i], category_i'''
   
 
-def category_from_output(output, hotel_dict):
+def category_from_output(output, hotel_list):
   #top_n, top_i = output.data.topk(1) # Tensor out of Variable with .data
   #category_i = int(top_i[0][0])
   
@@ -174,12 +174,12 @@ def category_from_output(output, hotel_dict):
   #print(category_i)
   
   for cat_i, cat in enumerate(category_i):
-    categories.append(hotel_dict.index2word[cat])
+    categories.append(hotel_list[cat])
   
   #print(output)
   return categories, category_i
 
-def categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False):
+def categories_from_output_windowed_opt(output, hotel_window, hotel_list, pickfirst = False):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
   category_scores_dict = {}
@@ -189,8 +189,8 @@ def categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfi
   for batch_i, window in enumerate(hotel_window):
     category_scores_dict = {}
     for hotelw_i, hotelw in enumerate(window):
-      if hotelw in hotel_dict:
-        hotel_i = hotel_dict.index2word.index(hotelw)
+      if hotelw in hotel_list:
+        hotel_i = hotel_list.index(hotelw)
         category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
       else:
         category_scores_dict[hotelw] = -9999
