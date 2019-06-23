@@ -298,7 +298,7 @@ start = time.time()
 training_results_hotels = {}
 training_results_scores = {}
 
-with open('rnn_train_sub_xgb_inner.csv', mode='w') as rnn_train_sub_xgb:
+with open('rnn_train_sub_xgb_100%_inner.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
