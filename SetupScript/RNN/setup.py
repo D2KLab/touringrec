@@ -135,23 +135,27 @@ if param.ismeta:
 
 #corpus = dsm.get_corpus(df_encode)
 
-df_encode = pd.read_csv('./encode_1.csv')
-df_encode = dsm.remove_single_actions(df_encode)
+df_encode = pd.read_csv('./encode_1_colab.csv')
+#df_encode = dsm.remove_single_actions(df_encode)
+df_encode = dsm.remove_single_clickout_actions(df_encode)
 #df_encode = dsm.remove_nonitem_actions(df_encode)
 
-df_train_inner = pd.read_csv('./train_1.csv')
-df_train_inner = dsm.remove_single_actions(df_train_inner)
+df_train_inner = pd.read_csv('./train_1_colab.csv')
+#df_train_inner = dsm.remove_single_actions(df_train_inner)
+df_train_inner = dsm.remove_single_clickout_actions(df_train_inner)
 #df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
 #df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
 #df_train_inner = dsm.reference_to_str(df_train_inner)
 
-df_test_inner = pd.read_csv('./test_1.csv')
-df_test_inner = dsm.remove_single_actions(df_test_inner)
+df_test_inner = pd.read_csv('./test_1_colab.csv')
+#df_test_inner = dsm.remove_single_actions(df_test_inner)
+df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
 #df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 #df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 #df_test_inner = dsm.reference_to_str(df_test_inner)
 
-df_gt_inner = pd.read_csv('./gt_1.csv')
+df_gt_inner = pd.read_csv('./gt_1_colab.csv')
+df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
@@ -220,7 +224,7 @@ if param.isimpression:
     max_window = 25
 
 #Setting up feature numbers
-n_hotels = len(hotel_dict.index2word)
+n_hotels = len(hotel_list)
 n_features_w2vec = len(word2vec.wv['666856'])
 n_features_meta = len(meta_list)
 n_features_impression = max_window
