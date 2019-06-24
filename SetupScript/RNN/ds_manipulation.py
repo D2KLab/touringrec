@@ -47,6 +47,19 @@ def remove_single_actions_opt(df):
       #df = df.drop(df[(df['action_type'] == "clickout item") & (df['step'] == 1)].index)
     
   return df 
+
+def remove_single_clickout_actions(df):
+  print('Initial size: ' + str(df.shape[0]))
+  n_action_session = df.groupby('session_id').size().reset_index(name='n_actions')
+  #print(n_action_session.head())
+  df = (df.merge(n_action_session, left_on='session_id', right_on='session_id', how="left"))
+  #print(df.head())
+  # df['step_max'] = df.groupby(['session_id'])['step'].transform(max)
+  # print(df.head())
+  df = df.drop(df[(df["action_type"] == "clickout item") & (df['n_actions'] == 1)].index)
+  print('Final size: ' + str(df.shape[0]))
+  del df['n_actions']
+  return df
   
 def remove_nonitem_actions(df):
   df = df.drop(df[(df['action_type'] != 'interaction item image') & (df['action_type'] != 'interaction item deals') & (df['action_type'] != 'clickout item') & (df['action_type'] != 'search for item')].index)
