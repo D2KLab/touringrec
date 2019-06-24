@@ -135,6 +135,10 @@ if param.ismeta:
 
 #corpus = dsm.get_corpus(df_encode)
 
+df_encode = pd.read_csv('./encode_1.csv')
+df_encode = dsm.remove_single_actions(df_encode)
+#df_encode = dsm.remove_nonitem_actions(df_encode)
+
 df_train_inner = pd.read_csv('./train_1.csv')
 df_train_inner = dsm.remove_single_actions(df_train_inner)
 #df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
@@ -162,7 +166,8 @@ df_gt_inner = pd.read_csv('./gt_1.csv')
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
 
 
-df_corpus = pd.concat([df_train_inner, df_test_inner], ignore_index=True)
+#df_corpus = pd.concat([df_train_inner, df_test_inner], ignore_index=True)
+df_corpus = df_encode
 df_corpus = dsm.reference_to_str(df_corpus)
 
 corpus = dsm.get_corpus(df_corpus)
