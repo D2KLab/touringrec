@@ -179,38 +179,34 @@ def category_from_output(output, hotel_dict):
   #print(output)
   return categories, category_i
 
-def categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False):
-  output_arr = np.asarray(output.cpu().detach().numpy())
-  
-  category_scores_dict = {}
-  categories_scores = []
-  categories = []
+def categories_from_output_windowed_opt(output, hotel_window, hotel_dict, prev_hotel_list, pickfirst = False):
+  sub_hotels = []
+  sub_scores = []
+
+  sub_hotels_batched = []
+  sub_scores_batched = []
 
   for batch_i, window in enumerate(hotel_window):
-    category_scores_dict = {}
-    for hotelw_i, hotelw in enumerate(window):
-      if hotelw in hotel_dict:
-        hotel_i = hotel_dict.index2word.index(hotelw)
-        category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
-      else:
-        category_scores_dict[hotelw] = -9999
-        
-    #print(category_scores_dict)
-    category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
-    #print(category_scores_tuples)
-    temp_categories = []
-    temp_scores = []
+    prev_hotel = prev_hotel_list[batch_i]
+    out_class_v, out_class_i = torch.max(output[batch_i], 0)
+    
+    sub_hotels = []
+    sub_scores = []
+    
+    if out_class_i == 0:
+      sub_hotels = window
+      sub_scores = [0] * len(window)
+    else:
+      sub_hotels.append(prev_hotel)
+      sub_scores.append(float(out_class_v))
+      for hotel in window:
+        if hotel != sub_hotels[0]:
+          sub_hotels.append(hotel)
+          sub_scores.append(0)
       
-    if pickfirst:
-      temp_categories = category_scores_tuples[0][0]
-      temp_scores = category_scores_tuples[0][1]
-      
-    else:  
-      for tup in category_scores_tuples:
-        temp_categories.append(tup[0])
-        temp_scores.append(tup[1])
-      
-    categories.append(temp_categories)
-    categories_scores.append(temp_scores)
+    sub_hotels_batched.append(sub_hotels)
+    sub_scores_batched.append(sub_scores)
+
+    #print(sub_hotels_batched)
   
-  return categories, categories_scores
+  return sub_hotels_batched, sub_scores_batched

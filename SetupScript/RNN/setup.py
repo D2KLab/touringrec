@@ -201,7 +201,7 @@ STEP 3: PREPARE NET INPUT
 if param.batchsize == 0:
     sessions, categories, hotels_window = dsm.prepare_input(df_train_inner)
 else:
-    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train_inner, param.batchsize)
+    sessions, categories, hotels_window, train_prev_hotel_list = dsm.prepare_input_batched(df_train_inner, param.batchsize)
 
 test_sessions, test_hotels_window, test_clickout_index, prev_hotel_list = tst.prepare_test(df_test_inner, df_gt_inner)
 
@@ -331,6 +331,7 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
                 category = categories[index]
                 hotel_window = hotels_window[index]
                 category_tensor = lstm.category_to_tensor_batch(category, hotel_dict, n_hotels)
+                train_prev_hotel = train_prev_hotel_list[index]
 
             
             output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
@@ -340,6 +341,9 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
             #guess, guess_i = lstm.category_from_output(output, hotel_dict)
             #guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
         
+            if epoch == num_epochs: 
+                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, train_prev_hotel, pickfirst = False)
+
             for batch_i, category_v in enumerate(category):
                 #if guess[batch_i] == category_v:
                 #    count_correct = count_correct + 1
@@ -358,8 +362,8 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
                     #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
 
                 if epoch == num_epochs:   
-                    guess, guess_i = lstm.category_from_output(output, hotel_dict)
-                    guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
+                    #guess, guess_i = lstm.category_from_output(output, hotel_dict)
+                    #guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
  
                     for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
                         # Write single hotel score
@@ -398,12 +402,12 @@ STEP 7: PREPARE TEST SET
 '''
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, param.subname, isprint=True, dev = False)
 print("Final score for inner: " + str(mrr))
 
 test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
 
-mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, param.subname, isprint=True, dev = True)
 print("Final score for dev: " + str(mrr))
 
 '''

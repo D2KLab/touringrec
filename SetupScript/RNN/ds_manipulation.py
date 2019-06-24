@@ -176,22 +176,33 @@ def prepare_input_batched(df_train, batch_size):
   category_set_batched = []
   hotels_window_set_batched = []
 
+  prev_hotel_set = []
+  prev_hotel_set_batched = []
+
   df_sessions = df_train.groupby('session_id')
 
   for group_name, df_group in df_sessions:
     sub_sessions = []
     categories = []
+    prev_hotels = []
     temp_session = []
     hotels_window = []
+    prev_hotel = ''
 
     for action_index, action in df_group.iterrows():
-      if action['action_type'] == 'clickout item':
+      if (action['action_type'] == 'clickout item') & (prev_hotel != ''):
         sub_sessions.append(temp_session)
         temp_session.append(action)
-        categories.append(action['reference'])
+        if action['reference'] == prev_hotel:
+          categories.append(1)
+          prev_hotels.append(prev_hotel)
+        else:
+          categories.append(0)
+          prev_hotels.append(prev_hotel)
         hotels_window.append(action['impressions'].split('|'))
       else:
         temp_session.append(action)
+      prev_hotel = action['reference']
         
     # Uncomment this for splitting a single session into multiple clickouts(comment if underneats)
     '''training_set = training_set + sub_sessions
@@ -201,29 +212,36 @@ def prepare_input_batched(df_train, batch_size):
     if(len(sub_sessions) != 0):
       training_set.append(sub_sessions[-1])
       category_set.append(categories[-1])
+      prev_hotel_set.append(prev_hotels[-1])
       hotels_window_set.append(hotels_window[-1])
   
   temp_session_batched = []
   temp_category_batched = []
   temp_hotel_window_batched = []
-  
+  temp_prev_hotel_batched = []
+
   for si, session in enumerate(training_set):
     temp_session_batched.append(session)
     temp_category_batched.append(category_set[si])
+    temp_prev_hotel_batched.append(prev_hotel_set[si])
     temp_hotel_window_batched.append(hotels_window_set[si])
   
     if len(temp_session_batched) == batch_size:
       training_set_batched.append(temp_session_batched)
       category_set_batched.append(temp_category_batched)
+      prev_hotel_set_batched.append(temp_prev_hotel_batched)
       hotels_window_set_batched.append(temp_hotel_window_batched)
+
       temp_session_batched = []
       temp_category_batched = []
+      temp_prev_hotel_batched = []
       temp_hotel_window_batched = []
 
   if len(temp_session_batched) != 0:
     training_set_batched.append(temp_session_batched)
     category_set_batched.append(temp_category_batched)
+    prev_hotel_set_batched.append(temp_prev_hotel_batched)
     hotels_window_set_batched.append(temp_hotel_window_batched)
     
     
-  return training_set_batched, category_set_batched, hotels_window_set_batched
+  return training_set_batched, category_set_batched, hotels_window_set_batched, prev_hotel_set_batched

@@ -1,4 +1,5 @@
 import csv
+import torch
 import numpy as np
 import pandas as pd
 import functions as f
@@ -221,10 +222,13 @@ def prepare_test(df_test, df_gt):
   for action_index, action in df_test.iterrows():
       if(action['reference'] != 'unknown'):
           if (action['action_type'] == 'clickout item') & math.isnan(float(action['reference'])):
+            if prev_hotel != '':
               hotels_window = action['impressions'].split('|')
               temp_session.append(action)
               temp_clickout_index.append(action_index)
               temp_prev_hotel_list.append(prev_hotel)
+            else:
+              temp_session.append(action)
           else:
               temp_session.append(action)
           prev_hotel = action['reference']
@@ -241,6 +245,7 @@ def prepare_test(df_test, df_gt):
               hotels_window = []
               temp_clickout_index = []
               temp_prev_hotel_list = []
+              prev_hotel = ''
 
 
       i = i+1  
@@ -291,19 +296,24 @@ def recommendations_from_output_classification(output, hotel_dict, hotels_window
   sub_scores = []
   
   out_class_v, out_class_i = torch.max(output, 1)
-  
   if out_class_i == 0:
-    sub_hotels = hotels_window
-    sub_scores = [0] * len(hotels_window)
+    for hotel in hotels_window:
+      sub_hotels.append(hotel)
+      sub_scores.append(0)
   else:
     sub_hotels.append(prev_hotel)
-    sub_scores.append(out_class_v)
+    #print(out_class_v)
+    #print(float(out_class_v))
+    sub_scores.append(float(out_class_v))
+
     for hotel in hotels_window:
       if hotel != sub_hotels[0]:
         sub_hotels.append(hotel)
         sub_scores.append(0)
-                           
-  return list_to_space_string(sub_hotels), sub_scores
+
+  #print(sub_hotels)
+                             
+  return sub_hotels, sub_scores
   
 
 # Just return an output given a line
@@ -312,9 +322,9 @@ def evaluate_classification(model, session, hotel_dict, n_features, hotels_windo
     
     output = model(line_tensor)
         
-    output = recommendations_from_output_classification(output, hotel_dict, hotels_window, n_features, prev_hotel)
+    output, out_scores = recommendations_from_output_classification(output, hotel_dict, hotels_window, n_features, prev_hotel)
 
-    return output
+    return output, out_scores
   
 def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, subname="submission_default_name", isprint=False, dev = False):
   """Return the score obtained by the net on the test dataframe"""
@@ -336,14 +346,12 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hote
     
     for session_index, session in enumerate(sessions):
       if clickout_index[session_index] != []:
-        categories, categories_scores = evaluate_classification(model, session, hotel_dict, n_features, hotels_window[session_index], max_window,  meta_dict, meta_list, prev_hotel_list[0])
-        df_test.loc[clickout_index[session_index], 'item_recommendations'] = list_to_space_string(categories)
+        categories, categories_scores = evaluate_classification(model, session, hotel_dict, n_features, hotels_window[session_index], max_window,  meta_dict, meta_list, prev_hotel_list[session_index])
         
+        df_test.loc[clickout_index[session_index], 'item_recommendations'] = list_to_space_string(categories)
         for hotel_i, hotel in enumerate(categories):
           # Write single hotel score
           file_writer.writerow([str(session[0]['session_id']), str(hotel), str(categories_scores[hotel_i])])
-
-      
   df_sub = get_submission_target(df_test)
   
   #Removing unnecessary columns
