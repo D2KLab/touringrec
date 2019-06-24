@@ -135,26 +135,26 @@ if param.ismeta:
 
 #corpus = dsm.get_corpus(df_encode)
 
-df_encode = pd.read_csv('./encode_1_colab.csv')
+#df_encode = pd.read_csv('./encode_inner_10.csv')
 #df_encode = dsm.remove_single_actions(df_encode)
-df_encode = dsm.remove_single_clickout_actions(df_encode)
+#df_encode = dsm.remove_single_clickout_actions(df_encode)
 #df_encode = dsm.remove_nonitem_actions(df_encode)
 
-df_train_inner = pd.read_csv('./train_1_colab.csv')
+df_train_inner = pd.read_csv('./train_inner_10.csv')
 #df_train_inner = dsm.remove_single_actions(df_train_inner)
 df_train_inner = dsm.remove_single_clickout_actions(df_train_inner)
 #df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
 #df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
 #df_train_inner = dsm.reference_to_str(df_train_inner)
 
-df_test_inner = pd.read_csv('./test_1_colab.csv')
+df_test_inner = pd.read_csv('./test_inner_10.csv')
 #df_test_inner = dsm.remove_single_actions(df_test_inner)
 df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
 #df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 #df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 #df_test_inner = dsm.reference_to_str(df_test_inner)
 
-df_gt_inner = pd.read_csv('./gt_1_colab.csv')
+df_gt_inner = pd.read_csv('./gt_inner_10.csv')
 df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
@@ -170,8 +170,8 @@ df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
 
 
-#df_corpus = pd.concat([df_train_inner, df_test_inner], ignore_index=True)
-df_corpus = df_encode
+df_corpus = pd.concat([df_train_inner, df_test_inner], ignore_index=True)
+#df_corpus = df_encode
 df_corpus = dsm.reference_to_str(df_corpus)
 
 corpus = dsm.get_corpus(df_corpus)
@@ -379,6 +379,7 @@ with open('rnn_train_sub_xgb_inner_' + param.subname + '.csv', mode='w') as rnn_
             #print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
             #print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
             acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, hotel_list, n_features, max_window, meta_dict, meta_list)
+            print(timeSince(start))
             print("Score: " + str(acc))
             all_acc.append(acc)
             current_loss = 0
