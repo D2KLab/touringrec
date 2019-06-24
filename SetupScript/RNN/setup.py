@@ -36,9 +36,10 @@ parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
 parser.add_argument('--encode', action="store", type=str, help="--train encode.csv")
 parser.add_argument('--meta', action="store", type=str, help="--train metadata.csv")
-parser.add_argument('--train', action="store", type=str, help="--train train.csv")
-parser.add_argument('--test', action="store", type=str, help="--test test.csv")
-parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
+parser.add_argument('--traininner', action="store", type=str, help="--traininner train.csv")
+parser.add_argument('--testinner', action="store", type=str, help="--testinner test.csv")
+parser.add_argument('--gtinner', action="store", type=str, help="--gtinner train.csv")
+parser.add_argument('--testdev', action="store", type=str, help="--testdev test.csv")
 #parser.add_argument('--metadata', action="store", type=str, help="Define the metadata file")
 #parser.add_argument('--localscore', action="store", type=int, help="0 -> Local score, 1 -> Official score")
 parser.add_argument('--ismeta', action='store_true', help='Use metadata')
@@ -62,9 +63,10 @@ args = parser.parse_args()
 
 param = LSTMParam.LSTMParameters(   args.encode,
                                     args.meta,
-                                    args.train, 
-                                    args.test,
-                                    args.gt,
+                                    args.traininner, 
+                                    args.testinner,
+                                    args.gtinner,
+                                    args.testdev,
                                     args.ismeta,
                                     args.isimpression,
                                     args.isdrop,
@@ -135,24 +137,24 @@ if param.ismeta:
 
 #corpus = dsm.get_corpus(df_encode)
 
-df_train_inner = pd.read_csv('./train.csv')
+df_train_inner = pd.read_csv(param.traininner) # ./train.csv
 df_train_inner = dsm.remove_single_clickout_actions(df_train_inner)
 #df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
 df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
 #df_train_inner = dsm.reference_to_str(df_train_inner)
 
-df_test_inner = pd.read_csv('./test.csv')
+df_test_inner = pd.read_csv(param.testinner) # ./test.csv'
 df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
 #df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 #df_test_inner = dsm.reference_to_str(df_test_inner)
 
-df_gt_inner = pd.read_csv('./gt.csv')
+df_gt_inner = pd.read_csv(param.gtinner) # ./gt.csv
 df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
-df_test_dev = pd.read_csv('./test_off.csv')
+df_test_dev = pd.read_csv(param.testdev) # ./test_off.csv
 df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
@@ -201,7 +203,7 @@ if param.batchsize == 0:
 else:
     sessions, categories, hotels_window = dsm.prepare_input_batched(df_train_inner, param.batchsize)
 
-test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_inner, df_gt_inner)
+test_sessions, test_hotels_window, test_clickout_index, prev_hotel_list = tst.prepare_test(df_test_inner, df_gt_inner)
 
 #getting maximum window size
 max_window = 0
@@ -232,7 +234,7 @@ STEP 4: CREATE NETWORK
 
 #DEFINE PARAMETERS
 input_dim = n_features
-output_dim = n_hotels
+output_dim = 2
 #hidden_dim = int(1/100 * (input_dim + output_dim))
 hidden_dim = param.hiddendim
 print('The model is:')
@@ -261,8 +263,8 @@ STEP 5: LEARNING PHASE
 '''
 
 #LOSS FUNCTION
-#loss_fn = torch.nn.CrossEntropyLoss()
-loss_fn = torch.nn.NLLLoss()
+loss_fn = torch.nn.CrossEntropyLoss()
+#loss_fn = torch.nn.NLLLoss()
 
 if param.iscuda:
     loss_fn = loss_fn.cuda()
@@ -328,7 +330,7 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
                 session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features, hotels_window, max_window, meta_dict, meta_list)
                 category = categories[index]
                 hotel_window = hotels_window[index]
-                category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
+                category_tensor = lstm.category_to_tensor_batch(category, hotel_dict, n_hotels)
 
             
             output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
@@ -371,8 +373,8 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
             print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
             #print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
             #print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
-            #acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
-            #print("Score: " + str(acc))
+            acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list)
+            print("Score: " + str(acc))
             #all_acc.append(acc)
             current_loss = 0
 
@@ -396,13 +398,13 @@ STEP 7: PREPARE TEST SET
 '''
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-#mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
-#print("Final score for inner: " + str(mrr))
+mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
+print("Final score for inner: " + str(mrr))
 
-#test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
+test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
 
-#mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
-#print("Final score for dev: " + str(mrr))
+mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
+print("Final score for dev: " + str(mrr))
 
 '''
 STEP 8: SAVING SUBMISSION

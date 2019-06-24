@@ -67,7 +67,7 @@ class LSTMModel(nn.Module):
         
         out = self.fc(out)
     
-        out = self.logsoftmax(out)
+        #out = self.logsoftmax(out)
 
         return out
 
@@ -142,13 +142,13 @@ def hotel_to_category(hotel, hotel_dict, n_features):
     tensor = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
   return tensor
 
-def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
-  batch_size = len(hotel_list)
+def category_to_tensor_batch(category_b, hotel_dict, n_hotels):
+  batch_size = len(category_b)
   tensor = torch.zeros(batch_size)
-  for hi, hotel in enumerate(hotel_list):
-    if hotel in hotel_dict.index2word:
-      tensor[hi] = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
+  for ci, category in enumerate(category_b):
+    tensor[ci] = torch.tensor([category], dtype=torch.long)
   return tensor
+
 
 '''def category_from_output(output, hotel_dict):
   #top_n, top_i = output.data.topk(1) # Tensor out of Variable with .data

@@ -1,10 +1,11 @@
 class LSTMParameters():
-    def __init__(self, encode, meta, train, test, gt, ismeta, isimpression, isdrop, hiddendim, epochs, ncomponents, window, learnrate, iscuda, subname, numthread, batchsize):
+    def __init__(self, encode, meta, traininner, testinner, gtinner, testdev, ismeta, isimpression, isdrop, hiddendim, epochs, ncomponents, window, learnrate, iscuda, subname, numthread, batchsize):
         self.encode = encode
         self.meta = meta
-        self.train = train
-        self.test = test
-        self.gt = gt
+        self.traininner = traininner
+        self.testinner = testinner
+        self.gtinner = gtinner
+        self.testdev = testdev
         self.ismeta = ismeta
         self.isimpression = isimpression
         self.isdrop = isdrop
