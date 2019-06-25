@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 import pandas as pd
+from operator import itemgetter
 #from setup import param
 
 class LSTMModel(nn.Module):
@@ -22,7 +23,7 @@ class LSTMModel(nn.Module):
 
         #self.lstm = nn.LSTM(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim)  
       
-        self.gru = nn.GRU(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim, dropout = 0.2)
+        self.gru = nn.GRU(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim) # Use dropout with more than 1 layer
 
         #self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 10)
 
@@ -158,8 +159,8 @@ def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
   #print(output)
   return hotel_dict.index2word[category_i], category_i'''
   
-# Version for batched results
-def category_from_output(output):
+
+def category_from_output(output, hotel_dict):
   #top_n, top_i = output.data.topk(1) # Tensor out of Variable with .data
   #category_i = int(top_i[0][0])
   
@@ -177,3 +178,39 @@ def category_from_output(output):
   
   #print(output)
   return categories, category_i
+
+def categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False):
+  output_arr = np.asarray(output.cpu().detach().numpy())
+  
+  category_scores_dict = {}
+  categories_scores = []
+  categories = []
+
+  for batch_i, window in enumerate(hotel_window):
+    category_scores_dict = {}
+    for hotelw_i, hotelw in enumerate(window):
+      if hotelw in hotel_dict:
+        hotel_i = hotel_dict.index2word.index(hotelw)
+        category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
+      else:
+        category_scores_dict[hotelw] = -9999
+        
+    #print(category_scores_dict)
+    category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
+    #print(category_scores_tuples)
+    temp_categories = []
+    temp_scores = []
+      
+    if pickfirst:
+      temp_categories = category_scores_tuples[0][0]
+      temp_scores = category_scores_tuples[0][1]
+      
+    else:  
+      for tup in category_scores_tuples:
+        temp_categories.append(tup[0])
+        temp_scores.append(tup[1])
+      
+    categories.append(temp_categories)
+    categories_scores.append(temp_scores)
+  
+  return categories, categories_scores

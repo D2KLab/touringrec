@@ -19,7 +19,7 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
     ranked_hotels = {}
     hotel_i = 0
     
-    for hotel_v in output_arr:
+    '''for hotel_v in output_arr:
         hotel_id = hotel_dict.index2word[hotel_i]
 
         if hotel_id in hotels_window:
@@ -28,7 +28,16 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
     
     for hotel_id in hotels_window:
         if hotel_id not in ranked_hotels:
-            ranked_hotels[hotel_id] = -9999
+            ranked_hotels[hotel_id] = -9999'''
+    
+    ranked_hotels = {}
+    for hotelw_i, hotelw in enumerate(window):
+      if hotelw in hotel_dict:
+        hotel_i = hotel_dict.index2word.index(hotelw)
+        #hotel_i = hotel_list.index(hotelw)  # This is for using hotel list
+        ranked_hotels[hotelw] = output_arr[hotel_i]
+      else:
+        ranked_hotels[hotelw] = -9999
 
     ranked_hotels = sorted(ranked_hotels.items(), key=itemgetter(1), reverse = True)
     ranked = []
@@ -271,3 +280,83 @@ def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clic
 
   mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
   return mrr
+
+
+### FUNCTIONS FOR CLASSIFICATION TASK ###
+
+def recommendations_from_output_classification(output, hotel_dict, window, n_features):
+  output_arr = np.asarray(output.cpu().detach().numpy())
+  
+  category_scores_dict = {}
+  categories_scores = []
+  categories = []
+
+  category_scores_dict = {}
+  for hotelw_i, hotelw in enumerate(window):
+    if hotelw in hotel_dict:
+      hotel_i = hotel_dict.index2word.index(hotelw)
+      category_scores_dict[hotelw] = output_arr[0][hotel_i]
+    else:
+      category_scores_dict[hotelw] = -9999
+
+  category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
+
+  for tup in category_scores_tuples:
+    categories.append(tup[0])
+    categories_scores.append(tup[1])
+  
+  return categories, categories_scores
+
+# Just return an output given a line
+def evaluate_classification(model, session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
+    line_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
+    
+    output = model(line_tensor)
+        
+    output = recommendations_from_output_classification(output, hotel_dict, hotels_window, n_features)
+
+    return output
+  
+def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False, dev = False):
+  """Return the score obtained by the net on the test dataframe"""
+
+  test_dim = len(df_test)
+
+  print_every = 500
+  
+  #missed_target = 0
+  if dev:
+    fname = 'rnn_test_sub_xgb_dev.csv'
+  else:
+    fname = 'rnn_test_sub_xgb_inner.csv'  
+
+  with open(fname, mode='w') as test_xgb_sub:
+    
+    file_writer = csv.writer(test_xgb_sub)
+    file_writer.writerow(['session_id', 'hotel_id', 'score'])          
+    
+    for session_index, session in enumerate(sessions):
+      if clickout_index[session_index] != []:
+        categories, categories_scores = evaluate_classification(model, session, hotel_dict, n_features, hotels_window[session_index], max_window,  meta_dict, meta_list)
+        df_test.loc[clickout_index[session_index], 'item_recommendations'] = list_to_space_string(categories)
+        
+        for hotel_i, hotel in enumerate(categories):
+          # Write single hotel score
+          file_writer.writerow([str(session[0]['session_id']), str(hotel), str(categories_scores[hotel_i])])
+
+      
+  df_sub = get_submission_target(df_test)
+  
+  #Removing unnecessary columns
+  df_sub = df_sub[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
+
+  mask = df_sub["item_recommendations"].notnull()
+  df_sub = df_sub[mask]
+
+  # Saving df_sub
+  if isprint:
+      df_sub.to_csv('./' + subname + '.csv')
+
+  mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  return mrr
+  
