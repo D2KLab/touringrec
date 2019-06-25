@@ -203,7 +203,7 @@ if param.batchsize == 0:
 else:
     sessions, categories, hotels_window, train_prev_hotel_list = dsm.prepare_input_batched(df_train_inner, param.batchsize)
 
-test_sessions, test_hotels_window, test_clickout_index, prev_hotel_list = tst.prepare_test(df_test_inner, df_gt_inner)
+test_sessions, test_hotels_window, test_clickout_index, prev_hotel_list = tst.prepare_test(df_test_inner)
 
 #getting maximum window size
 max_window = 0
@@ -301,7 +301,7 @@ start = time.time()
 training_results_hotels = {}
 training_results_scores = {}
 
-with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
+with open('rnn_train_sub_xgb_inner' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
@@ -402,12 +402,12 @@ STEP 7: PREPARE TEST SET
 '''
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, param.subname, isprint=True, dev = False)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, df_gt_inner, param.subname, isprint=True, dev = False)
 print("Final score for inner: " + str(mrr))
 
-test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
+test_sessions, test_hotels_window, test_clickout_index, prev_hotel_list = tst.prepare_test(df_test_dev)
 
-mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, param.subname, isprint=True, dev = True)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, param.subname, isprint=True, dev = True)
 print("Final score for dev: " + str(mrr))
 
 '''

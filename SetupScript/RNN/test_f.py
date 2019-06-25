@@ -197,7 +197,7 @@ def test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, met
     mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
     return mrr
 
-def prepare_test(df_test, df_gt):
+def prepare_test(df_test):
   #Creating a NaN column for item recommendations
   df_test['item_recommendations'] = np.nan
 
@@ -326,7 +326,7 @@ def evaluate_classification(model, session, hotel_dict, n_features, hotels_windo
 
     return output, out_scores
   
-def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, subname="submission_default_name", isprint=False, dev = False):
+def test_accuracy_optimized_classification(model, df_test, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, prev_hotel_list, df_gt = [], subname="submission_default_name", isprint=False, dev = False):
   """Return the score obtained by the net on the test dataframe"""
 
   test_dim = len(df_test)
@@ -335,9 +335,9 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hote
   
   #missed_target = 0
   if dev:
-    fname = 'rnn_test_sub_xgb_2class_dev.csv'
+    fname = 'rnn_test_sub_xgb_2class_dev_10%.csv'
   else:
-    fname = 'rnn_test_sub_xgb_2class_inner.csv'  
+    fname = 'rnn_test_sub_xgb_2class_inner_10%.csv'  
 
   with open(fname, mode='w') as test_xgb_sub:
     
@@ -364,6 +364,10 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hote
   if isprint:
       df_sub.to_csv('./' + subname + '.csv')
 
-  mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  if dev:
+    mrr = 0
+  else:
+    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+
   return mrr
   
