@@ -67,7 +67,7 @@ class LSTMModel(nn.Module):
         
         out = self.fc(out)
     
-        out = self.logsoftmax(out)
+        #out = self.logsoftmax(out)
 
         return out
 
@@ -142,12 +142,11 @@ def hotel_to_category(hotel, hotel_dict, n_features):
     tensor = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
   return tensor
 
-def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
-  batch_size = len(hotel_list)
-  tensor = torch.zeros(batch_size)
-  for hi, hotel in enumerate(hotel_list):
-    if hotel in hotel_dict.index2word:
-      tensor[hi] = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
+def hotels_to_category_batch(category_b, hotel_dict, n_hotels):
+  batch_size = len(category_b)
+  tensor = torch.zeros(category_b)
+  for ci, category in enumerate(category_b):
+    tensor[ci] = torch.tensor([category], dtype=torch.long)
   return tensor
 
 '''def category_from_output(output, hotel_dict):
@@ -180,35 +179,25 @@ def category_from_output(output, hotel_dict):
   return categories, category_i
 
 def categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False):
-  output_arr = np.asarray(output.cpu().detach().numpy())
+  output_arr_b = np.asarray(output.cpu().detach().numpy())
   
   category_scores_dict = {}
   categories_scores = []
   categories = []
 
   for batch_i, window in enumerate(hotel_window):
-    category_scores_dict = {}
-    for hotelw_i, hotelw in enumerate(window):
-      if hotelw in hotel_dict:
-        hotel_i = hotel_dict.index2word.index(hotelw)
-        category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
-      else:
-        category_scores_dict[hotelw] = -9999
-        
-    #print(category_scores_dict)
-    category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
-    #print(category_scores_tuples)
-    temp_categories = []
-    temp_scores = []
+    output_arr = output_arr_b[0]
+  
+    ranked_hotels = {}
+          
+    for hotel_i, hotel in enumerate(window):
+      ranked_hotels[hotel] = output_arr[hotel_i]
       
-    if pickfirst:
-      temp_categories = category_scores_tuples[0][0]
-      temp_scores = category_scores_tuples[0][1]
-      
-    else:  
-      for tup in category_scores_tuples:
-        temp_categories.append(tup[0])
-        temp_scores.append(tup[1])
+    ranked_hotels_tuple = sorted(ranked_hotels.items(), key=itemgetter(1), reverse = True)
+         
+    for tup in ranked_hotels_tuple:
+      temp_categories.append(tup[0])
+      temp_scores.append(tup[1])
       
     categories.append(temp_categories)
     categories_scores.append(temp_scores)

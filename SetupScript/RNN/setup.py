@@ -234,7 +234,7 @@ STEP 4: CREATE NETWORK
 
 #DEFINE PARAMETERS
 input_dim = n_features
-output_dim = n_hotels
+output_dim = 26
 #hidden_dim = int(1/100 * (input_dim + output_dim))
 hidden_dim = param.hiddendim
 print('The model is:')
@@ -263,8 +263,8 @@ STEP 5: LEARNING PHASE
 '''
 
 #LOSS FUNCTION
-#loss_fn = torch.nn.CrossEntropyLoss()
-loss_fn = torch.nn.NLLLoss()
+loss_fn = torch.nn.CrossEntropyLoss()
+#loss_fn = torch.nn.NLLLoss()
 
 if param.iscuda:
     loss_fn = loss_fn.cuda()
@@ -340,6 +340,10 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
             #guess, guess_i = lstm.category_from_output(output, hotel_dict)
             #guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
         
+            #guess, guess_i = lstm.category_from_output(output, hotel_dict)
+            guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
+ 
+
             for batch_i, category_v in enumerate(category):
                 #if guess[batch_i] == category_v:
                 #    count_correct = count_correct + 1
@@ -358,9 +362,6 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
                     #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
 
                 if epoch == num_epochs:   
-                    guess, guess_i = lstm.category_from_output(output, hotel_dict)
-                    guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
- 
                     for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
                         # Write single hotel score
                         file_writer.writerow([str(session[batch_i][0]['session_id']), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
