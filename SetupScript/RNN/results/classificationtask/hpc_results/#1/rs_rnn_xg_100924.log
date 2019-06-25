@@ -1,0 +1,4035 @@
+INFO: localdir at /scratch/100924.gcrepaldi
+INFO: your job will run on local system.
+Using GPU: cuda:0
+Using num thread = 2
+n_hotels is 90274
+n_features_w2vec is 100
+n_features_meta is 0
+n_features_impression is 0
+n_features is 100
+The model is:
+input_dim is:100
+hidden_dim is: 100
+output_dim is:90274
+40096 sessions to be computed
+Non-Windowed results:
+(12m 15s) 11.5434 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(12m 15s) 11.5434 cb3559b4aaaf3 / 1981351 ✗ (3074554)
+Non-Windowed results:
+(12m 15s) 11.5434 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(12m 15s) 11.5434 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(12m 15s) 11.5434 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(12m 15s) 11.5434 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(12m 15s) 11.5434 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(12m 15s) 11.5434 cb394ac18a88f / 411761 ✗ (6658880)
+Non-Windowed results:
+(12m 15s) 11.5434 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(12m 15s) 11.5434 cb3a50d337432 / 107713 ✗ (6452216)
+Non-Windowed results:
+(12m 15s) 11.5434 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(12m 15s) 11.5434 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(12m 15s) 11.5434 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(12m 15s) 11.5434 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(12m 15s) 11.5434 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(12m 15s) 11.5434 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(12m 15s) 11.5434 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(12m 15s) 11.5434 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(12m 15s) 11.5434 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(12m 15s) 11.5434 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(12m 15s) 11.5434 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(12m 15s) 11.5434 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(12m 15s) 11.5434 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(12m 15s) 11.5434 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(12m 15s) 11.5434 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(12m 15s) 11.5434 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(12m 15s) 11.5434 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(12m 15s) 11.5434 cb45085012aae / 2859550 ✗ (2181818)
+Non-Windowed results:
+(12m 15s) 11.5434 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(12m 15s) 11.5434 cb49fd926c59c / 38252 ✗ (12974)
+Non-Windowed results:
+(12m 15s) 11.5434 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(12m 15s) 11.5434 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(12m 15s) 11.5434 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(12m 15s) 11.5434 cb4d817f2f0f9 / 1009187 ✗ (1244689)
+Non-Windowed results:
+(12m 15s) 11.5434 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(12m 15s) 11.5434 cb4eba32a9dd9 / 8506218 ✗ (3895022)
+Non-Windowed results:
+(12m 15s) 11.5434 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(12m 15s) 11.5434 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(12m 15s) 11.5434 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(12m 15s) 11.5434 cb4f4a35e890f / 59658 ✗ (69887)
+Non-Windowed results:
+(12m 15s) 11.5434 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(12m 15s) 11.5434 cb4f7127613a0 / 8350208 ✗ (103507)
+Non-Windowed results:
+(12m 15s) 11.5434 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(12m 15s) 11.5434 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(12m 15s) 11.5434 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(12m 15s) 11.5434 cb5496bf956dc / 1211618 ✗ (1116908)
+Non-Windowed results:
+(12m 15s) 11.5434 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(12m 15s) 11.5434 cb56be6102c0e / 60877 ✗ (838326)
+Non-Windowed results:
+(12m 15s) 11.5434 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(12m 15s) 11.5434 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(12m 15s) 11.5434 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(12m 15s) 11.5434 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(12m 15s) 11.5434 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(12m 15s) 11.5434 cb57d74988837 / 3227394 ✗ (98864)
+Non-Windowed results:
+(12m 15s) 11.5434 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(12m 15s) 11.5434 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(12m 15s) 11.5434 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(12m 15s) 11.5434 cb5edc4932eb7 / 2663003 ✗ (2728192)
+Non-Windowed results:
+(12m 15s) 11.5434 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(12m 15s) 11.5434 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(12m 15s) 11.5434 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(12m 15s) 11.5434 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(12m 15s) 11.5434 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(12m 15s) 11.5434 cb60ca9f3d465 / 4701148 ✗ (12707)
+Epoch: 1 Loss: 11.440746359128717
+1 3% (15m 30s)
+Found 13 correct clickouts among 40096 sessions.
+Windowed - Found 6019 correct clickouts among 40096 sessions.
+Score: 0.2565305655906944
+40096 sessions to be computed
+Non-Windowed results:
+(37m 58s) 11.0644 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(37m 58s) 11.0644 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(37m 58s) 11.0644 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(37m 58s) 11.0644 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(37m 58s) 11.0644 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(37m 58s) 11.0644 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(37m 58s) 11.0644 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(37m 58s) 11.0644 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(37m 58s) 11.0644 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(37m 58s) 11.0644 cb3a50d337432 / 3367616 ✗ (6452216)
+Non-Windowed results:
+(37m 58s) 11.0644 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(37m 58s) 11.0644 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(37m 58s) 11.0644 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(37m 58s) 11.0644 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(37m 58s) 11.0644 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(37m 58s) 11.0644 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(37m 58s) 11.0644 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(37m 58s) 11.0644 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(37m 58s) 11.0644 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(37m 58s) 11.0644 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(37m 58s) 11.0644 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(37m 58s) 11.0644 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(37m 58s) 11.0644 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(37m 58s) 11.0644 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(37m 58s) 11.0644 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(37m 58s) 11.0644 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(37m 58s) 11.0644 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(37m 58s) 11.0644 cb45085012aae / 2859550 ✗ (2181818)
+Non-Windowed results:
+(37m 58s) 11.0644 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(37m 58s) 11.0644 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(37m 58s) 11.0644 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(37m 58s) 11.0644 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(37m 58s) 11.0644 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(37m 58s) 11.0644 cb4d817f2f0f9 / 1009187 ✗ (1244689)
+Non-Windowed results:
+(37m 58s) 11.0644 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(37m 58s) 11.0644 cb4eba32a9dd9 / 8506218 ✗ (3895022)
+Non-Windowed results:
+(37m 58s) 11.0644 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(37m 58s) 11.0644 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(37m 58s) 11.0644 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(37m 58s) 11.0644 cb4f4a35e890f / 59658 ✗ (69887)
+Non-Windowed results:
+(37m 58s) 11.0644 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(37m 58s) 11.0644 cb4f7127613a0 / 8350208 ✗ (103507)
+Non-Windowed results:
+(37m 58s) 11.0644 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(37m 58s) 11.0644 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(37m 58s) 11.0644 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(37m 58s) 11.0644 cb5496bf956dc / 1211618 ✗ (1116908)
+Non-Windowed results:
+(37m 58s) 11.0644 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(37m 58s) 11.0644 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(37m 58s) 11.0644 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(37m 58s) 11.0644 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(37m 58s) 11.0644 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(37m 58s) 11.0644 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(37m 58s) 11.0644 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(37m 58s) 11.0644 cb57d74988837 / 3227394 ✗ (98864)
+Non-Windowed results:
+(37m 58s) 11.0644 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(37m 58s) 11.0644 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(37m 58s) 11.0644 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(37m 58s) 11.0644 cb5edc4932eb7 / 2663003 ✗ (2728192)
+Non-Windowed results:
+(37m 58s) 11.0644 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(37m 58s) 11.0644 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(37m 58s) 11.0644 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(37m 58s) 11.0644 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(37m 58s) 11.0644 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(37m 58s) 11.0644 cb60ca9f3d465 / 4701148 ✗ (12707)
+Epoch: 2 Loss: 10.649764168291023
+2 6% (41m 11s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 12980 correct clickouts among 40096 sessions.
+Score: 0.2594057056238238
+40096 sessions to be computed
+Non-Windowed results:
+(63m 56s) 10.9115 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(63m 56s) 10.9115 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(63m 56s) 10.9115 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(63m 56s) 10.9115 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(63m 56s) 10.9115 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(63m 56s) 10.9115 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(63m 56s) 10.9115 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(63m 56s) 10.9115 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(63m 56s) 10.9115 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(63m 56s) 10.9115 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(63m 56s) 10.9115 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(63m 56s) 10.9115 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(63m 56s) 10.9115 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(63m 56s) 10.9115 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(63m 56s) 10.9115 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(63m 56s) 10.9115 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(63m 56s) 10.9115 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(63m 56s) 10.9115 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(63m 56s) 10.9115 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(63m 56s) 10.9115 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(63m 56s) 10.9115 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(63m 56s) 10.9115 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(63m 56s) 10.9115 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(63m 56s) 10.9115 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(63m 56s) 10.9115 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(63m 56s) 10.9115 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(63m 56s) 10.9115 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(63m 56s) 10.9115 cb45085012aae / 2859550 ✗ (2181818)
+Non-Windowed results:
+(63m 56s) 10.9115 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(63m 56s) 10.9115 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(63m 56s) 10.9115 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(63m 56s) 10.9115 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(63m 56s) 10.9115 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(63m 56s) 10.9115 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(63m 56s) 10.9115 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(63m 56s) 10.9115 cb4eba32a9dd9 / 8506218 ✗ (3895022)
+Non-Windowed results:
+(63m 56s) 10.9115 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(63m 56s) 10.9115 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(63m 56s) 10.9115 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(63m 56s) 10.9115 cb4f4a35e890f / 59658 ✗ (69887)
+Non-Windowed results:
+(63m 56s) 10.9115 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(63m 56s) 10.9115 cb4f7127613a0 / 8350208 ✗ (103507)
+Non-Windowed results:
+(63m 56s) 10.9115 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(63m 56s) 10.9115 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(63m 56s) 10.9115 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(63m 56s) 10.9115 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(63m 56s) 10.9115 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(63m 56s) 10.9115 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(63m 56s) 10.9115 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(63m 56s) 10.9115 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(63m 56s) 10.9115 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(63m 56s) 10.9115 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(63m 56s) 10.9115 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(63m 56s) 10.9115 cb57d74988837 / 98864 ✓
+Non-Windowed results:
+(63m 56s) 10.9115 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(63m 56s) 10.9115 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(63m 56s) 10.9115 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(63m 56s) 10.9115 cb5edc4932eb7 / 2663003 ✗ (2728192)
+Non-Windowed results:
+(63m 56s) 10.9115 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(63m 56s) 10.9115 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(63m 56s) 10.9115 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(63m 56s) 10.9115 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(63m 56s) 10.9115 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(63m 56s) 10.9115 cb60ca9f3d465 / 4701148 ✗ (12707)
+Epoch: 3 Loss: 10.465127313983793
+3 10% (66m 59s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 13170 correct clickouts among 40096 sessions.
+Score: 0.2607823570983897
+40096 sessions to be computed
+Non-Windowed results:
+(90m 4s) 10.8261 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(90m 4s) 10.8261 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(90m 4s) 10.8261 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(90m 4s) 10.8261 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(90m 4s) 10.8261 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(90m 4s) 10.8261 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(90m 4s) 10.8261 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(90m 4s) 10.8261 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(90m 4s) 10.8261 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(90m 4s) 10.8261 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(90m 4s) 10.8261 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(90m 4s) 10.8261 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(90m 4s) 10.8261 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(90m 4s) 10.8261 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(90m 4s) 10.8261 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(90m 4s) 10.8261 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(90m 4s) 10.8261 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(90m 4s) 10.8261 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(90m 4s) 10.8261 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(90m 4s) 10.8261 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(90m 4s) 10.8261 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(90m 4s) 10.8261 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(90m 4s) 10.8261 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(90m 4s) 10.8261 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(90m 4s) 10.8261 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(90m 4s) 10.8261 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(90m 4s) 10.8261 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(90m 4s) 10.8261 cb45085012aae / 2859550 ✗ (2181818)
+Non-Windowed results:
+(90m 4s) 10.8261 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(90m 4s) 10.8261 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(90m 4s) 10.8261 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(90m 4s) 10.8261 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(90m 4s) 10.8261 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(90m 4s) 10.8261 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(90m 4s) 10.8261 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(90m 4s) 10.8261 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(90m 4s) 10.8261 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(90m 4s) 10.8261 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(90m 4s) 10.8261 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(90m 4s) 10.8261 cb4f4a35e890f / 59658 ✗ (69887)
+Non-Windowed results:
+(90m 4s) 10.8261 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(90m 4s) 10.8261 cb4f7127613a0 / 8350208 ✗ (103507)
+Non-Windowed results:
+(90m 4s) 10.8261 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(90m 4s) 10.8261 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(90m 4s) 10.8261 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(90m 4s) 10.8261 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(90m 4s) 10.8261 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(90m 4s) 10.8261 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(90m 4s) 10.8261 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(90m 4s) 10.8261 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(90m 4s) 10.8261 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(90m 4s) 10.8261 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(90m 4s) 10.8261 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(90m 4s) 10.8261 cb57d74988837 / 98864 ✓
+Non-Windowed results:
+(90m 4s) 10.8261 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(90m 4s) 10.8261 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(90m 4s) 10.8261 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(90m 4s) 10.8261 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(90m 4s) 10.8261 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(90m 4s) 10.8261 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(90m 4s) 10.8261 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(90m 4s) 10.8261 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(90m 4s) 10.8261 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(90m 4s) 10.8261 cb60ca9f3d465 / 4701148 ✗ (12707)
+Epoch: 4 Loss: 10.395940471627858
+4 13% (93m 16s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 13263 correct clickouts among 40096 sessions.
+Score: 0.26237726152907587
+40096 sessions to be computed
+Non-Windowed results:
+(116m 21s) 10.7644 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(116m 21s) 10.7644 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(116m 21s) 10.7644 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(116m 21s) 10.7644 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(116m 21s) 10.7644 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(116m 21s) 10.7644 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(116m 21s) 10.7644 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(116m 21s) 10.7644 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(116m 21s) 10.7644 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(116m 21s) 10.7644 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(116m 21s) 10.7644 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(116m 21s) 10.7644 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(116m 21s) 10.7644 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(116m 21s) 10.7644 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(116m 21s) 10.7644 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(116m 21s) 10.7644 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(116m 21s) 10.7644 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(116m 21s) 10.7644 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(116m 21s) 10.7644 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(116m 21s) 10.7644 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(116m 21s) 10.7644 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(116m 21s) 10.7644 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(116m 21s) 10.7644 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(116m 21s) 10.7644 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(116m 21s) 10.7644 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(116m 21s) 10.7644 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(116m 21s) 10.7644 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(116m 21s) 10.7644 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(116m 21s) 10.7644 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(116m 21s) 10.7644 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(116m 21s) 10.7644 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(116m 21s) 10.7644 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(116m 21s) 10.7644 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(116m 21s) 10.7644 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(116m 21s) 10.7644 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(116m 21s) 10.7644 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(116m 21s) 10.7644 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(116m 21s) 10.7644 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(116m 21s) 10.7644 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(116m 21s) 10.7644 cb4f4a35e890f / 59658 ✗ (69887)
+Non-Windowed results:
+(116m 21s) 10.7644 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(116m 21s) 10.7644 cb4f7127613a0 / 8350208 ✗ (103507)
+Non-Windowed results:
+(116m 21s) 10.7644 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(116m 21s) 10.7644 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(116m 21s) 10.7644 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(116m 21s) 10.7644 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(116m 21s) 10.7644 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(116m 21s) 10.7644 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(116m 21s) 10.7644 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(116m 21s) 10.7644 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(116m 21s) 10.7644 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(116m 21s) 10.7644 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(116m 21s) 10.7644 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(116m 21s) 10.7644 cb57d74988837 / 98864 ✓
+Non-Windowed results:
+(116m 21s) 10.7644 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(116m 21s) 10.7644 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(116m 21s) 10.7644 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(116m 21s) 10.7644 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(116m 21s) 10.7644 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(116m 21s) 10.7644 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(116m 21s) 10.7644 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(116m 21s) 10.7644 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(116m 21s) 10.7644 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(116m 21s) 10.7644 cb60ca9f3d465 / 4701148 ✗ (12707)
+Epoch: 5 Loss: 10.357484219270235
+5 16% (119m 34s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 13375 correct clickouts among 40096 sessions.
+Score: 0.26275269728542117
+40096 sessions to be computed
+Non-Windowed results:
+(142m 40s) 10.7116 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(142m 40s) 10.7116 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(142m 40s) 10.7116 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(142m 40s) 10.7116 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(142m 40s) 10.7116 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(142m 40s) 10.7116 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(142m 40s) 10.7116 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(142m 40s) 10.7116 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(142m 40s) 10.7116 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(142m 40s) 10.7116 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(142m 40s) 10.7116 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(142m 40s) 10.7116 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(142m 40s) 10.7116 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(142m 40s) 10.7116 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(142m 40s) 10.7116 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(142m 40s) 10.7116 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(142m 40s) 10.7116 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(142m 40s) 10.7116 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(142m 40s) 10.7116 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(142m 40s) 10.7116 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(142m 40s) 10.7116 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(142m 40s) 10.7116 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(142m 40s) 10.7116 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(142m 40s) 10.7116 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(142m 40s) 10.7116 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(142m 40s) 10.7116 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(142m 40s) 10.7116 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(142m 40s) 10.7116 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(142m 40s) 10.7116 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(142m 40s) 10.7116 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(142m 40s) 10.7116 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(142m 40s) 10.7116 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(142m 40s) 10.7116 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(142m 40s) 10.7116 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(142m 40s) 10.7116 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(142m 40s) 10.7116 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(142m 40s) 10.7116 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(142m 40s) 10.7116 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(142m 40s) 10.7116 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(142m 40s) 10.7116 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(142m 40s) 10.7116 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(142m 40s) 10.7116 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(142m 40s) 10.7116 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(142m 40s) 10.7116 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(142m 40s) 10.7116 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(142m 40s) 10.7116 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(142m 40s) 10.7116 cb57d74988837 / 98864 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(142m 40s) 10.7116 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(142m 40s) 10.7116 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(142m 40s) 10.7116 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(142m 40s) 10.7116 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(142m 40s) 10.7116 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(142m 40s) 10.7116 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(142m 40s) 10.7116 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(142m 40s) 10.7116 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(142m 40s) 10.7116 cb60ca9f3d465 / 4701148 ✗ (12707)
+Epoch: 6 Loss: 10.331278534574881
+6 20% (145m 53s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 13472 correct clickouts among 40096 sessions.
+Score: 0.26401753789238913
+40096 sessions to be computed
+Non-Windowed results:
+(169m 1s) 10.6648 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(169m 1s) 10.6648 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(169m 1s) 10.6648 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(169m 1s) 10.6648 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(169m 1s) 10.6648 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(169m 1s) 10.6648 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(169m 1s) 10.6648 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(169m 1s) 10.6648 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(169m 1s) 10.6648 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(169m 1s) 10.6648 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(169m 1s) 10.6648 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(169m 1s) 10.6648 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(169m 1s) 10.6648 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(169m 1s) 10.6648 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(169m 1s) 10.6648 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(169m 1s) 10.6648 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(169m 1s) 10.6648 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(169m 1s) 10.6648 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(169m 1s) 10.6648 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(169m 1s) 10.6648 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(169m 1s) 10.6648 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(169m 1s) 10.6648 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(169m 1s) 10.6648 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(169m 1s) 10.6648 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(169m 1s) 10.6648 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(169m 1s) 10.6648 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(169m 1s) 10.6648 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(169m 1s) 10.6648 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(169m 1s) 10.6648 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(169m 1s) 10.6648 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(169m 1s) 10.6648 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(169m 1s) 10.6648 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(169m 1s) 10.6648 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(169m 1s) 10.6648 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(169m 1s) 10.6648 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(169m 1s) 10.6648 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(169m 1s) 10.6648 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(169m 1s) 10.6648 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(169m 1s) 10.6648 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(169m 1s) 10.6648 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(169m 1s) 10.6648 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(169m 1s) 10.6648 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(169m 1s) 10.6648 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(169m 1s) 10.6648 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(169m 1s) 10.6648 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(169m 1s) 10.6648 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(169m 1s) 10.6648 cb57d74988837 / 98864 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(169m 1s) 10.6648 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(169m 1s) 10.6648 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(169m 1s) 10.6648 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(169m 1s) 10.6648 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(169m 1s) 10.6648 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(169m 1s) 10.6648 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(169m 1s) 10.6648 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(169m 1s) 10.6648 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(169m 1s) 10.6648 cb60ca9f3d465 / 4701148 ✗ (12707)
+Epoch: 7 Loss: 10.308790064581089
+7 23% (172m 15s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 13569 correct clickouts among 40096 sessions.
+Score: 0.26542907004913635
+40096 sessions to be computed
+Non-Windowed results:
+(195m 21s) 10.6165 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(195m 21s) 10.6165 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(195m 21s) 10.6165 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(195m 21s) 10.6165 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(195m 21s) 10.6165 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(195m 21s) 10.6165 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(195m 21s) 10.6165 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(195m 21s) 10.6165 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(195m 21s) 10.6165 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(195m 21s) 10.6165 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(195m 21s) 10.6165 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(195m 21s) 10.6165 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(195m 21s) 10.6165 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(195m 21s) 10.6165 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(195m 21s) 10.6165 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(195m 21s) 10.6165 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(195m 21s) 10.6165 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(195m 21s) 10.6165 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(195m 21s) 10.6165 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(195m 21s) 10.6165 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(195m 21s) 10.6165 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(195m 21s) 10.6165 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(195m 21s) 10.6165 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(195m 21s) 10.6165 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(195m 21s) 10.6165 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(195m 21s) 10.6165 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(195m 21s) 10.6165 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(195m 21s) 10.6165 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(195m 21s) 10.6165 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(195m 21s) 10.6165 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(195m 21s) 10.6165 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(195m 21s) 10.6165 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(195m 21s) 10.6165 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(195m 21s) 10.6165 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(195m 21s) 10.6165 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(195m 21s) 10.6165 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(195m 21s) 10.6165 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(195m 21s) 10.6165 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(195m 21s) 10.6165 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(195m 21s) 10.6165 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(195m 21s) 10.6165 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(195m 21s) 10.6165 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(195m 21s) 10.6165 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(195m 21s) 10.6165 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(195m 21s) 10.6165 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(195m 21s) 10.6165 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(195m 21s) 10.6165 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(195m 21s) 10.6165 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(195m 21s) 10.6165 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(195m 21s) 10.6165 cb56e9848d4a9 / 4106158 ✗ (7884058)
+Non-Windowed results:
+(195m 21s) 10.6165 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(195m 21s) 10.6165 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(195m 21s) 10.6165 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(195m 21s) 10.6165 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(195m 21s) 10.6165 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(195m 21s) 10.6165 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(195m 21s) 10.6165 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(195m 21s) 10.6165 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(195m 21s) 10.6165 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(195m 21s) 10.6165 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(195m 21s) 10.6165 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(195m 21s) 10.6165 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(195m 21s) 10.6165 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(195m 21s) 10.6165 cb60ca9f3d465 / 12707 ✓
+Epoch: 8 Loss: 10.286718902831447
+8 26% (198m 34s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 13723 correct clickouts among 40096 sessions.
+Score: 0.2664547114374512
+40096 sessions to be computed
+Non-Windowed results:
+(221m 40s) 10.5709 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(221m 40s) 10.5709 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(221m 40s) 10.5709 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(221m 40s) 10.5709 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(221m 40s) 10.5709 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(221m 40s) 10.5709 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(221m 40s) 10.5709 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(221m 40s) 10.5709 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(221m 40s) 10.5709 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(221m 40s) 10.5709 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(221m 40s) 10.5709 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(221m 40s) 10.5709 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(221m 40s) 10.5709 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(221m 40s) 10.5709 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(221m 40s) 10.5709 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(221m 40s) 10.5709 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(221m 40s) 10.5709 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(221m 40s) 10.5709 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(221m 40s) 10.5709 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(221m 40s) 10.5709 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(221m 40s) 10.5709 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(221m 40s) 10.5709 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(221m 40s) 10.5709 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(221m 40s) 10.5709 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(221m 40s) 10.5709 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(221m 40s) 10.5709 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(221m 40s) 10.5709 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(221m 40s) 10.5709 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(221m 40s) 10.5709 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(221m 40s) 10.5709 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(221m 40s) 10.5709 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(221m 40s) 10.5709 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(221m 40s) 10.5709 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(221m 40s) 10.5709 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(221m 40s) 10.5709 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(221m 40s) 10.5709 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(221m 40s) 10.5709 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(221m 40s) 10.5709 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(221m 40s) 10.5709 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(221m 40s) 10.5709 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(221m 40s) 10.5709 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(221m 40s) 10.5709 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(221m 40s) 10.5709 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(221m 40s) 10.5709 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(221m 40s) 10.5709 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(221m 40s) 10.5709 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(221m 40s) 10.5709 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(221m 40s) 10.5709 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(221m 40s) 10.5709 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(221m 40s) 10.5709 cb56e9848d4a9 / 4106158 ✗ (7884058)
+Non-Windowed results:
+(221m 40s) 10.5709 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(221m 40s) 10.5709 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(221m 40s) 10.5709 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(221m 40s) 10.5709 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(221m 40s) 10.5709 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(221m 40s) 10.5709 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(221m 40s) 10.5709 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(221m 40s) 10.5709 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(221m 40s) 10.5709 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(221m 40s) 10.5709 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(221m 40s) 10.5709 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(221m 40s) 10.5709 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(221m 40s) 10.5709 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(221m 40s) 10.5709 cb60ca9f3d465 / 12707 ✓
+Epoch: 9 Loss: 10.263630744465237
+9 30% (224m 52s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 13871 correct clickouts among 40096 sessions.
+Score: 0.26754127324525645
+40096 sessions to be computed
+Non-Windowed results:
+(248m 1s) 10.5340 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(248m 1s) 10.5340 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(248m 1s) 10.5340 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(248m 1s) 10.5340 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(248m 1s) 10.5340 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(248m 1s) 10.5340 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(248m 1s) 10.5340 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(248m 1s) 10.5340 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(248m 1s) 10.5340 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(248m 1s) 10.5340 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(248m 1s) 10.5340 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(248m 1s) 10.5340 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(248m 1s) 10.5340 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(248m 1s) 10.5340 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(248m 1s) 10.5340 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(248m 1s) 10.5340 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(248m 1s) 10.5340 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(248m 1s) 10.5340 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(248m 1s) 10.5340 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(248m 1s) 10.5340 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(248m 1s) 10.5340 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(248m 1s) 10.5340 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(248m 1s) 10.5340 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(248m 1s) 10.5340 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(248m 1s) 10.5340 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(248m 1s) 10.5340 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(248m 1s) 10.5340 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(248m 1s) 10.5340 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(248m 1s) 10.5340 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(248m 1s) 10.5340 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(248m 1s) 10.5340 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(248m 1s) 10.5340 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(248m 1s) 10.5340 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(248m 1s) 10.5340 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(248m 1s) 10.5340 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(248m 1s) 10.5340 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(248m 1s) 10.5340 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(248m 1s) 10.5340 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(248m 1s) 10.5340 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(248m 1s) 10.5340 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(248m 1s) 10.5340 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(248m 1s) 10.5340 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(248m 1s) 10.5340 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(248m 1s) 10.5340 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(248m 1s) 10.5340 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(248m 1s) 10.5340 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(248m 1s) 10.5340 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(248m 1s) 10.5340 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(248m 1s) 10.5340 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(248m 1s) 10.5340 cb56e9848d4a9 / 4106158 ✗ (7884058)
+Non-Windowed results:
+(248m 1s) 10.5340 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(248m 1s) 10.5340 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(248m 1s) 10.5340 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(248m 1s) 10.5340 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(248m 1s) 10.5340 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(248m 1s) 10.5340 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(248m 1s) 10.5340 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(248m 1s) 10.5340 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(248m 1s) 10.5340 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(248m 1s) 10.5340 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(248m 1s) 10.5340 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(248m 1s) 10.5340 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(248m 1s) 10.5340 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(248m 1s) 10.5340 cb60ca9f3d465 / 12707 ✓
+Epoch: 10 Loss: 10.247882948051142
+10 33% (251m 9s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 13944 correct clickouts among 40096 sessions.
+Score: 0.2669503770097339
+40096 sessions to be computed
+Non-Windowed results:
+(274m 32s) 10.4859 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(274m 32s) 10.4859 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(274m 32s) 10.4859 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(274m 32s) 10.4859 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(274m 32s) 10.4859 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(274m 32s) 10.4859 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(274m 32s) 10.4859 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(274m 32s) 10.4859 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(274m 32s) 10.4859 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(274m 32s) 10.4859 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(274m 32s) 10.4859 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(274m 32s) 10.4859 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(274m 32s) 10.4859 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(274m 32s) 10.4859 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(274m 32s) 10.4859 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(274m 32s) 10.4859 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(274m 32s) 10.4859 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(274m 32s) 10.4859 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(274m 32s) 10.4859 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(274m 32s) 10.4859 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(274m 32s) 10.4859 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(274m 32s) 10.4859 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(274m 32s) 10.4859 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(274m 32s) 10.4859 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(274m 32s) 10.4859 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(274m 32s) 10.4859 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(274m 32s) 10.4859 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(274m 32s) 10.4859 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(274m 32s) 10.4859 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(274m 32s) 10.4859 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(274m 32s) 10.4859 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(274m 32s) 10.4859 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(274m 32s) 10.4859 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(274m 32s) 10.4859 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(274m 32s) 10.4859 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(274m 32s) 10.4859 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(274m 32s) 10.4859 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(274m 32s) 10.4859 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(274m 32s) 10.4859 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(274m 32s) 10.4859 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(274m 32s) 10.4859 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(274m 32s) 10.4859 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(274m 32s) 10.4859 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(274m 32s) 10.4859 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(274m 32s) 10.4859 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(274m 32s) 10.4859 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(274m 32s) 10.4859 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(274m 32s) 10.4859 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(274m 32s) 10.4859 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(274m 32s) 10.4859 cb56e9848d4a9 / 4106158 ✗ (7884058)
+Non-Windowed results:
+(274m 32s) 10.4859 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(274m 32s) 10.4859 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(274m 32s) 10.4859 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(274m 32s) 10.4859 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(274m 32s) 10.4859 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(274m 32s) 10.4859 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(274m 32s) 10.4859 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(274m 32s) 10.4859 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(274m 32s) 10.4859 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(274m 32s) 10.4859 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(274m 32s) 10.4859 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(274m 32s) 10.4859 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(274m 32s) 10.4859 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(274m 32s) 10.4859 cb60ca9f3d465 / 12707 ✓
+Epoch: 11 Loss: 10.218796355574016
+11 36% (277m 46s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14190 correct clickouts among 40096 sessions.
+Score: 0.26800964402616473
+40096 sessions to be computed
+Non-Windowed results:
+(300m 55s) 10.4494 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(300m 55s) 10.4494 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(300m 55s) 10.4494 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(300m 55s) 10.4494 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(300m 55s) 10.4494 cb37bf8eb9041 / 1570313 ✗ (7982436)
+Non-Windowed results:
+(300m 55s) 10.4494 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(300m 55s) 10.4494 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(300m 55s) 10.4494 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(300m 55s) 10.4494 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(300m 55s) 10.4494 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(300m 55s) 10.4494 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(300m 55s) 10.4494 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(300m 55s) 10.4494 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(300m 55s) 10.4494 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(300m 55s) 10.4494 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(300m 55s) 10.4494 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(300m 55s) 10.4494 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(300m 55s) 10.4494 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(300m 55s) 10.4494 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(300m 55s) 10.4494 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(300m 55s) 10.4494 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(300m 55s) 10.4494 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(300m 55s) 10.4494 cb44feff05f92 / 2847298 ✗ (3976206)
+Non-Windowed results:
+(300m 55s) 10.4494 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(300m 55s) 10.4494 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(300m 55s) 10.4494 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(300m 55s) 10.4494 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(300m 55s) 10.4494 cb4c36a8e9679 / 51454 ✗ (2195582)
+Non-Windowed results:
+(300m 55s) 10.4494 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(300m 55s) 10.4494 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(300m 55s) 10.4494 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(300m 55s) 10.4494 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(300m 55s) 10.4494 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(300m 55s) 10.4494 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(300m 55s) 10.4494 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(300m 55s) 10.4494 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(300m 55s) 10.4494 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(300m 55s) 10.4494 cb51c263d6db7 / 104338 ✗ (340316)
+Non-Windowed results:
+(300m 55s) 10.4494 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(300m 55s) 10.4494 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(300m 55s) 10.4494 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(300m 55s) 10.4494 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(300m 55s) 10.4494 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(300m 55s) 10.4494 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(300m 55s) 10.4494 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(300m 55s) 10.4494 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(300m 55s) 10.4494 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(300m 55s) 10.4494 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(300m 55s) 10.4494 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(300m 55s) 10.4494 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(300m 55s) 10.4494 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(300m 55s) 10.4494 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(300m 55s) 10.4494 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(300m 55s) 10.4494 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(300m 55s) 10.4494 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(300m 55s) 10.4494 cb60ca9f3d465 / 12707 ✓
+Epoch: 12 Loss: 10.200559500399724
+12 40% (304m 7s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14353 correct clickouts among 40096 sessions.
+Score: 0.26866027818522464
+40096 sessions to be computed
+Non-Windowed results:
+(327m 38s) 10.4166 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(327m 38s) 10.4166 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(327m 38s) 10.4166 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(327m 38s) 10.4166 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(327m 38s) 10.4166 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(327m 38s) 10.4166 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(327m 38s) 10.4166 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(327m 38s) 10.4166 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(327m 38s) 10.4166 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(327m 38s) 10.4166 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(327m 38s) 10.4166 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(327m 38s) 10.4166 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(327m 38s) 10.4166 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(327m 38s) 10.4166 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(327m 38s) 10.4166 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(327m 38s) 10.4166 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(327m 38s) 10.4166 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(327m 38s) 10.4166 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(327m 38s) 10.4166 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(327m 38s) 10.4166 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(327m 38s) 10.4166 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(327m 38s) 10.4166 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(327m 38s) 10.4166 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(327m 38s) 10.4166 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(327m 38s) 10.4166 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(327m 38s) 10.4166 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(327m 38s) 10.4166 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(327m 38s) 10.4166 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(327m 38s) 10.4166 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(327m 38s) 10.4166 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(327m 38s) 10.4166 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(327m 38s) 10.4166 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(327m 38s) 10.4166 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(327m 38s) 10.4166 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(327m 38s) 10.4166 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(327m 38s) 10.4166 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(327m 38s) 10.4166 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(327m 38s) 10.4166 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(327m 38s) 10.4166 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(327m 38s) 10.4166 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(327m 38s) 10.4166 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(327m 38s) 10.4166 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(327m 38s) 10.4166 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(327m 38s) 10.4166 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(327m 38s) 10.4166 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(327m 38s) 10.4166 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(327m 38s) 10.4166 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(327m 38s) 10.4166 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(327m 38s) 10.4166 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(327m 38s) 10.4166 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(327m 38s) 10.4166 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(327m 38s) 10.4166 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(327m 38s) 10.4166 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(327m 38s) 10.4166 cb60ca9f3d465 / 12707 ✓
+Epoch: 13 Loss: 10.181989190298752
+13 43% (331m 0s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14567 correct clickouts among 40096 sessions.
+Score: 0.26879296392191343
+40096 sessions to be computed
+Non-Windowed results:
+(354m 55s) 10.3741 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(354m 55s) 10.3741 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(354m 55s) 10.3741 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(354m 55s) 10.3741 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(354m 55s) 10.3741 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(354m 55s) 10.3741 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(354m 55s) 10.3741 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(354m 55s) 10.3741 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(354m 55s) 10.3741 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(354m 55s) 10.3741 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(354m 55s) 10.3741 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(354m 55s) 10.3741 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(354m 55s) 10.3741 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(354m 55s) 10.3741 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(354m 55s) 10.3741 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(354m 55s) 10.3741 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(354m 55s) 10.3741 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(354m 55s) 10.3741 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(354m 55s) 10.3741 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(354m 55s) 10.3741 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(354m 55s) 10.3741 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(354m 55s) 10.3741 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(354m 55s) 10.3741 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(354m 55s) 10.3741 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(354m 55s) 10.3741 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(354m 55s) 10.3741 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(354m 55s) 10.3741 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(354m 55s) 10.3741 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(354m 55s) 10.3741 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(354m 55s) 10.3741 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(354m 55s) 10.3741 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(354m 55s) 10.3741 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(354m 55s) 10.3741 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(354m 55s) 10.3741 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(354m 55s) 10.3741 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(354m 55s) 10.3741 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(354m 55s) 10.3741 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(354m 55s) 10.3741 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(354m 55s) 10.3741 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(354m 55s) 10.3741 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(354m 55s) 10.3741 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(354m 55s) 10.3741 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(354m 55s) 10.3741 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(354m 55s) 10.3741 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(354m 55s) 10.3741 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(354m 55s) 10.3741 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(354m 55s) 10.3741 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(354m 55s) 10.3741 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(354m 55s) 10.3741 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(354m 55s) 10.3741 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(354m 55s) 10.3741 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(354m 55s) 10.3741 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(354m 55s) 10.3741 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(354m 55s) 10.3741 cb60ca9f3d465 / 12707 ✓
+Epoch: 14 Loss: 10.163357359451574
+14 46% (358m 18s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14789 correct clickouts among 40096 sessions.
+Score: 0.2684562436517265
+40096 sessions to be computed
+Non-Windowed results:
+(382m 9s) 10.3363 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(382m 9s) 10.3363 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(382m 9s) 10.3363 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(382m 9s) 10.3363 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(382m 9s) 10.3363 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(382m 9s) 10.3363 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(382m 9s) 10.3363 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(382m 9s) 10.3363 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(382m 9s) 10.3363 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(382m 9s) 10.3363 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(382m 9s) 10.3363 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(382m 9s) 10.3363 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(382m 9s) 10.3363 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(382m 9s) 10.3363 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(382m 9s) 10.3363 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(382m 9s) 10.3363 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(382m 9s) 10.3363 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(382m 9s) 10.3363 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(382m 9s) 10.3363 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(382m 9s) 10.3363 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(382m 9s) 10.3363 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(382m 9s) 10.3363 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(382m 9s) 10.3363 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(382m 9s) 10.3363 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(382m 9s) 10.3363 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(382m 9s) 10.3363 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(382m 9s) 10.3363 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(382m 9s) 10.3363 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(382m 9s) 10.3363 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(382m 9s) 10.3363 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(382m 9s) 10.3363 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(382m 9s) 10.3363 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(382m 9s) 10.3363 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(382m 9s) 10.3363 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(382m 9s) 10.3363 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(382m 9s) 10.3363 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(382m 9s) 10.3363 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(382m 9s) 10.3363 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(382m 9s) 10.3363 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(382m 9s) 10.3363 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(382m 9s) 10.3363 cb56e9848d4a9 / 3438678 ✗ (7884058)
+Non-Windowed results:
+(382m 9s) 10.3363 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(382m 9s) 10.3363 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(382m 9s) 10.3363 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(382m 9s) 10.3363 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(382m 9s) 10.3363 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(382m 9s) 10.3363 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(382m 9s) 10.3363 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(382m 9s) 10.3363 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(382m 9s) 10.3363 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(382m 9s) 10.3363 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(382m 9s) 10.3363 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(382m 9s) 10.3363 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(382m 9s) 10.3363 cb60ca9f3d465 / 12707 ✓
+Epoch: 15 Loss: 10.14672694544933
+15 50% (385m 30s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15073 correct clickouts among 40096 sessions.
+Score: 0.26911830037493084
+40096 sessions to be computed
+Non-Windowed results:
+(409m 21s) 10.3589 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(409m 21s) 10.3589 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(409m 21s) 10.3589 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(409m 21s) 10.3589 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(409m 21s) 10.3589 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(409m 21s) 10.3589 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(409m 21s) 10.3589 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(409m 21s) 10.3589 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(409m 21s) 10.3589 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(409m 21s) 10.3589 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(409m 21s) 10.3589 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(409m 21s) 10.3589 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(409m 21s) 10.3589 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(409m 21s) 10.3589 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(409m 21s) 10.3589 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(409m 21s) 10.3589 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(409m 21s) 10.3589 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(409m 21s) 10.3589 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(409m 21s) 10.3589 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(409m 21s) 10.3589 cb44636720edc / 33498 ✗ (2595938)
+Non-Windowed results:
+(409m 21s) 10.3589 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(409m 21s) 10.3589 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(409m 21s) 10.3589 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(409m 21s) 10.3589 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(409m 21s) 10.3589 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(409m 21s) 10.3589 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(409m 21s) 10.3589 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(409m 21s) 10.3589 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(409m 21s) 10.3589 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(409m 21s) 10.3589 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(409m 21s) 10.3589 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(409m 21s) 10.3589 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(409m 21s) 10.3589 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(409m 21s) 10.3589 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(409m 21s) 10.3589 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(409m 21s) 10.3589 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(409m 21s) 10.3589 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(409m 21s) 10.3589 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(409m 21s) 10.3589 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(409m 21s) 10.3589 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(409m 21s) 10.3589 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(409m 21s) 10.3589 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(409m 21s) 10.3589 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(409m 21s) 10.3589 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(409m 21s) 10.3589 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(409m 21s) 10.3589 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(409m 21s) 10.3589 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(409m 21s) 10.3589 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(409m 21s) 10.3589 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(409m 21s) 10.3589 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(409m 21s) 10.3589 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(409m 21s) 10.3589 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(409m 21s) 10.3589 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(409m 21s) 10.3589 cb60ca9f3d465 / 12707 ✓
+Epoch: 16 Loss: 10.147044937608724
+16 53% (412m 43s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15010 correct clickouts among 40096 sessions.
+Score: 0.268751430480539
+40096 sessions to be computed
+Non-Windowed results:
+(436m 37s) 10.3278 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(436m 37s) 10.3278 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(436m 37s) 10.3278 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(436m 37s) 10.3278 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(436m 37s) 10.3278 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(436m 37s) 10.3278 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(436m 37s) 10.3278 cb394ac18a88f / 1113595 ✗ (6658880)
+Non-Windowed results:
+(436m 37s) 10.3278 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(436m 37s) 10.3278 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(436m 37s) 10.3278 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(436m 37s) 10.3278 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(436m 37s) 10.3278 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(436m 37s) 10.3278 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(436m 37s) 10.3278 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(436m 37s) 10.3278 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(436m 37s) 10.3278 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(436m 37s) 10.3278 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(436m 37s) 10.3278 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(436m 37s) 10.3278 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(436m 37s) 10.3278 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(436m 37s) 10.3278 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(436m 37s) 10.3278 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(436m 37s) 10.3278 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(436m 37s) 10.3278 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(436m 37s) 10.3278 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(436m 37s) 10.3278 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(436m 37s) 10.3278 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(436m 37s) 10.3278 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(436m 37s) 10.3278 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(436m 37s) 10.3278 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(436m 37s) 10.3278 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(436m 37s) 10.3278 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(436m 37s) 10.3278 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(436m 37s) 10.3278 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(436m 37s) 10.3278 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(436m 37s) 10.3278 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(436m 37s) 10.3278 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(436m 37s) 10.3278 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(436m 37s) 10.3278 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(436m 37s) 10.3278 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(436m 37s) 10.3278 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(436m 37s) 10.3278 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(436m 37s) 10.3278 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(436m 37s) 10.3278 cb57b4ea53d0b / 2617715 ✗ (2552508)
+Non-Windowed results:
+(436m 37s) 10.3278 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(436m 37s) 10.3278 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(436m 37s) 10.3278 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(436m 37s) 10.3278 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(436m 37s) 10.3278 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(436m 37s) 10.3278 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(436m 37s) 10.3278 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(436m 37s) 10.3278 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(436m 37s) 10.3278 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(436m 37s) 10.3278 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(436m 37s) 10.3278 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(436m 37s) 10.3278 cb60ca9f3d465 / 12707 ✓
+Epoch: 17 Loss: 10.139555224017533
+17 56% (439m 59s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15095 correct clickouts among 40096 sessions.
+Score: 0.26868741260782236
+40096 sessions to be computed
+Non-Windowed results:
+(463m 14s) 10.2779 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(463m 14s) 10.2779 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(463m 14s) 10.2779 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(463m 14s) 10.2779 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(463m 14s) 10.2779 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(463m 14s) 10.2779 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(463m 14s) 10.2779 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(463m 14s) 10.2779 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(463m 14s) 10.2779 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(463m 14s) 10.2779 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(463m 14s) 10.2779 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(463m 14s) 10.2779 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(463m 14s) 10.2779 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(463m 14s) 10.2779 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(463m 14s) 10.2779 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(463m 14s) 10.2779 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(463m 14s) 10.2779 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(463m 14s) 10.2779 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(463m 14s) 10.2779 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(463m 14s) 10.2779 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(463m 14s) 10.2779 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(463m 14s) 10.2779 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(463m 14s) 10.2779 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(463m 14s) 10.2779 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(463m 14s) 10.2779 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(463m 14s) 10.2779 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(463m 14s) 10.2779 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(463m 14s) 10.2779 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(463m 14s) 10.2779 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(463m 14s) 10.2779 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(463m 14s) 10.2779 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(463m 14s) 10.2779 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(463m 14s) 10.2779 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(463m 14s) 10.2779 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(463m 14s) 10.2779 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(463m 14s) 10.2779 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(463m 14s) 10.2779 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(463m 14s) 10.2779 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(463m 14s) 10.2779 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(463m 14s) 10.2779 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(463m 14s) 10.2779 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(463m 14s) 10.2779 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(463m 14s) 10.2779 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(463m 14s) 10.2779 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(463m 14s) 10.2779 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(463m 14s) 10.2779 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(463m 14s) 10.2779 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(463m 14s) 10.2779 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(463m 14s) 10.2779 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(463m 14s) 10.2779 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(463m 14s) 10.2779 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(463m 14s) 10.2779 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(463m 14s) 10.2779 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(463m 14s) 10.2779 cb60ca9f3d465 / 12707 ✓
+Epoch: 18 Loss: 10.137792442668845
+18 60% (466m 32s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15184 correct clickouts among 40096 sessions.
+Score: 0.26836755072588475
+40096 sessions to be computed
+Non-Windowed results:
+(489m 42s) 10.2441 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(489m 42s) 10.2441 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(489m 42s) 10.2441 cb3679f58b287 / 106978 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(489m 42s) 10.2441 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(489m 42s) 10.2441 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(489m 42s) 10.2441 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(489m 42s) 10.2441 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(489m 42s) 10.2441 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(489m 42s) 10.2441 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(489m 42s) 10.2441 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(489m 42s) 10.2441 cb4133f6a7cd2 / 1504011 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(489m 42s) 10.2441 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(489m 42s) 10.2441 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(489m 42s) 10.2441 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(489m 42s) 10.2441 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(489m 42s) 10.2441 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(489m 42s) 10.2441 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(489m 42s) 10.2441 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(489m 42s) 10.2441 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(489m 42s) 10.2441 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(489m 42s) 10.2441 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(489m 42s) 10.2441 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(489m 42s) 10.2441 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(489m 42s) 10.2441 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(489m 42s) 10.2441 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(489m 42s) 10.2441 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(489m 42s) 10.2441 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(489m 42s) 10.2441 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(489m 42s) 10.2441 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(489m 42s) 10.2441 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(489m 42s) 10.2441 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(489m 42s) 10.2441 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(489m 42s) 10.2441 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(489m 42s) 10.2441 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(489m 42s) 10.2441 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(489m 42s) 10.2441 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(489m 42s) 10.2441 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(489m 42s) 10.2441 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(489m 42s) 10.2441 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(489m 42s) 10.2441 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(489m 42s) 10.2441 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(489m 42s) 10.2441 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(489m 42s) 10.2441 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(489m 42s) 10.2441 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(489m 42s) 10.2441 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(489m 42s) 10.2441 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(489m 42s) 10.2441 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(489m 42s) 10.2441 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(489m 42s) 10.2441 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(489m 42s) 10.2441 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(489m 42s) 10.2441 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(489m 42s) 10.2441 cb60ca9f3d465 / 12707 ✓
+Epoch: 19 Loss: 10.116660921077013
+19 63% (492m 54s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15614 correct clickouts among 40096 sessions.
+Score: 0.26843607594856805
+40096 sessions to be computed
+Non-Windowed results:
+(515m 59s) 10.2849 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(515m 59s) 10.2849 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(515m 59s) 10.2849 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(515m 59s) 10.2849 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(515m 59s) 10.2849 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(515m 59s) 10.2849 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(515m 59s) 10.2849 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(515m 59s) 10.2849 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(515m 59s) 10.2849 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(515m 59s) 10.2849 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(515m 59s) 10.2849 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(515m 59s) 10.2849 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(515m 59s) 10.2849 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(515m 59s) 10.2849 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(515m 59s) 10.2849 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(515m 59s) 10.2849 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(515m 59s) 10.2849 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(515m 59s) 10.2849 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(515m 59s) 10.2849 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(515m 59s) 10.2849 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(515m 59s) 10.2849 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(515m 59s) 10.2849 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(515m 59s) 10.2849 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(515m 59s) 10.2849 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(515m 59s) 10.2849 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(515m 59s) 10.2849 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(515m 59s) 10.2849 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(515m 59s) 10.2849 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(515m 59s) 10.2849 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(515m 59s) 10.2849 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(515m 59s) 10.2849 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(515m 59s) 10.2849 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(515m 59s) 10.2849 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(515m 59s) 10.2849 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(515m 59s) 10.2849 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(515m 59s) 10.2849 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(515m 59s) 10.2849 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(515m 59s) 10.2849 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(515m 59s) 10.2849 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(515m 59s) 10.2849 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(515m 59s) 10.2849 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(515m 59s) 10.2849 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(515m 59s) 10.2849 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(515m 59s) 10.2849 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(515m 59s) 10.2849 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(515m 59s) 10.2849 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(515m 59s) 10.2849 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(515m 59s) 10.2849 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(515m 59s) 10.2849 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(515m 59s) 10.2849 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(515m 59s) 10.2849 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(515m 59s) 10.2849 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(515m 59s) 10.2849 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(515m 59s) 10.2849 cb60ca9f3d465 / 12707 ✓
+Epoch: 20 Loss: 10.120770838768694
+20 66% (519m 12s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15453 correct clickouts among 40096 sessions.
+Score: 0.268520897962563
+40096 sessions to be computed
+Non-Windowed results:
+(542m 21s) 10.2563 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(542m 21s) 10.2563 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(542m 21s) 10.2563 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(542m 21s) 10.2563 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(542m 21s) 10.2563 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(542m 21s) 10.2563 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(542m 21s) 10.2563 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(542m 21s) 10.2563 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(542m 21s) 10.2563 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(542m 21s) 10.2563 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(542m 21s) 10.2563 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(542m 21s) 10.2563 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(542m 21s) 10.2563 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(542m 21s) 10.2563 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(542m 21s) 10.2563 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(542m 21s) 10.2563 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(542m 21s) 10.2563 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(542m 21s) 10.2563 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(542m 21s) 10.2563 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(542m 21s) 10.2563 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(542m 21s) 10.2563 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(542m 21s) 10.2563 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(542m 21s) 10.2563 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(542m 21s) 10.2563 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(542m 21s) 10.2563 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(542m 21s) 10.2563 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(542m 21s) 10.2563 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(542m 21s) 10.2563 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(542m 21s) 10.2563 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(542m 21s) 10.2563 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(542m 21s) 10.2563 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(542m 21s) 10.2563 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(542m 21s) 10.2563 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(542m 21s) 10.2563 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(542m 21s) 10.2563 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(542m 21s) 10.2563 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(542m 21s) 10.2563 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(542m 21s) 10.2563 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(542m 21s) 10.2563 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(542m 21s) 10.2563 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(542m 21s) 10.2563 cb56e9848d4a9 / 3438678 ✗ (7884058)
+Non-Windowed results:
+(542m 21s) 10.2563 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(542m 21s) 10.2563 cb57b4ea53d0b / 2617715 ✗ (2552508)
+Non-Windowed results:
+(542m 21s) 10.2563 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(542m 21s) 10.2563 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(542m 21s) 10.2563 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(542m 21s) 10.2563 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(542m 21s) 10.2563 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(542m 21s) 10.2563 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(542m 21s) 10.2563 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(542m 21s) 10.2563 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(542m 21s) 10.2563 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(542m 21s) 10.2563 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(542m 21s) 10.2563 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(542m 21s) 10.2563 cb60ca9f3d465 / 12707 ✓
+Epoch: 21 Loss: 10.1089638872139
+21 70% (545m 51s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15712 correct clickouts among 40096 sessions.
+Score: 0.26889867186181665
+40096 sessions to be computed
+Non-Windowed results:
+(569m 58s) 10.3217 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(569m 58s) 10.3217 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(569m 58s) 10.3217 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(569m 58s) 10.3217 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(569m 58s) 10.3217 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(569m 58s) 10.3217 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(569m 58s) 10.3217 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(569m 58s) 10.3217 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(569m 58s) 10.3217 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(569m 58s) 10.3217 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(569m 58s) 10.3217 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(569m 58s) 10.3217 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(569m 58s) 10.3217 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(569m 58s) 10.3217 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(569m 58s) 10.3217 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(569m 58s) 10.3217 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(569m 58s) 10.3217 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(569m 58s) 10.3217 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(569m 58s) 10.3217 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(569m 58s) 10.3217 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(569m 58s) 10.3217 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(569m 58s) 10.3217 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(569m 58s) 10.3217 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(569m 58s) 10.3217 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(569m 58s) 10.3217 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(569m 58s) 10.3217 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(569m 58s) 10.3217 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(569m 58s) 10.3217 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(569m 58s) 10.3217 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(569m 58s) 10.3217 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(569m 58s) 10.3217 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(569m 58s) 10.3217 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(569m 58s) 10.3217 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(569m 58s) 10.3217 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(569m 58s) 10.3217 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(569m 58s) 10.3217 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(569m 58s) 10.3217 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(569m 58s) 10.3217 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(569m 58s) 10.3217 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(569m 58s) 10.3217 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(569m 58s) 10.3217 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(569m 58s) 10.3217 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(569m 58s) 10.3217 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(569m 58s) 10.3217 cb57b4ea53d0b / 2617715 ✗ (2552508)
+Non-Windowed results:
+(569m 58s) 10.3217 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(569m 58s) 10.3217 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(569m 58s) 10.3217 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(569m 58s) 10.3217 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(569m 58s) 10.3217 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(569m 58s) 10.3217 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(569m 58s) 10.3217 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(569m 58s) 10.3217 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(569m 58s) 10.3217 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(569m 58s) 10.3217 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(569m 58s) 10.3217 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(569m 58s) 10.3217 cb60ca9f3d465 / 12707 ✓
+Epoch: 22 Loss: 10.12417120983005
+22 73% (573m 28s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15502 correct clickouts among 40096 sessions.
+Score: 0.2689152467224221
+40096 sessions to be computed
+Non-Windowed results:
+(597m 54s) 10.2172 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(597m 54s) 10.2172 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(597m 54s) 10.2172 cb3679f58b287 / 106978 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(597m 54s) 10.2172 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(597m 54s) 10.2172 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(597m 54s) 10.2172 cb394ac18a88f / 6658880 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(597m 54s) 10.2172 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(597m 54s) 10.2172 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(597m 54s) 10.2172 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(597m 54s) 10.2172 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(597m 54s) 10.2172 cb4133f6a7cd2 / 1504011 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(597m 54s) 10.2172 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(597m 54s) 10.2172 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(597m 54s) 10.2172 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(597m 54s) 10.2172 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(597m 54s) 10.2172 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(597m 54s) 10.2172 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(597m 54s) 10.2172 cb44636720edc / 33584 ✗ (2595938)
+Non-Windowed results:
+(597m 54s) 10.2172 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(597m 54s) 10.2172 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(597m 54s) 10.2172 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(597m 54s) 10.2172 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(597m 54s) 10.2172 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(597m 54s) 10.2172 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(597m 54s) 10.2172 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(597m 54s) 10.2172 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(597m 54s) 10.2172 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(597m 54s) 10.2172 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(597m 54s) 10.2172 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(597m 54s) 10.2172 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(597m 54s) 10.2172 cb4f481e4f46e / 115941 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(597m 54s) 10.2172 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(597m 54s) 10.2172 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(597m 54s) 10.2172 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(597m 54s) 10.2172 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(597m 54s) 10.2172 cb5496bf956dc / 128811 ✗ (1116908)
+Non-Windowed results:
+(597m 54s) 10.2172 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(597m 54s) 10.2172 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(597m 54s) 10.2172 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(597m 54s) 10.2172 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(597m 54s) 10.2172 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(597m 54s) 10.2172 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(597m 54s) 10.2172 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(597m 54s) 10.2172 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(597m 54s) 10.2172 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(597m 54s) 10.2172 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(597m 54s) 10.2172 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(597m 54s) 10.2172 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(597m 54s) 10.2172 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(597m 54s) 10.2172 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(597m 54s) 10.2172 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(597m 54s) 10.2172 cb60ca9f3d465 / 12707 ✓
+Epoch: 23 Loss: 10.097335200450559
+23 76% (601m 20s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15717 correct clickouts among 40096 sessions.
+Score: 0.26975499078529475
+40096 sessions to be computed
+Non-Windowed results:
+(625m 31s) 10.3432 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(625m 31s) 10.3432 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(625m 31s) 10.3432 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(625m 31s) 10.3432 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(625m 31s) 10.3432 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(625m 31s) 10.3432 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(625m 31s) 10.3432 cb394ac18a88f / 1113595 ✗ (6658880)
+Non-Windowed results:
+(625m 31s) 10.3432 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(625m 31s) 10.3432 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(625m 31s) 10.3432 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(625m 31s) 10.3432 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(625m 31s) 10.3432 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(625m 31s) 10.3432 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(625m 31s) 10.3432 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(625m 31s) 10.3432 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(625m 31s) 10.3432 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(625m 31s) 10.3432 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(625m 31s) 10.3432 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(625m 31s) 10.3432 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(625m 31s) 10.3432 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(625m 31s) 10.3432 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(625m 31s) 10.3432 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(625m 31s) 10.3432 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(625m 31s) 10.3432 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(625m 31s) 10.3432 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(625m 31s) 10.3432 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(625m 31s) 10.3432 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(625m 31s) 10.3432 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(625m 31s) 10.3432 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(625m 31s) 10.3432 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(625m 31s) 10.3432 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(625m 31s) 10.3432 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(625m 31s) 10.3432 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(625m 31s) 10.3432 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(625m 31s) 10.3432 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(625m 31s) 10.3432 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(625m 31s) 10.3432 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(625m 31s) 10.3432 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(625m 31s) 10.3432 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(625m 31s) 10.3432 cb5496bf956dc / 1890275 ✗ (1116908)
+Non-Windowed results:
+(625m 31s) 10.3432 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(625m 31s) 10.3432 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(625m 31s) 10.3432 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(625m 31s) 10.3432 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(625m 31s) 10.3432 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(625m 31s) 10.3432 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(625m 31s) 10.3432 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(625m 31s) 10.3432 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(625m 31s) 10.3432 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(625m 31s) 10.3432 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(625m 31s) 10.3432 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(625m 31s) 10.3432 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(625m 31s) 10.3432 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(625m 31s) 10.3432 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(625m 31s) 10.3432 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(625m 31s) 10.3432 cb60ca9f3d465 / 12707 ✓
+Epoch: 24 Loss: 10.18734786192703
+24 80% (629m 0s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14670 correct clickouts among 40096 sessions.
+Score: 0.2678904004416518
+40096 sessions to be computed
+Non-Windowed results:
+(651m 1s) 10.3176 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(651m 1s) 10.3176 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(651m 1s) 10.3176 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(651m 1s) 10.3176 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(651m 1s) 10.3176 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(651m 1s) 10.3176 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(651m 1s) 10.3176 cb394ac18a88f / 1113595 ✗ (6658880)
+Non-Windowed results:
+(651m 1s) 10.3176 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(651m 1s) 10.3176 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(651m 1s) 10.3176 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(651m 1s) 10.3176 cb40b1aa6cccc / 147224 ✗ (3399566)
+Non-Windowed results:
+(651m 1s) 10.3176 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(651m 1s) 10.3176 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(651m 1s) 10.3176 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(651m 1s) 10.3176 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(651m 1s) 10.3176 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(651m 1s) 10.3176 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(651m 1s) 10.3176 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(651m 1s) 10.3176 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(651m 1s) 10.3176 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(651m 1s) 10.3176 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(651m 1s) 10.3176 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(651m 1s) 10.3176 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(651m 1s) 10.3176 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(651m 1s) 10.3176 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(651m 1s) 10.3176 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(651m 1s) 10.3176 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(651m 1s) 10.3176 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(651m 1s) 10.3176 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(651m 1s) 10.3176 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(651m 1s) 10.3176 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(651m 1s) 10.3176 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(651m 1s) 10.3176 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(651m 1s) 10.3176 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(651m 1s) 10.3176 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(651m 1s) 10.3176 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(651m 1s) 10.3176 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(651m 1s) 10.3176 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(651m 1s) 10.3176 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(651m 1s) 10.3176 cb5496bf956dc / 1890275 ✗ (1116908)
+Non-Windowed results:
+(651m 1s) 10.3176 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(651m 1s) 10.3176 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(651m 1s) 10.3176 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(651m 1s) 10.3176 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(651m 1s) 10.3176 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(651m 1s) 10.3176 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(651m 1s) 10.3176 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(651m 1s) 10.3176 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(651m 1s) 10.3176 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(651m 1s) 10.3176 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(651m 1s) 10.3176 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(651m 1s) 10.3176 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(651m 1s) 10.3176 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(651m 1s) 10.3176 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(651m 1s) 10.3176 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(651m 1s) 10.3176 cb60ca9f3d465 / 12707 ✓
+Epoch: 25 Loss: 10.203463565799016
+25 83% (653m 48s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14255 correct clickouts among 40096 sessions.
+Score: 0.26814751948629306
+40096 sessions to be computed
+Non-Windowed results:
+(677m 56s) 10.2802 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(677m 56s) 10.2802 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(677m 56s) 10.2802 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(677m 56s) 10.2802 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(677m 56s) 10.2802 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(677m 56s) 10.2802 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(677m 56s) 10.2802 cb394ac18a88f / 1113595 ✗ (6658880)
+Non-Windowed results:
+(677m 56s) 10.2802 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(677m 56s) 10.2802 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(677m 56s) 10.2802 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(677m 56s) 10.2802 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(677m 56s) 10.2802 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(677m 56s) 10.2802 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(677m 56s) 10.2802 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(677m 56s) 10.2802 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(677m 56s) 10.2802 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(677m 56s) 10.2802 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(677m 56s) 10.2802 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(677m 56s) 10.2802 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(677m 56s) 10.2802 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(677m 56s) 10.2802 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(677m 56s) 10.2802 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(677m 56s) 10.2802 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(677m 56s) 10.2802 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(677m 56s) 10.2802 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(677m 56s) 10.2802 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(677m 56s) 10.2802 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(677m 56s) 10.2802 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(677m 56s) 10.2802 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(677m 56s) 10.2802 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(677m 56s) 10.2802 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(677m 56s) 10.2802 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(677m 56s) 10.2802 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(677m 56s) 10.2802 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(677m 56s) 10.2802 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(677m 56s) 10.2802 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(677m 56s) 10.2802 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(677m 56s) 10.2802 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(677m 56s) 10.2802 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(677m 56s) 10.2802 cb5496bf956dc / 1890275 ✗ (1116908)
+Non-Windowed results:
+(677m 56s) 10.2802 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(677m 56s) 10.2802 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(677m 56s) 10.2802 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(677m 56s) 10.2802 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(677m 56s) 10.2802 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(677m 56s) 10.2802 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(677m 56s) 10.2802 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(677m 56s) 10.2802 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(677m 56s) 10.2802 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(677m 56s) 10.2802 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(677m 56s) 10.2802 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(677m 56s) 10.2802 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(677m 56s) 10.2802 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(677m 56s) 10.2802 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(677m 56s) 10.2802 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(677m 56s) 10.2802 cb60ca9f3d465 / 12707 ✓
+Epoch: 26 Loss: 10.178554946674124
+26 86% (681m 25s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14415 correct clickouts among 40096 sessions.
+Score: 0.2692023244813451
+40096 sessions to be computed
+Non-Windowed results:
+(705m 25s) 10.2575 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(705m 25s) 10.2575 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(705m 25s) 10.2575 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(705m 25s) 10.2575 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(705m 25s) 10.2575 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(705m 25s) 10.2575 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(705m 25s) 10.2575 cb394ac18a88f / 1113595 ✗ (6658880)
+Non-Windowed results:
+(705m 25s) 10.2575 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(705m 25s) 10.2575 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(705m 25s) 10.2575 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(705m 25s) 10.2575 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(705m 25s) 10.2575 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(705m 25s) 10.2575 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(705m 25s) 10.2575 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(705m 25s) 10.2575 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(705m 25s) 10.2575 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(705m 25s) 10.2575 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(705m 25s) 10.2575 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(705m 25s) 10.2575 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(705m 25s) 10.2575 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(705m 25s) 10.2575 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(705m 25s) 10.2575 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(705m 25s) 10.2575 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(705m 25s) 10.2575 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(705m 25s) 10.2575 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(705m 25s) 10.2575 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(705m 25s) 10.2575 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(705m 25s) 10.2575 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(705m 25s) 10.2575 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(705m 25s) 10.2575 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(705m 25s) 10.2575 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(705m 25s) 10.2575 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(705m 25s) 10.2575 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(705m 25s) 10.2575 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(705m 25s) 10.2575 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(705m 25s) 10.2575 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(705m 25s) 10.2575 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(705m 25s) 10.2575 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(705m 25s) 10.2575 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(705m 25s) 10.2575 cb5496bf956dc / 1890275 ✗ (1116908)
+Non-Windowed results:
+(705m 25s) 10.2575 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(705m 25s) 10.2575 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(705m 25s) 10.2575 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(705m 25s) 10.2575 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(705m 25s) 10.2575 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(705m 25s) 10.2575 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(705m 25s) 10.2575 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(705m 25s) 10.2575 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(705m 25s) 10.2575 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(705m 25s) 10.2575 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(705m 25s) 10.2575 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(705m 25s) 10.2575 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(705m 25s) 10.2575 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(705m 25s) 10.2575 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(705m 25s) 10.2575 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(705m 25s) 10.2575 cb60ca9f3d465 / 12707 ✓
+Epoch: 27 Loss: 10.154333024051603
+27 90% (708m 59s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14666 correct clickouts among 40096 sessions.
+Score: 0.26931719424894746
+40096 sessions to be computed
+Non-Windowed results:
+(733m 39s) 10.2195 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(733m 39s) 10.2195 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(733m 39s) 10.2195 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(733m 39s) 10.2195 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(733m 39s) 10.2195 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(733m 39s) 10.2195 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(733m 39s) 10.2195 cb394ac18a88f / 1113595 ✗ (6658880)
+Non-Windowed results:
+(733m 39s) 10.2195 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(733m 39s) 10.2195 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(733m 39s) 10.2195 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(733m 39s) 10.2195 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(733m 39s) 10.2195 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(733m 39s) 10.2195 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(733m 39s) 10.2195 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(733m 39s) 10.2195 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(733m 39s) 10.2195 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(733m 39s) 10.2195 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(733m 39s) 10.2195 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(733m 39s) 10.2195 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(733m 39s) 10.2195 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(733m 39s) 10.2195 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(733m 39s) 10.2195 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(733m 39s) 10.2195 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(733m 39s) 10.2195 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(733m 39s) 10.2195 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(733m 39s) 10.2195 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(733m 39s) 10.2195 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(733m 39s) 10.2195 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(733m 39s) 10.2195 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(733m 39s) 10.2195 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(733m 39s) 10.2195 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(733m 39s) 10.2195 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(733m 39s) 10.2195 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(733m 39s) 10.2195 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(733m 39s) 10.2195 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(733m 39s) 10.2195 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(733m 39s) 10.2195 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(733m 39s) 10.2195 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(733m 39s) 10.2195 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(733m 39s) 10.2195 cb5496bf956dc / 1890275 ✗ (1116908)
+Non-Windowed results:
+(733m 39s) 10.2195 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(733m 39s) 10.2195 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(733m 39s) 10.2195 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(733m 39s) 10.2195 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(733m 39s) 10.2195 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(733m 39s) 10.2195 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(733m 39s) 10.2195 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(733m 39s) 10.2195 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(733m 39s) 10.2195 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(733m 39s) 10.2195 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(733m 39s) 10.2195 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(733m 39s) 10.2195 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(733m 39s) 10.2195 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(733m 39s) 10.2195 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(733m 39s) 10.2195 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(733m 39s) 10.2195 cb60ca9f3d465 / 12707 ✓
+Epoch: 28 Loss: 10.134724594932123
+28 93% (737m 11s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14842 correct clickouts among 40096 sessions.
+Score: 0.2696040607273299
+40096 sessions to be computed
+Non-Windowed results:
+(762m 0s) 10.1983 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(762m 0s) 10.1983 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(762m 0s) 10.1983 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(762m 0s) 10.1983 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(762m 0s) 10.1983 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(762m 0s) 10.1983 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(762m 0s) 10.1983 cb394ac18a88f / 1113595 ✗ (6658880)
+Non-Windowed results:
+(762m 0s) 10.1983 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(762m 0s) 10.1983 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(762m 0s) 10.1983 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(762m 0s) 10.1983 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(762m 0s) 10.1983 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(762m 0s) 10.1983 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(762m 0s) 10.1983 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(762m 0s) 10.1983 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(762m 0s) 10.1983 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(762m 0s) 10.1983 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(762m 0s) 10.1983 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(762m 0s) 10.1983 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(762m 0s) 10.1983 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(762m 0s) 10.1983 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(762m 0s) 10.1983 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(762m 0s) 10.1983 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(762m 0s) 10.1983 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(762m 0s) 10.1983 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(762m 0s) 10.1983 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(762m 0s) 10.1983 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(762m 0s) 10.1983 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(762m 0s) 10.1983 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(762m 0s) 10.1983 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(762m 0s) 10.1983 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(762m 0s) 10.1983 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(762m 0s) 10.1983 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(762m 0s) 10.1983 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(762m 0s) 10.1983 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(762m 0s) 10.1983 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(762m 0s) 10.1983 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(762m 0s) 10.1983 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(762m 0s) 10.1983 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(762m 0s) 10.1983 cb5496bf956dc / 1890275 ✗ (1116908)
+Non-Windowed results:
+(762m 0s) 10.1983 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(762m 0s) 10.1983 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(762m 0s) 10.1983 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(762m 0s) 10.1983 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(762m 0s) 10.1983 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(762m 0s) 10.1983 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(762m 0s) 10.1983 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(762m 0s) 10.1983 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(762m 0s) 10.1983 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(762m 0s) 10.1983 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(762m 0s) 10.1983 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(762m 0s) 10.1983 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(762m 0s) 10.1983 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(762m 0s) 10.1983 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(762m 0s) 10.1983 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(762m 0s) 10.1983 cb60ca9f3d465 / 12707 ✓
+Epoch: 29 Loss: 10.117618953525211
+29 96% (765m 34s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 14984 correct clickouts among 40096 sessions.
+Score: 0.26933625113167875
+40096 sessions to be computed
+Non-Windowed results:
+(790m 13s) 10.1780 cb3559b4aaaf3 / 8796 ✗ (3074554)
+Windowed results:
+(790m 13s) 10.1780 cb3559b4aaaf3 / 3074554 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb3679f58b287 / 8796 ✗ (106978)
+Windowed results:
+(790m 13s) 10.1780 cb3679f58b287 / 42076 ✗ (106978)
+Non-Windowed results:
+(790m 13s) 10.1780 cb37bf8eb9041 / 8796 ✗ (7982436)
+Windowed results:
+(790m 13s) 10.1780 cb37bf8eb9041 / 2294626 ✗ (7982436)
+Non-Windowed results:
+(790m 13s) 10.1780 cb394ac18a88f / 8796 ✗ (6658880)
+Windowed results:
+(790m 13s) 10.1780 cb394ac18a88f / 1113595 ✗ (6658880)
+Non-Windowed results:
+(790m 13s) 10.1780 cb3a50d337432 / 8796 ✗ (6452216)
+Windowed results:
+(790m 13s) 10.1780 cb3a50d337432 / 1543335 ✗ (6452216)
+Non-Windowed results:
+(790m 13s) 10.1780 cb40b1aa6cccc / 8796 ✗ (3399566)
+Windowed results:
+(790m 13s) 10.1780 cb40b1aa6cccc / 38145 ✗ (3399566)
+Non-Windowed results:
+(790m 13s) 10.1780 cb4133f6a7cd2 / 8796 ✗ (1504011)
+Windowed results:
+(790m 13s) 10.1780 cb4133f6a7cd2 / 7210596 ✗ (1504011)
+Non-Windowed results:
+(790m 13s) 10.1780 cb41973725a9d / 8796 ✗ (3852158)
+Windowed results:
+(790m 13s) 10.1780 cb41973725a9d / 521521 ✗ (3852158)
+Non-Windowed results:
+(790m 13s) 10.1780 cb419b368c387 / 8796 ✗ (967961)
+Windowed results:
+(790m 13s) 10.1780 cb419b368c387 / 165215 ✗ (967961)
+Non-Windowed results:
+(790m 13s) 10.1780 cb41f34f83d3e / 8796 ✗ (2454150)
+Windowed results:
+(790m 13s) 10.1780 cb41f34f83d3e / 2681450 ✗ (2454150)
+Non-Windowed results:
+(790m 13s) 10.1780 cb44636720edc / 8796 ✗ (2595938)
+Windowed results:
+(790m 13s) 10.1780 cb44636720edc / 5124462 ✗ (2595938)
+Non-Windowed results:
+(790m 13s) 10.1780 cb44e71f46a07 / 8796 ✗ (967617)
+Windowed results:
+(790m 13s) 10.1780 cb44e71f46a07 / 967617 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb44feff05f92 / 8796 ✗ (3976206)
+Windowed results:
+(790m 13s) 10.1780 cb44feff05f92 / 3976206 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb45085012aae / 8796 ✗ (2181818)
+Windowed results:
+(790m 13s) 10.1780 cb45085012aae / 103334 ✗ (2181818)
+Non-Windowed results:
+(790m 13s) 10.1780 cb49fd926c59c / 8796 ✗ (12974)
+Windowed results:
+(790m 13s) 10.1780 cb49fd926c59c / 12974 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb4c36a8e9679 / 8796 ✗ (2195582)
+Windowed results:
+(790m 13s) 10.1780 cb4c36a8e9679 / 5205 ✗ (2195582)
+Non-Windowed results:
+(790m 13s) 10.1780 cb4d817f2f0f9 / 8796 ✗ (1244689)
+Windowed results:
+(790m 13s) 10.1780 cb4d817f2f0f9 / 2083424 ✗ (1244689)
+Non-Windowed results:
+(790m 13s) 10.1780 cb4eba32a9dd9 / 8796 ✗ (3895022)
+Windowed results:
+(790m 13s) 10.1780 cb4eba32a9dd9 / 104986 ✗ (3895022)
+Non-Windowed results:
+(790m 13s) 10.1780 cb4f481e4f46e / 8796 ✗ (115941)
+Windowed results:
+(790m 13s) 10.1780 cb4f481e4f46e / 760241 ✗ (115941)
+Non-Windowed results:
+(790m 13s) 10.1780 cb4f4a35e890f / 8796 ✗ (69887)
+Windowed results:
+(790m 13s) 10.1780 cb4f4a35e890f / 63345 ✗ (69887)
+Non-Windowed results:
+(790m 13s) 10.1780 cb4f7127613a0 / 8796 ✗ (103507)
+Windowed results:
+(790m 13s) 10.1780 cb4f7127613a0 / 103507 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb51c263d6db7 / 8796 ✗ (340316)
+Windowed results:
+(790m 13s) 10.1780 cb51c263d6db7 / 340316 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb5496bf956dc / 8796 ✗ (1116908)
+Windowed results:
+(790m 13s) 10.1780 cb5496bf956dc / 1890275 ✗ (1116908)
+Non-Windowed results:
+(790m 13s) 10.1780 cb56be6102c0e / 8796 ✗ (838326)
+Windowed results:
+(790m 13s) 10.1780 cb56be6102c0e / 838326 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb56e9848d4a9 / 8796 ✗ (7884058)
+Windowed results:
+(790m 13s) 10.1780 cb56e9848d4a9 / 6077124 ✗ (7884058)
+Non-Windowed results:
+(790m 13s) 10.1780 cb57b4ea53d0b / 8796 ✗ (2552508)
+Windowed results:
+(790m 13s) 10.1780 cb57b4ea53d0b / 2552508 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb57d74988837 / 8796 ✗ (98864)
+Windowed results:
+(790m 13s) 10.1780 cb57d74988837 / 98868 ✗ (98864)
+Non-Windowed results:
+(790m 13s) 10.1780 cb5ea7b72c570 / 8796 ✗ (371491)
+Windowed results:
+(790m 13s) 10.1780 cb5ea7b72c570 / 1436336 ✗ (371491)
+Non-Windowed results:
+(790m 13s) 10.1780 cb5edc4932eb7 / 8796 ✗ (2728192)
+Windowed results:
+(790m 13s) 10.1780 cb5edc4932eb7 / 4039786 ✗ (2728192)
+Non-Windowed results:
+(790m 13s) 10.1780 cb5f4ae49030d / 8796 ✗ (2202720)
+Windowed results:
+(790m 13s) 10.1780 cb5f4ae49030d / 2162500 ✗ (2202720)
+Non-Windowed results:
+(790m 13s) 10.1780 cb60ae5c329e4 / 8796 ✗ (74657)
+Windowed results:
+(790m 13s) 10.1780 cb60ae5c329e4 / 74657 ✓
+Non-Windowed results:
+(790m 13s) 10.1780 cb60ca9f3d465 / 8796 ✗ (12707)
+Windowed results:
+(790m 13s) 10.1780 cb60ca9f3d465 / 12707 ✓
+Epoch: 30 Loss: 10.10191749061286
+30 100% (793m 39s)
+Found 33 correct clickouts among 40096 sessions.
+Windowed - Found 15135 correct clickouts among 40096 sessions.
+Score: 0.2698835278597195
+Final score for inner: 0.27004287267939064
+Final score for dev: 0.2684993640629424
