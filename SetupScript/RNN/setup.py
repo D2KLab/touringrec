@@ -36,9 +36,10 @@ parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
 parser.add_argument('--encode', action="store", type=str, help="--train encode.csv")
 parser.add_argument('--meta', action="store", type=str, help="--train metadata.csv")
-parser.add_argument('--train', action="store", type=str, help="--train train.csv")
-parser.add_argument('--test', action="store", type=str, help="--test test.csv")
-parser.add_argument('--gt', action="store", type=str, help="--gt train.csv")
+parser.add_argument('--traininner', action="store", type=str, help="--train train.csv")
+parser.add_argument('--testinner', action="store", type=str, help="--test test.csv")
+parser.add_argument('--gtinner', action="store", type=str, help="--gt train.csv")
+parser.add_argument('--testdev', action="store", type=str, help="--test test.csv")
 #parser.add_argument('--metadata', action="store", type=str, help="Define the metadata file")
 #parser.add_argument('--localscore', action="store", type=int, help="0 -> Local score, 1 -> Official score")
 parser.add_argument('--ismeta', action='store_true', help='Use metadata')
@@ -62,9 +63,10 @@ args = parser.parse_args()
 
 param = LSTMParam.LSTMParameters(   args.encode,
                                     args.meta,
-                                    args.train, 
-                                    args.test,
-                                    args.gt,
+                                    args.traininner, 
+                                    args.testinner,
+                                    args.gtinner,
+                                    args.testdev,
                                     args.ismeta,
                                     args.isimpression,
                                     args.isdrop,
@@ -135,24 +137,24 @@ if param.ismeta:
 
 #corpus = dsm.get_corpus(df_encode)
 
-df_train_inner = pd.read_csv('./train.csv')
+df_train_inner = pd.read_csv(param.traininner)
 df_train_inner = dsm.remove_single_clickout_actions(df_train_inner)
 #df_train_inner = dsm.remove_single_actions_opt(df_train_inner)
 df_train_inner =  dsm.remove_nonitem_actions(df_train_inner)
 #df_train_inner = dsm.reference_to_str(df_train_inner)
 
-df_test_inner = pd.read_csv('./test.csv')
+df_test_inner = pd.read_csv(param.testinner)
 df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
 #df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 #df_test_inner = dsm.reference_to_str(df_test_inner)
 
-df_gt_inner = pd.read_csv('./gt.csv')
+df_gt_inner = pd.read_csv(param.gtinner)
 df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
-df_test_dev = pd.read_csv('./test_off.csv')
+df_test_dev = pd.read_csv(param.testdev)
 df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)

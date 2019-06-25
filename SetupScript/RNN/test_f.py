@@ -12,40 +12,42 @@ def list_to_space_string(l):
     s = " ".join(l)
     return s
 
-def recommendations_from_output(output, hotel_dict, hotels_window, n_features):
-    i = 0
-    window_dict = {}
-    output_arr = np.asarray(output[0].cpu().detach().numpy())
-    ranked_hotels = {}
-    hotel_i = 0
-    
-    '''for hotel_v in output_arr:
-        hotel_id = hotel_dict.index2word[hotel_i]
+def recommendations_from_output(output, hotel_dict, hotels_window, n_features, session):
+  i = 0
+  window_dict = {}
+  
+  output_arr = np.asarray(output[0].cpu().detach().numpy())
 
-        if hotel_id in hotels_window:
-            ranked_hotels[hotel_id] = hotel_v
-        hotel_i = hotel_i + 1
-    
-    for hotel_id in hotels_window:
-        if hotel_id not in ranked_hotels:
-            ranked_hotels[hotel_id] = -9999'''
-    
-    ranked_hotels = {}
-    for hotelw_i, hotelw in enumerate(window):
-      if hotelw in hotel_dict:
-        hotel_i = hotel_dict.index2word.index(hotelw)
-        #hotel_i = hotel_list.index(hotelw)  # This is for using hotel list
-        ranked_hotels[hotelw] = output_arr[hotel_i]
+  session_hotels = {}
+  window_hotels = {}
+  vote = 0
+  for ai, action in enumerate(session):
+    hotel = action['reference']
+    if not math.isnan(float(hotel)):
+      if (hotel in hotel_dict) & (hotel not in session_hotels):
+        #print(hotel)
+        session_hotels[hotel] = output_arr[hotel_dict.index2word.index(hotel)] + vote
+        vote = vote + 1
+      
+  session_hotels_tuple = sorted(session_hotels.items(), key=itemgetter(1), reverse = True)
+  
+  for hotel in hotels_window:
+    if hotel not in session_hotels:
+      if hotel in hotel_dict:
+        window_hotels[hotel] = output_arr[hotel_dict.index2word.index(hotel)]
       else:
-        ranked_hotels[hotelw] = -9999
+        window_hotels[hotel] = -99
+    
+  window_hotels_tuple = sorted(window_hotels.items(), key=itemgetter(1), reverse = True)
+  
+  ranked_hotels_tuple = session_hotels_tuple + window_hotels_tuple
+  
+  
+  ranked = []
+  for tup in ranked_hotels_tuple:
+    ranked.append(tup[0]) 
 
-    ranked_hotels = sorted(ranked_hotels.items(), key=itemgetter(1), reverse = True)
-    ranked = []
-
-    for tup in ranked_hotels:
-        ranked.append(tup[0])                          
-                            
-    return list_to_space_string(ranked)
+  return list_to_space_string(ranked)
 
 def evaluate(model, session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
     """Just return an output list of hotel given a single session."""
