@@ -25,13 +25,15 @@ def recommendations_from_output(output, hotel_dict, hotels_window, n_features, p
   
   out_class_v, out_class_i = torch.max(output, 1)
   
-  if out_class_i == 0:
+  '''if out_class_i == 0:
     sub_hotels = hotels_window
-  else:
-    sub_hotels.append(prev_hotel)
-    for hotel in hotels_window:
-      if hotel != sub_hotels[0]:
-        sub_hotels.append(hotel) 
+  else:'''
+  if not math.isnan(float(prev_hotel)):
+    if prev_hotel != '':
+      sub_hotels.append(str(prev_hotel))
+      for hotel in hotels_window:
+        if hotel != prev_hotel:
+          sub_hotels.append(hotel)
                            
   return list_to_space_string(sub_hotels)
 

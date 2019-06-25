@@ -28,8 +28,8 @@ import LSTMParameters as LSTMParam
 
 import argparse
 
-#python3 python3 setup.py --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --epochs 10 --ncomponents 100 --window 3 --learnrate 0.001
-#python3 setup.py --encode ./encode_1.csv --meta ./item_metadata.csv --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --hiddendim 100 --epochs 20 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_1%_sub --numthread 2 --batchsize 16
+#python3 ./setup.py --traininner ./train_inner_10.csv --testinner ./test_inner_10.csv --gtinner ./gt_inner_10.csv --testdev ./test_10.csv --hiddendim 100 --epochs 2 --ncomponents 100 --window 5 --learnrate 0.08 --iscuda --subname 10%_sub --numthread 2 --batchsize 32
+
 torch.manual_seed(1)
 
 parser = argparse.ArgumentParser()
@@ -387,7 +387,7 @@ with open('rnn_train_sub_xgb_inner' + param.subname + '.csv', mode='w') as rnn_t
 STEP 6: PLOTTING RESULTS
 '''
 
-import matplotlib.pyplot as plt
+'''import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
 #plt.figure()
@@ -398,7 +398,7 @@ import matplotlib.ticker as ticker
 
 
 '''
-STEP 7: PREPARE TEST SET
+#STEP 7: PREPARE TEST SET
 '''
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
@@ -411,7 +411,7 @@ mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, test_sessio
 print("Final score for dev: " + str(mrr))
 
 '''
-STEP 8: SAVING SUBMISSION
+#STEP 8: SAVING SUBMISSION
 '''
 
 #Computing score
@@ -436,4 +436,4 @@ with open(param.subname + '_acc.csv', mode='w') as acc_file:
     file_writer = csv.writer(acc_file)
     file_writer.writerow(['#Epochs'])
     for acc in all_acc:
-        file_writer.writerow([acc])
+        file_writer.writerow([acc])'''
