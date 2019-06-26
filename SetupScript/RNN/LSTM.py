@@ -107,7 +107,7 @@ def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features, hot
   
   for si, session in enumerate(session_list):
     for ai, action in enumerate(session):
-      tensor[ai][si] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
+      tensor[ai][si] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window[si], max_window, meta_dict, meta_list)
   return tensor
 
 def meta_to_index(meta, meta_list):

@@ -335,8 +335,9 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
 
             current_loss += loss
             
-            #guess, guess_i = lstm.category_from_output(output, hotel_dict)
-            #guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
+            if epoch == num_epochs:
+                #guess, guess_i = lstm.category_from_output(output, hotel_dict)
+                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
         
             for batch_i, category_v in enumerate(category):
                 #if guess[batch_i] == category_v:
@@ -356,9 +357,6 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
                     #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
 
                 if epoch == num_epochs:   
-                    guess, guess_i = lstm.category_from_output(output, hotel_dict)
-                    guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
- 
                     for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
                         # Write single hotel score
                         file_writer.writerow([str(session[batch_i][0]['session_id']), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
