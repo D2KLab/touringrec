@@ -37,6 +37,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_inner_gt = f.get_interaction_actions(df_inner_gt, actions=parameters.listactions)
     df_inner_gt = remove_single_clickout_actions(df_inner_gt)
     df_inner_gt = create_recent_index(df_inner_gt)
+    print(df_inner_gt.head())
     df_inner_gt_clickout, df_inner_gt_no_clickout = split_clickout(df_inner_gt)
 
     df_test_cleaned = f.get_interaction_actions(df_test, actions = parameters.listactions, clean_null = True)
@@ -108,6 +109,7 @@ def recent_index(x):
     list_interactions = x.all_interactions.split(" ")
     if str(x.item_id) in list_interactions:
         i = list_interactions.index(str(x.item_id))
+        i = i / len(list_interactions)
     else:
         i = -999
     #i = least_recent - i
@@ -172,9 +174,10 @@ def clean_dataset_error(df):
     return df
 
 def xg_boost_training(train):
+    train = train[TRAINING_COLS + ['label']]
     df_train, df_val = train_test_split(train, test_size=0.2)
     print(df_train.head())
-    cols = ['user_id', 'session_id', 'timestamp', 'item_id', 'label', 'step']
+    cols = ['label']
     xgtrain = xgb.DMatrix(df_train.drop(cols, axis=1), df_train.label)
     xgval = xgb.DMatrix(df_val.drop(cols, axis=1), df_val.label)
     params = {
@@ -210,9 +213,7 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
         df_train_xg = df_train_xg[['user_id', 'session_id', 'timestamp', 'step', 'reference', 'position', 'item_id', 'recent_index']]
     else:
         df_train_xg = df_train_xg[['user_id', 'session_id', 'timestamp', 'step', 'reference', 'position', 'item_id']]
-       
-    print(df_train_xg.head())
-
+    
     #df_train_xg = create_recent_index(df_train_xg)
     if(is_test == False):
         df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
