@@ -15,6 +15,7 @@ import time
 from lightfm.evaluation import reciprocal_rank
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler   
 #import graphviz
     
 TRAINING_COLS = ['position','recent_index', 'score', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction']
@@ -22,8 +23,8 @@ TRAINING_COLS = ['position','recent_index', 'score', 'user_bias', 'item_bias', '
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
-    df_inner_train = pd.read_csv('train_inner.csv')
-    df_inner_gt = pd.read_csv('gt_inner.csv')
+    df_inner_train = pd.read_csv('train_inner_100.csv')
+    df_inner_gt = pd.read_csv('gt_inner_100.csv')
     subm_csv = 'submission_mf_xgboost.csv'
     df_train = clean_dataset_error(df_train)
     df_inner_gt = clean_dataset_error(df_inner_gt)
@@ -35,9 +36,13 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     print(df_inner_train.head())
     #df_train = f.get_interaction_actions(df_train, actions = parameters.listactions)
     df_inner_gt = f.get_interaction_actions(df_inner_gt, actions=parameters.listactions)
+    #df_inner_single_click = get_single_clickout_actions(df_inner_gt)
     df_inner_gt = remove_single_clickout_actions(df_inner_gt)
+    print(df_inner_single_click.head())
     df_inner_gt = create_recent_index(df_inner_gt)
     print(df_inner_gt.head())
+    #df_train_xg_single = get_single_click_features(df_inner_single_click)
+    #xg_model_single_click = xg_boost_training_single_click(df_train_xg_single)
     df_inner_gt_clickout, df_inner_gt_no_clickout = split_clickout(df_inner_gt)
 
     df_test_cleaned = f.get_interaction_actions(df_test, actions = parameters.listactions, clean_null = True)
@@ -83,10 +88,22 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_out = generate_submission(df_test_xg, xg_model)
     print('Generated submissions: ')
     print(df_out.head())
+    #df_test_nation = f.explode_position_scalable(df_test_nation, 'impressions')
+    #df_test_nation['device'] = df_test_nation.apply(lambda x: 0 if(str(x.device) == 'desktop') else 1, axis = 1)
+    #print(df_test_nation.head())
+    #df_out_nation = generate_submission(df_test_nation, xg_model_single_click, ['position', 'device'])
     df_out_nation = complete_prediction(df_test_nation)
     df_out = pd.concat([df_out, df_out_nation])
     df_out.to_csv(subm_csv, index=False)
     return df_out
+
+def get_single_click_features(df, is_test = False):
+    df_train_xg = f.explode_position_scalable(df, 'impressions')
+    if(is_test == False):
+        df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
+    df_train_xg['device'] = df_train_xg.apply(lambda x: 0 if(str(x.device) == 'desktop') else 1, axis = 1)
+    print(df_train_xg.head())
+    return df_train_xg
 
 
 def create_recent_index(df_orig, grouped=False):
@@ -139,15 +156,16 @@ def get_RNN_features(df, filename):
 
 
 
-def generate_submission(df, xg_model):
-    df = df.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: calculate_rank(x, xg_model)).reset_index(name='item_recommendations')
+def generate_submission(df, xg_model, training_cols=TRAINING_COLS):
+    df = df.groupby(['user_id', 'session_id', 'timestamp', 'step']).apply(lambda x: calculate_rank(x, xg_model, t_cols=training_cols)).reset_index(name='item_recommendations')
     df = df[['user_id', 'session_id', 'timestamp', 'step', 'item_recommendations']]
     return df
 
-def calculate_rank(group, model):
+def calculate_rank(group, model, t_cols=TRAINING_COLS):
     #cols = ['user_id', 'session_id', 'timestamp', 'item_id', 'step']
     #print(group)
-    df_test = group[TRAINING_COLS]
+    df_test = group[t_cols]
+    #df_test = scale_column(df_test, ['position'])
     #print(df_test)
     xgtest = xgb.DMatrix(df_test)
     prediction = model.predict(xgtest, ntree_limit=model.best_ntree_limit)
@@ -167,6 +185,21 @@ def remove_single_clickout_actions(df):
     # df['step_max'] = df.groupby(['session_id'])['step'].transform(max)
     # print(df.head())
     df = df.drop(df[(df["action_type"] == "clickout item") & (df['n_actions'] == 1)].index)
+    print('Initial size: ' + str(df.shape[0]))
+    df = df[df['n_actions'] < 50]
+    print('Without outliers size: ' + str(df.shape[0]))
+    del df['n_actions']
+    return df
+
+def get_single_clickout_actions(df):
+    print('Initial size: ' + str(df.shape[0]))
+    n_action_session = df.groupby('session_id').size().reset_index(name='n_actions')
+    print(n_action_session.head())
+    df = (df.merge(n_action_session, left_on='session_id', right_on='session_id', how="left"))
+    print(df.head())
+    # df['step_max'] = df.groupby(['session_id'])['step'].transform(max)
+    # print(df.head())
+    df = df[(df["action_type"] == "clickout item") & (df['n_actions'] == 1)]
     print('Final size: ' + str(df.shape[0]))
     del df['n_actions']
     return df
@@ -174,9 +207,49 @@ def remove_single_clickout_actions(df):
 def clean_dataset_error(df):
     df = df[df['user_id'] != '3473ULL51OOW']
     return df
+def xg_boost_training_single_click(train):
+    train = train[['position', 'device', 'label']]
+    df_train, df_val = train_test_split(train, test_size=0.2)
+    cols = ['label']
+    xgtrain = xgb.DMatrix(df_train.drop(cols, axis=1), df_train.label)
+    xgval = xgb.DMatrix(df_val.drop(cols, axis=1), df_val.label)
+    params = {
+        'objective':'binary:logistic', 
+        'eta':0.1, 
+        'booster':'gbtree',
+        'predictor': 'cpu_predictor',
+        'max_depth':7,         
+        'nthread':4,  
+        'seed':1,    
+        'eval_metric':'auc',
+    }
+
+    model = xgb.train(
+        params=list(params.items()),  
+        early_stopping_rounds=30, 
+        verbose_eval=10, 
+        dtrain=xgtrain,
+        evals=[(xgtrain, 'train'), (xgval, 'test')],
+        num_boost_round=300,
+    )
+
+    #xgb.plot_importance(model)
+    #xgb.plot_tree(model)
+    #plt.show()
+    return model
+
+def scale_column(df, col_name):
+    scaled_features = df.copy()
+    features = scaled_features[col_name]
+    scaler = StandardScaler().fit(features.values)
+    features = scaler.transform(features.values)
+    scaled_features[col_name] = features
+    return scaled_features
+
 
 def xg_boost_training(train):
     train = train[TRAINING_COLS + ['label']]
+    #train = scale_column(train, ['position'])
     df_train, df_val = train_test_split(train, test_size=0.2)
     print(df_train.head())
     cols = ['label']
@@ -217,6 +290,7 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
         df_train_xg = df_train_xg[['user_id', 'session_id', 'timestamp', 'step', 'reference', 'position', 'item_id']]
     
     #df_train_xg = create_recent_index(df_train_xg)
+    print(df_train_xg.head(500))
     if(is_test == False):
         df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
     df_train_xg['user_id_enc'] = df_train_xg['user_id'].map(user_dict)
