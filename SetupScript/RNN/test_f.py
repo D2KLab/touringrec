@@ -273,6 +273,7 @@ def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clic
 
   mask = df_sub["item_recommendations"].notnull()
   df_sub = df_sub[mask]
+  df_sub = df_sub.drop(df_sub.index[df_sub['item_recommendations'] == np.nan])
 
   # Saving df_sub
   if isprint:
@@ -309,7 +310,7 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
 
 # Just return an output given a line
 def evaluate_classification(model, session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
-    line_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
+    line_tensor = lstm.session_to_tensor_ultimate(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
     
     output = model(line_tensor)
         
@@ -322,9 +323,9 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   
   #missed_target = 0
   if dev:
-    fname = './ultimate/rnn_test_sub_xgb_dev.csv' + subname
+    fname = './ultimate/rnn_test_sub_xgb_dev' + subname + '.csv'
   else:
-    fname = './ultimate/rnn_test_sub_xgb_inner.csv' + subname
+    fname = './ultimate/rnn_test_sub_xgb_inner' + subname + '.csv'
 
   with open(fname, mode='w') as test_xgb_sub:
     
@@ -334,20 +335,25 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
     for session, hotel_list in session_dict.items():
       if session in clickout_dict:
         categories, categories_scores = evaluate_classification(model, hotel_list, hotel_dict, n_features, impression_dict[session], max_window, meta_dict, meta_list)
-        df_test.loc[(df_test['session_id'] == session) & (math.isnan(df_test['reference'])), 'item_recommendations'] = list_to_space_string(categories)
-        
+        df_test.loc[(df_test['session_id'] == session) & (df_test['step'] == clickout_dict[session]), 'item_recommendations'] = list_to_space_string(categories)
+
         for hotel_i, hotel in enumerate(categories):
           # Write single hotel score
           file_writer.writerow([str(session), str(hotel), str(categories_scores[hotel_i])])
 
-      
+  #print(df_test[df_test['action_type'] == 'clickout item'])
   df_sub = get_submission_target(df_test)
-  
+
   #Removing unnecessary columns
   df_sub = df_sub[['user_id', 'session_id', 'timestamp','step', 'item_recommendations']]
 
   mask = df_sub["item_recommendations"].notnull()
+  #mask = math.isnan(df_sub["item_recommendations"])
   df_sub = df_sub[mask]
+  df_sub = df_sub.drop(df_sub.index[df_sub['item_recommendations'] == math.nan])
+  #df_sub = df_sub.drop(df_sub.index[math.isnan(df_sub['item_recommendations'])])
+
+  #print(df_sub)
 
   # Saving df_sub
   if isprint:

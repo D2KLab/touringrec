@@ -219,7 +219,7 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
         category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
       else:
         category_scores_dict[hotelw] = -9999
-        
+    
     #print(category_scores_dict)
     category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
     #print(category_scores_tuples)

@@ -1,0 +1,15 @@
+Started _10% execution
+W2vec completed - Time: 0m 18s
+Imported and collected training set - Time: 0m 19s
+Imported and collected test set - Time: 0m 19s
+Batched trainig set - Time: 0m 19s
+Epoch 1 start - Time: 0m 0s
+Epoch 1 end - Time: 0m 17s
+Epoch 1 - Loss: 9.798130714532101
+Epoch 2 start - Time: 0m 17s
+Epoch 2 end - Time: 0m 37s
+Epoch 2 - Loss: 8.810844977696737
+Start inner submission - Time: 0m 0s
+Finish inner submission - Time: 0m 4s
+Start dev submission - Time: 0m 4s
+Finish dev submission - Time: 0m 8s
