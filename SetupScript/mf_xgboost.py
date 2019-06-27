@@ -117,8 +117,10 @@ def recent_index(x):
 
 
 def get_list_session_interactions(group):
-    #print(group)
-    return " ".join(list(group.reference.drop_duplicates().values))
+    group.loc[:,'reference'] = group['reference'].apply(str)
+    list_values = group.reference.drop_duplicates()
+    joined = " ".join(list_values)
+    return joined
 
 def add_popularity(item, dictionary):
     if item in dictionary:
