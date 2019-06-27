@@ -198,21 +198,38 @@ STEP 3: PREPARE NET INPUT
 '''
 
 #this splits the training set sessions into multiple mini-sessions
+'''
 if param.batchsize == 0:
     sessions, categories, hotels_window = dsm.prepare_input(df_train_inner)
 else:
     sessions, categories, hotels_window = dsm.prepare_input_batched(df_train_inner, param.batchsize)
+'''
 
-test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_inner, df_gt_inner)
+#test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_inner, df_gt_inner)
+
+session_dict = {}
+category_dict = {}
+impression_dict = {}
+session_dict, category_dict, impression_dict = dsm.get_training_input(df_train_inner)
+
+test_session_dict = {}
+test_category_dict = {}
+test_impression_dict = {}
+test_session_dict, test_category_dict, test_impression_dict = dsm.get_test_input(df_test_inner)
+
+# Batching sessions for RNN input
+batched_sessions = dsm.get_batched_sessions(test_session_dict, param.batchsize)
 
 #getting maximum window size
 max_window = 0
+'''
 if param.isimpression:
     for window in hotels_window:
         if len(window) > max_window:
             max_window = len(window)
     #if param.train == './train_1.csv':
     max_window = 25
+'''
 
 #Setting up feature numbers
 n_hotels = len(hotel_dict.index2word)
@@ -280,7 +297,7 @@ import math
 num_epochs = param.epochs
 plot_every = 1
 
-n_iters = len(sessions) * num_epochs
+n_iters = len(session_dict) * num_epochs
 print_every = 1000
 
 # Keep track of losses and acc for plotting
@@ -301,7 +318,8 @@ start = time.time()
 training_results_hotels = {}
 training_results_scores = {}
 
-with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
+
+with open('rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
@@ -312,36 +330,33 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
         count_correct = 0
         count_correct_windowed = 0
 
-        print(str(len(sessions) * param.batchsize) + ' sessions to be computed')
+        print(str(len(session_dict)) + ' sessions to be computed')
         
-        for index, session in enumerate(sessions):
+        for batch in batched_sessions:
             iter = iter + 1
 
-            if param.batchsize == 0:
-                session_tensor = lstm.session_to_tensor(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
-                category = categories[index]
-                category_tensor = lstm.hotel_to_category(category, hotel_dict, n_hotels)
-            else:
-                max_session_len = 0
-                for si, single_session in enumerate(session):
-                    if len(single_session) > max_session_len:
-                        max_session_len = len(single_session)
-                
-                session_tensor = lstm.sessions_to_batch(session, hotel_dict, max_session_len, n_features, hotels_window, max_window, meta_dict, meta_list)
-                category = categories[index]
-                hotel_window = hotels_window[index]
-                category_tensor = lstm.hotels_to_category_batch(category, hotel_dict, n_hotels)
+            max_session_len = 0
+            batch_category = []
+            batch_hotel_window = []
+            for si, single_session in enumerate(batch):
+                if len(session_dict[single_session]) > max_session_len:
+                    max_session_len = len(session_dict[single_session])
+                batch_category.append(category_dict[single_session])
+                batch_hotel_window.append(impression_dict[single_session])
+                batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
+
+
+            batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
 
             
-            output, loss = lstm.train(model, loss_fn, optimizer, category_tensor, session_tensor, param.iscuda)
+            output, loss = lstm.train(model, loss_fn, optimizer, batch_category_tensor, batch_session_tensor, param.iscuda)
 
             current_loss += loss
             
             if epoch == num_epochs:
-                #guess, guess_i = lstm.category_from_output(output, hotel_dict)
-                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False)
+                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False)
         
-            for batch_i, category_v in enumerate(category):
+            for batch_i, category_v in enumerate(batch_category):
                 #if guess[batch_i] == category_v:
                 #    count_correct = count_correct + 1
 
@@ -361,13 +376,13 @@ with open('rnn_train_sub_xgb_100%_inner' + param.subname + '.csv', mode='w') as 
                 if epoch == num_epochs:   
                     for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
                         # Write single hotel score
-                        file_writer.writerow([str(session[batch_i][0]['session_id']), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
+                        file_writer.writerow([str(batch[batch_i]), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
                     
                 
         # Add current loss avg to list of losses
         if epoch % plot_every == 0:
-            all_losses.append(current_loss / (plot_every * len(sessions)))
-            print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(sessions))))
+            all_losses.append(current_loss / (plot_every * len(batched_sessions)))
+            print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(batched_sessions))))
             print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
             #print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
             #print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
@@ -392,16 +407,17 @@ import matplotlib.ticker as ticker
 
 
 '''
-STEP 7: PREPARE TEST SET
+STEP 7: Save Test Results
 '''
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-#mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
-#print("Final score for inner: " + str(mrr))
+mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_clickout_dict, test_impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
+print("Final score for inner: " + str(mrr))
 
 #test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
+test_session_dict, test_category_dict, test_impression_dict = dsm.get_test_input(df_test_dev)
 
-#mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_dev, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
 #print("Final score for dev: " + str(mrr))
 
 '''
@@ -410,6 +426,7 @@ STEP 8: SAVING SUBMISSION
 
 #Computing score
 #print("End execution with score " + str(mrr))
+'''
 file_exists = os.path.isfile('classification_scores.csv')
 with open('classification_scores.csv', mode='a') as score_file:
     file_writer = csv.writer(score_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -417,17 +434,18 @@ with open('classification_scores.csv', mode='a') as score_file:
         file_writer.writerow(['Train set', 'Using impressions', 'Using meta', 'Hidden dimension', 'Dropout layer', '#Epochs', '#Components', 'W2Vec window', 'Learn Rate', 'batchsize', 'Score'])
     #file_writer.writerow([str(param.train), str(param.isimpression), str(param.ismeta), str(param.hiddendim), str(param.isdrop), str(param.epochs), str(param.ncomponents), str(param.window), str(param.learnrate), str(param.batchsize), str(mrr)])
 #f.send_telegram_message("End execution with score " + str(mrr))
-
+'''
 #Saving loss
 with open(param.subname + '_loss.csv', mode='w') as loss_file:
     file_writer = csv.writer(loss_file)
     file_writer.writerow(['#Epochs'])
     for loss in all_losses:
         file_writer.writerow([loss])
-
+'''
 #Saving acc
 with open(param.subname + '_acc.csv', mode='w') as acc_file:
     file_writer = csv.writer(acc_file)
     file_writer.writerow(['#Epochs'])
     for acc in all_acc:
         file_writer.writerow([acc])
+'''

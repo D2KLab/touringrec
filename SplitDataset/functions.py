@@ -102,3 +102,13 @@ def clean_dataset(df_test):
 def get_df_percentage(df, perc):
     df_size = df.shape[0]
     return df.head(int(perc * df_size))
+
+def get_clickout_data(action, clickout_dict, impression_dict):
+  clickout_dict[action.session_id] = action.reference
+  impression_dict[action.session_id] = action.impressions
+  return action.reference
+
+def get_list_session_interactions(group, session_dict):
+  #print(group)
+  session_dict[group.session_id.values[0]] = list(group.reference.values)
+  return " ".join(list(group.reference.values))

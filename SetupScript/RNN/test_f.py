@@ -253,7 +253,7 @@ def prepare_test(df_test, df_gt):
         
   return test_sessions, test_hotels_window, test_clickout_index
   
-  
+
 def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False):
   """Return the score obtained by the net on the test dataframe"""
 
@@ -292,7 +292,7 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   categories = []
 
   category_scores_dict = {}
-  for hotelw_i, hotelw in enumerate(window):
+  for hotelw in window:
     if hotelw in hotel_dict:
       hotel_i = hotel_dict.index2word.index(hotelw)
       category_scores_dict[hotelw] = output_arr[0][hotel_i]
@@ -317,12 +317,8 @@ def evaluate_classification(model, session, hotel_dict, n_features, hotels_windo
 
     return output
   
-def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hotels_window, clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False, dev = False):
+def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, clickout_dict, impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False, dev = False):
   """Return the score obtained by the net on the test dataframe"""
-
-  test_dim = len(df_test)
-
-  print_every = 500
   
   #missed_target = 0
   if dev:
@@ -335,14 +331,14 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hote
     file_writer = csv.writer(test_xgb_sub)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])          
     
-    for session_index, session in enumerate(sessions):
-      if clickout_index[session_index] != []:
-        categories, categories_scores = evaluate_classification(model, session, hotel_dict, n_features, hotels_window[session_index], max_window,  meta_dict, meta_list)
-        df_test.loc[clickout_index[session_index], 'item_recommendations'] = list_to_space_string(categories)
+    for session, hotel_list in session_dict.items():
+      if session in clickout_dict:
+        categories, categories_scores = evaluate_classification(model, hotel_list, hotel_dict, n_features, impression_dict[session], max_window, meta_dict, meta_list)
+        df_test.loc[(df_test['session_id'] == session) & (math.isnan(df_test['reference'])), 'item_recommendations'] = list_to_space_string(categories)
         
         for hotel_i, hotel in enumerate(categories):
           # Write single hotel score
-          file_writer.writerow([str(session[0]['session_id']), str(hotel), str(categories_scores[hotel_i])])
+          file_writer.writerow([str(session), str(hotel), str(categories_scores[hotel_i])])
 
       
   df_sub = get_submission_target(df_test)
@@ -357,6 +353,11 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, sessions, hote
   if isprint:
       df_sub.to_csv('./' + subname + '.csv')
 
-  mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  # Computing mrr only if test set is not the one without gt
+  if dev:
+    mrr = 0
+  else:
+    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+
   return mrr
   

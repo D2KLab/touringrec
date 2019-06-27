@@ -227,3 +227,59 @@ def prepare_input_batched(df_train, batch_size):
     
     
   return training_set_batched, category_set_batched, hotels_window_set_batched
+
+
+def get_clickout_data(action, clickout_dict, impression_dict):
+  clickout_dict[action.session_id] = action.reference
+  impression_dict[action.session_id] = action.impressions
+  return action.reference
+
+def get_list_session_interactions(group, session_dict):
+  #print(group)
+  session_dict[group.session_id.values[0]] = list(group.reference.values)
+  return " ".join(list(group.reference.values))
+
+def get_training_input(df_train):
+  clickout_dict = {}
+  impression_dict = {}
+  session_dict = {}
+
+  df_train['step_max'] = df_train[df_train['action_type'] == 'clickout item'].groupby(['session_id'])['step'].transform(max)
+  df_train['result'] = df_train[df_train['step'] == df_train['step_max']].apply(lambda x: get_clickout_data(x, clickout_dict, impression_dict), axis = 1)
+  df_train = df_train.drop(df_train.index[math.isnan(float(df_train['step_max'])))
+  df_train = df_train.drop(df_train.index[(df_train['step'] == df_train['step_max']) & (df_train["action_type"] == "clickout item")])
+  df_train = df_train.groupby('session_id').apply(lambda x: get_list_session_interactions(x, session_dict)).reset_index(name = 'hotel_list')
+
+  return session_dict, clickout_dict, impression_dict
+
+
+def get_test_input(df_test):
+  #Creating a NaN column for item recommendations
+  df_test['item_recommendations'] = np.nan
+
+  test_clickout_dict = {}
+  test_impression_dict = {}
+  test_sessions_dict = {}
+
+  df_test['step_max'] = df_test[df_test['action_type'] == 'clickout item'].groupby(['session_id'])['step'].transform(max)
+  df_test['result'] = df_test[df_test['step'] == df_test['step_max']].apply(lambda x: get_clickout_data(x, test_clickout_dict, test_impression_dict), axis = 1)
+  df_test = df_test.drop(df_test.index[(df_test['step'] == df_test['step_max']) & (df_test["action_type"] == "clickout item")])
+  df_test = df_test.groupby('session_id').apply(lambda x: get_list_session_interactions(x, test_sessions_dict)).reset_index(name = 'hotel_list')
+
+  for key, value in       
+
+  return test_sessions_dict, test_clickout_dict, test_impression_dict
+
+def get_batched_sessions(session_dict, batchsize):
+  batched_sessions = []
+  temp_sessions = []
+  for session_id in session_dict.keys():
+    temp_sessions.append(session_id)
+    if len(temp_sessions) < batchsize:
+      batched_sessions.append(temp_sessions)
+      temp_sessions = []
+  
+  if temp_session != []:
+    batched_sessions.append(temp_sessions)
+
+  return batched_sessions

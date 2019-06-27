@@ -110,6 +110,31 @@ def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features, hot
       tensor[ai][si] = hotel_to_tensor(action['reference'], hotel_dict, n_features, hotels_window[si], max_window, meta_dict, meta_list)
   return tensor
 
+def session_to_tensor_ultimate(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
+  tensor = torch.zeros(len(session), 1, n_features)
+  
+  for hi, hotel in enumerate(session):
+    tensor[hi][0] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+  return tensor
+
+def sessions_to_batch_tensor(session_list, session_dict, hotel_dict, max_session_len, n_features):
+  batch_dim  = len(session_list)
+
+  tensor = torch.zeros(max_session_len, batch_dim, n_features)
+
+  for si, session in enumerate(session_list):
+    for hi, hotel in enumerate(session_dict[session]):
+      tensor[hi][si] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+  return tensor
+
+def hotel_to_tensor_ultimate(hotel, hotel_dict, n_features):
+  tensor = torch.zeros(n_features)
+  
+  if hotel in hotel_dict:
+    tensor = torch.from_numpy(hotel_dict[hotel])
+    
+  return tensor
+
 def meta_to_index(meta, meta_list):
     return meta_list.index(meta)
 
@@ -179,16 +204,16 @@ def category_from_output(output, hotel_dict):
   #print(output)
   return categories, category_i
 
-def categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfirst = False):
+def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
   category_scores_dict = {}
   categories_scores = []
   categories = []
 
-  for batch_i, window in enumerate(hotel_window):
+  for batch_i, single_session in enumerate(batch):
     category_scores_dict = {}
-    for hotelw_i, hotelw in enumerate(window):
+    for hotelw in impression_dict[single_session]:
       if hotelw in hotel_dict:
         hotel_i = hotel_dict.index2word.index(hotelw)
         category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
@@ -203,8 +228,7 @@ def categories_from_output_windowed_opt(output, hotel_window, hotel_dict, pickfi
       
     if pickfirst:
       temp_categories = category_scores_tuples[0][0]
-      temp_scores = category_scores_tuples[0][1]
-      
+      temp_scores = category_scores_tuples[0][1]    
     else:  
       for tup in category_scores_tuples:
         temp_categories.append(tup[0])
