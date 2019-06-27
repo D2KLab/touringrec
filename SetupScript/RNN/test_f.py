@@ -363,7 +363,7 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   if dev:
     mrr = 0
   else:
-    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+    #mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
-  return mrr
+  return 0
   

@@ -160,10 +160,12 @@ df_test_inner = pd.read_csv(param.testinner)
 df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
 #df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
-df_test_for_prepare = dsm.reference_to_str(df_test_inner)
+df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 
-df_gt_inner = pd.read_csv(param.gtinner)
-df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
+# No need for gt
+df_gt_inner = []
+#df_gt_inner = pd.read_csv(param.gtinner)
+#df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
@@ -171,7 +173,7 @@ df_test_dev = pd.read_csv(param.testdev)
 df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
-df_test_dev_for_prepare = dsm.reference_to_str(df_test_dev)
+df_test_dev_for_prepare = dsm.reference_to_str(df_test_dev.copy())
 
 #df_gt_dev = pd.read_csv('./gt_10.csv')
 
@@ -242,11 +244,11 @@ print('test_session_dict len is ' + str(len(test_session_dict)))
 print('test_category_dict len is ' + str(len(test_category_dict)))
 print('test_impression_dict len is ' + str(len(test_impression_dict)))
 
+'''
 df_test_inner = pd.read_csv(param.testinner)
 df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
-#df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
-
+'''
 
 logfile.write('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
 
@@ -461,10 +463,12 @@ logfile.write('Finish inner submission - Time: ' + str(timeSince(start_test_time
 
 #test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
 test_session_dict, test_category_dict, test_impression_dict = dsm.get_test_input(df_test_dev_for_prepare)
+
+'''
 df_test_dev = pd.read_csv(param.testdev)
 df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
-#df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
+'''
 
 logfile.write('Start dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
