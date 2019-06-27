@@ -38,7 +38,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_inner_gt = f.get_interaction_actions(df_inner_gt, actions=parameters.listactions)
     #df_inner_single_click = get_single_clickout_actions(df_inner_gt)
     df_inner_gt = remove_single_clickout_actions(df_inner_gt)
-    print(df_inner_single_click.head())
+    #print(df_inner_single_click.head())
     df_inner_gt = create_recent_index(df_inner_gt)
     print(df_inner_gt.head())
     #df_train_xg_single = get_single_click_features(df_inner_single_click)
