@@ -32,6 +32,8 @@ import argparse
 #python3 setup.py --encode ./encode_1.csv --meta ./item_metadata.csv --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --hiddendim 100 --epochs 20 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_1%_sub --numthread 2 --batchsize 16
 torch.manual_seed(1)
 
+dir = './ultimate/'
+
 parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
 parser.add_argument('--encode', action="store", type=str, help="--train encode.csv")
@@ -101,6 +103,17 @@ torch.set_num_threads(args.numthread)
 number_of_threads = torch.get_num_threads()
 print('Using num thread = ' + str(number_of_threads))
 
+logfile = open('log_' + param.subname + '.txt', 'a')
+logfile.write('Started ' + param.subname + 'execution\n')
+
+def timeSince(since):
+    now = time.time()
+    s = now - since
+    m = math.floor(s / 60)
+    s -= m * 60
+    return '%dm %ds' % (m, s)
+
+start_program_time = time.time()
 
 '''
 STEP 1: IMPORTING and MANIPULATING DATASET
@@ -185,6 +198,8 @@ n_features = len(word2vec.wv['666856'])
 
 hotel_dict = word2vec.wv
 
+logfile.write('W2vec completed - Time: ' + timeSince(start_program_time) + '\n')
+
 #extracting metadata features
 meta_list = []
 meta_dict = []
@@ -212,13 +227,19 @@ category_dict = {}
 impression_dict = {}
 session_dict, category_dict, impression_dict = dsm.get_training_input(df_train_inner)
 
+logfile.write('Imported and collected training set - Time: ' + timeSince(start_program_time) + '\n')
+
 test_session_dict = {}
 test_category_dict = {}
 test_impression_dict = {}
 test_session_dict, test_category_dict, test_impression_dict = dsm.get_test_input(df_test_inner)
 
+logfile.write('Imported and collected test set - Time: ' + timeSince(start_program_time) + '\n')
+
 # Batching sessions for RNN input
 batched_sessions = dsm.get_batched_sessions(test_session_dict, param.batchsize)
+
+logfile.write('Batched trainig set - Time: ' + timeSince(start_program_time) + '\n')
 
 #getting maximum window size
 max_window = 0
@@ -305,13 +326,6 @@ current_loss = 0
 all_losses = []
 all_acc = []
 
-def timeSince(since):
-    now = time.time()
-    s = now - since
-    m = math.floor(s / 60)
-    s -= m * 60
-    return '%dm %ds' % (m, s)
-
 start = time.time()
 
 # Training results for xgboost
@@ -319,11 +333,14 @@ training_results_hotels = {}
 training_results_scores = {}
 
 
-with open('rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
+with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
     for epoch in range(1, num_epochs + 1):
+
+        logfile.write('Epoch ' + epoch + ' start - Time: ' + timeSince(start) + '\n')
+
         #model.train()
         iter = 0
         
@@ -392,6 +409,11 @@ with open('rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train
             current_loss = 0
 
 
+        logfile.write('Epoch ' + epoch + ' end - Time: ' + timeSince(start) + '\n')
+        logfile.write('Epoch ' + epoch + ' - Loss: ' + all_losses[-1] + '\n')
+        
+
+
 '''
 STEP 6: PLOTTING RESULTS
 '''
@@ -410,15 +432,25 @@ import matplotlib.ticker as ticker
 STEP 7: Save Test Results
 '''
 
+start_test_time = time.time()
+
+logfile.write('Start inner submission - Time: ' + timeSince(start_test_time) + '\n')
+
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
 mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_clickout_dict, test_impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
 print("Final score for inner: " + str(mrr))
 
+logfile.write('Finish inner submission - Time: ' + timeSince(start_test_time) + '\n')
+
 #test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
 test_session_dict, test_category_dict, test_impression_dict = dsm.get_test_input(df_test_dev)
 
+logfile.write('Start dev submission - Time: ' + timeSince(start_test_time) + '\n')
+
 mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
 #print("Final score for dev: " + str(mrr))
+
+logfile.write('Finish dev submission - Time: ' + timeSince(start_test_time) + '\n')
 
 '''
 STEP 8: SAVING SUBMISSION
@@ -436,7 +468,7 @@ with open('classification_scores.csv', mode='a') as score_file:
 #f.send_telegram_message("End execution with score " + str(mrr))
 '''
 #Saving loss
-with open(param.subname + '_loss.csv', mode='w') as loss_file:
+with open(dir + param.subname + '_loss.csv', mode='w') as loss_file:
     file_writer = csv.writer(loss_file)
     file_writer.writerow(['#Epochs'])
     for loss in all_losses:
