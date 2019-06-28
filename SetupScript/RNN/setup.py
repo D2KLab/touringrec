@@ -255,7 +255,7 @@ n_features = len(word2vec.wv['666856'])
 
 #hotel_dict = w2v.normalize_word2vec(word2vec.wv)
 
-hotel_dict = word2vec.wv 
+hotel_dict = word2vec.wv
 
 logfile.write('W2vec completed - Time: ' + str(timeSince(start_program_time)) + '\n')
 
