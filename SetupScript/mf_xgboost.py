@@ -18,13 +18,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler   
 #import graphviz
     
-TRAINING_COLS = ['position','recent_index', 'score', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction']
+TRAINING_COLS = ['position','recent_index', 'score', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_gru', 'score_knn', 'score_rule']
 
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
-    df_inner_train = pd.read_csv('train_inner_100.csv')
-    df_inner_gt = pd.read_csv('gt_inner_100.csv')
+    df_inner_train = pd.read_csv('train.csv')
+    df_inner_gt = pd.read_csv('gt.csv')
     subm_csv = 'submission_mf_xgboost.csv'
     df_train = clean_dataset_error(df_train)
     df_inner_gt = clean_dataset_error(df_inner_gt)
@@ -36,13 +36,13 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     print(df_inner_train.head())
     #df_train = f.get_interaction_actions(df_train, actions = parameters.listactions)
     df_inner_gt = f.get_interaction_actions(df_inner_gt, actions=parameters.listactions)
-    df_inner_single_click = get_single_clickout_actions(df_inner_gt)
+    #df_inner_single_click = get_single_clickout_actions(df_inner_gt)
     df_inner_gt = remove_single_clickout_actions(df_inner_gt)
     #print(df_inner_single_click.head())
     df_inner_gt = create_recent_index(df_inner_gt)
     print(df_inner_gt.head())
-    df_train_xg_single = get_single_click_features(df_inner_single_click)
-    xg_model_single_click = xg_boost_training_single_click(df_train_xg_single)
+    #df_train_xg_single = get_single_click_features(df_inner_single_click)
+    #xg_model_single_click = xg_boost_training_single_click(df_train_xg_single)
     df_inner_gt_clickout, df_inner_gt_no_clickout = split_clickout(df_inner_gt)
 
     df_test_cleaned = f.get_interaction_actions(df_test, actions = parameters.listactions, clean_null = True)
@@ -65,6 +65,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, hotel_dic = hotel_dict, user_dic = user_dict)
     print('Get training set for XGBoost')
     df_train_xg = get_lightFM_features(df_inner_gt_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
+    df_train_xg = get_FR_xgboost(df_train_xg)
     #df_train_xg = get_RNN_features(df_train_xg, 'rnn_test_sub_xgb_inner.csv')
     print('LightFM Features: ')
     print(df_train_xg.head())
@@ -87,11 +88,11 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_out = generate_submission(df_test_xg, xg_model)
     print('Generated submissions: ')
     print(df_out.head())
-    df_test_nation = f.explode_position_scalable(df_test_nation, 'impressions')
-    df_test_nation['device'] = df_test_nation.apply(lambda x: 0 if(str(x.device) == 'desktop') else 1, axis = 1)
+    #df_test_nation = f.explode_position_scalable(df_test_nation, 'impressions')
+    #df_test_nation['device'] = df_test_nation.apply(lambda x: 0 if(str(x.device) == 'desktop') else 1, axis = 1)
     #print(df_test_nation.head())
-    df_out_nation = generate_submission(df_test_nation, xg_model_single_click, ['position', 'device'])
-    #df_out_nation = complete_prediction(df_test_nation)
+    #df_out_nation = generate_submission(df_test_nation, xg_model_single_click, ['position', 'device'])
+    df_out_nation = complete_prediction(df_test_nation)
     df_out = pd.concat([df_out, df_out_nation])
     df_out.to_csv(subm_csv, index=False)
     return df_out
@@ -152,6 +153,46 @@ def get_RNN_features(df, filename):
     df.fillna(0)
     print(df.head())
     return df
+
+def get_FR_xgboost(df):
+    print('DF INIZIALE: ' + str(df.shape[0]))
+    MERGE_COLS = ['user_id', 'session_id', 'hotel_id', 'timestamp', 'step']
+    df_gru = pd.read_csv('GRU_test_dev.csv')
+    df_knn = pd.read_csv('KNN_test_dev.csv')
+    df_rule = pd.read_csv('Rule_based_test_dev.csv')
+    df_gru = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
+    df_gru = (df_gru.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df_gru = clean_FR_dataset(df_gru)    
+    MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
+    df = (df.merge(df_gru, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
+    df.fillna(0)
+    print('DF FINALE: ' + str(df.shape[0]))
+    print(df.head())
+    return df
+
+
+def get_FR_final(df):
+    print('DF INIZIALE: ' + str(df.shape[0]))
+    MERGE_COLS = ['user_id', 'session_id', 'hotel_id', 'timestamp', 'step']
+    df_gru = pd.read_csv('GRU_confirmation.csv')
+    df_knn = pd.read_csv('KNN_confirmation.csv')
+    df_rule = pd.read_csv('Rule_based_confirmation.csv')
+    df_gru = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
+    df_gru = (df_gru.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df_gru = clean_FR_dataset(df_gru)    
+    MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
+    df = (df.merge(df_gru, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
+    df.fillna(0)
+    print('DF FINALE: ' + str(df.shape[0]))
+    print(df.head())
+    return df
+
+
+def clean_FR_dataset(df):
+    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+    df = df.rename(columns={'hotel_id':'item_id'})
+    return df
+
 
 
 
