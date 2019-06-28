@@ -18,7 +18,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler   
 #import graphviz
     
-TRAINING_COLS = ['position','recent_index', 'score_mf', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_rule']
+TRAINING_COLS = ['position','recent_index', 'score_mf', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_rule', 'score_knn', 'score_gru']
 
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
