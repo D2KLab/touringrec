@@ -99,7 +99,7 @@ verboseprint("Executing the solution " + algorithm)
 #df_rec = SOLUTION FUNCTION
 #Computing recommendation file
     
-df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, parameters = params)
+#df_rec = solutions[algorithm](df_train, df_test, file_metadata = metadata, parameters = params)
 df_test = f.get_submission_target(df_test)
 print(df_test)
 # df_test = df_test.rename(columns={'impressions':'item_recommendations'})
@@ -108,8 +108,8 @@ print(df_test)
 # print(df_rec.head())
 # #Computing score
 # algorithm = 'order_based'
-subm_csv = 'submission_' + algorithm + '.csv'
-#subm_csv = 'submission_mf_xgboost.csv'
+#subm_csv = 'submission_' + algorithm + '.csv'
+subm_csv = 'sub_rule_based.csv'
 if localscore == 1:
     mrr = f.score_submissions(subm_csv, gt, f.get_reciprocal_ranks)
     print("End execution with score " + str(mrr))

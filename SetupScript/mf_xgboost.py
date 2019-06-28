@@ -18,13 +18,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler   
 #import graphviz
     
-TRAINING_COLS = ['position','recent_index', 'score_mf', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_rule', 'score_knn', 'score_gru']
+TRAINING_COLS = ['position','recent_index', 'score_mf', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_gru']
 
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
-    df_inner_train = pd.read_csv('train.csv')
-    df_inner_gt = pd.read_csv('gt.csv')
+    df_inner_train = pd.read_csv('train_inner_100.csv')
+    df_inner_gt = pd.read_csv('gt_inner_100.csv')
     subm_csv = 'submission_mf_xgboost.csv'
     df_train = clean_dataset_error(df_train)
     df_inner_gt = clean_dataset_error(df_inner_gt)
@@ -158,11 +158,11 @@ def get_RNN_features(df, filename):
 def get_FR_xgboost(df):
     print('DF INIZIALE: ' + str(df.shape[0]))
     MERGE_COLS = ['user_id', 'session_id', 'hotel_id', 'timestamp', 'step']
-    df_gru = pd.read_csv('GRU_test_dev.csv')
-    df_knn = pd.read_csv('KNN_test_dev.csv')
-    df_rule = pd.read_csv('Rule_based_test_dev.csv')
-    df_final = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
-    df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df_final = pd.read_csv('GRU_test_dev.csv')
+    #df_knn = pd.read_csv('KNN_test_dev.csv')
+    #df_rule = pd.read_csv('Rule_based_test_dev.csv')
+    #df_final = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
+    #df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
     df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
     df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
@@ -174,11 +174,11 @@ def get_FR_xgboost(df):
 def get_FR_final(df):
     print('DF INIZIALE: ' + str(df.shape[0]))
     MERGE_COLS = ['user_id', 'session_id', 'hotel_id', 'timestamp', 'step']
-    df_gru = pd.read_csv('GRU_confirmation.csv')
-    df_knn = pd.read_csv('KNN_confirmation.csv')
-    df_rule = pd.read_csv('Rule_based_confirmation.csv')
-    df_final = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
-    df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df_final = pd.read_csv('GRU_confirmation.csv')
+    #df_knn = pd.read_csv('KNN_confirmation.csv')
+    #df_rule = pd.read_csv('Rule_based_confirmation.csv')
+    #df_final = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
+    #df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
     df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
     df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
