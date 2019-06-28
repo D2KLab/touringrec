@@ -203,6 +203,7 @@ print('session_dict len is ' + str(len(session_dict)))
 print('category_dict len is ' + str(len(category_dict)))
 print('impression_dict len is ' + str(len(impression_dict)))
 logfile.write('Imported and collected training set - Time: ' + str(timeSince(start_program_time)) + '\n')
+print('Imported and collected training set - Time: ' + str(timeSince(start_program_time)) + '\n')
 
 test_session_dict = {}
 test_category_dict = {}
@@ -219,7 +220,7 @@ df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 '''
 
 logfile.write('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
-
+print('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
 
 test_dev_session_dict = {}
 test_dev_category_dict = {}
@@ -230,13 +231,14 @@ print('test_dev_category_dict len is ' + str(len(test_dev_category_dict)))
 print('test_dev_impression_dict len is ' + str(len(test_dev_impression_dict)))
 
 logfile.write('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
+print('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
 
 # Batching sessions for RNN input
 batched_sessions = dsm.get_batched_sessions(session_dict, category_dict, param.batchsize)
 print('batched_sessions len is ' + str(len(batched_sessions)))
 
 logfile.write('Batched trainig set - Time: ' + str(timeSince(start_program_time)) + '\n')
-
+print(('Batched trainig set - Time: ' + str(timeSince(start_program_time)) + '\n'))
 
 #df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
 #df_corpus = dsm.reference_to_str(df_corpus)
@@ -258,7 +260,7 @@ n_features = len(word2vec.wv['666856'])
 hotel_dict = word2vec.wv
 
 logfile.write('W2vec completed - Time: ' + str(timeSince(start_program_time)) + '\n')
-
+print('W2vec completed - Time: ' + str(timeSince(start_program_time)) + '\n')
 #extracting metadata features
 meta_list = []
 meta_dict = []
@@ -370,7 +372,7 @@ for batch in batched_sessions:
     batch_hotel_window = []
     batch_category_tensor = []
 
-    for si, single_session in enumerate(batch):
+    for single_session in batch:
         if len(session_dict[single_session]) > max_session_len:
             max_session_len = len(session_dict[single_session])
         batch_category.append(category_dict[single_session])
