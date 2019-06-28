@@ -273,7 +273,7 @@ def xg_boost_training_single_click(train):
         num_boost_round=300,
     )
 
-    xgb.plot_importance(model)
+    #xgb.plot_importance(model)
     #xgb.plot_tree(model)
     plt.savefig('importance_xgboost.png')
     #plt.show()
@@ -316,7 +316,8 @@ def xg_boost_training(train):
         num_boost_round=300,
     )
 
-    #xgb.plot_importance(model)
+    xgb.plot_importance(model)
+    plt.savefig('importance_xgboost.png')
     #xgb.plot_tree(model)
     #plt.show()
     return model
