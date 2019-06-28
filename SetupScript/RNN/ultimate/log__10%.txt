@@ -1,100 +1,13 @@
 Started _10% execution
-Imported and collected training set - Time: 0m 3s
-Imported and collected test set - Time: 0m 3s
-Imported and collected test dev set - Time: 0m 3s
-Batched trainig set - Time: 0m 3s
-W2vec completed - Time: 0m 5s
-Epoch 1 start - Time: 0m 1s
-Epoch 1 end - Time: 0m 3s
-Epoch 1 - Loss: 1.120930085796863
-Epoch 2 start - Time: 0m 3s
-Epoch 2 end - Time: 0m 4s
-Epoch 2 - Loss: 0.10433634440414608
-Epoch 3 start - Time: 0m 4s
-Epoch 3 end - Time: 0m 5s
-Epoch 3 - Loss: 0.03979549010982737
-Epoch 4 start - Time: 0m 5s
-Epoch 4 end - Time: 0m 7s
-Epoch 4 - Loss: 0.0222722290083766
-Epoch 5 start - Time: 0m 7s
-Epoch 5 end - Time: 0m 8s
-Epoch 5 - Loss: 0.014555001613916829
-Epoch 6 start - Time: 0m 8s
-Epoch 6 end - Time: 0m 10s
-Epoch 6 - Loss: 0.010361948469653725
-Epoch 7 start - Time: 0m 10s
-Epoch 7 end - Time: 0m 11s
-Epoch 7 - Loss: 0.007790528936311603
-Epoch 8 start - Time: 0m 11s
-Epoch 8 end - Time: 0m 12s
-Epoch 8 - Loss: 0.006083145458251238
-Epoch 9 start - Time: 0m 12s
-Epoch 9 end - Time: 0m 14s
-Epoch 9 - Loss: 0.004883586056530475
-Epoch 10 start - Time: 0m 14s
-Epoch 10 end - Time: 0m 15s
-Epoch 10 - Loss: 0.004004512540996074
-Epoch 11 start - Time: 0m 15s
-Epoch 11 end - Time: 0m 16s
-Epoch 11 - Loss: 0.0033389309421181677
-Epoch 12 start - Time: 0m 16s
-Epoch 12 end - Time: 0m 18s
-Epoch 12 - Loss: 0.0028216578997671605
-Epoch 13 start - Time: 0m 18s
-Epoch 13 end - Time: 0m 19s
-Epoch 13 - Loss: 0.0024109584279358386
-Epoch 14 start - Time: 0m 19s
-Epoch 14 end - Time: 0m 21s
-Epoch 14 - Loss: 0.0020791211165487765
-Epoch 15 start - Time: 0m 21s
-Epoch 15 end - Time: 0m 22s
-Epoch 15 - Loss: 0.0018068915233016014
-Epoch 16 start - Time: 0m 22s
-Epoch 16 end - Time: 0m 23s
-Epoch 16 - Loss: 0.0015807759948074818
-Epoch 17 start - Time: 0m 23s
-Epoch 17 end - Time: 0m 25s
-Epoch 17 - Loss: 0.0013908714056015015
-Epoch 18 start - Time: 0m 25s
-Epoch 18 end - Time: 0m 26s
-Epoch 18 - Loss: 0.0012298407964408398
-Epoch 19 start - Time: 0m 26s
-Epoch 19 end - Time: 0m 28s
-Epoch 19 - Loss: 0.0010921895503997804
-Epoch 20 start - Time: 0m 28s
-Epoch 20 end - Time: 0m 29s
-Epoch 20 - Loss: 0.0009735763072967529
-Epoch 21 start - Time: 0m 29s
-Epoch 21 end - Time: 0m 31s
-Epoch 21 - Loss: 0.0008707822300493718
-Epoch 22 start - Time: 0m 31s
-Epoch 22 end - Time: 0m 32s
-Epoch 22 - Loss: 0.0007812052965164185
-Epoch 23 start - Time: 0m 32s
-Epoch 23 end - Time: 0m 34s
-Epoch 23 - Loss: 0.0007026706822216511
-Epoch 24 start - Time: 0m 34s
-Epoch 24 end - Time: 0m 35s
-Epoch 24 - Loss: 0.0006335496902465821
-Epoch 25 start - Time: 0m 35s
-Epoch 25 end - Time: 0m 36s
-Epoch 25 - Loss: 0.0005723776295781136
-Epoch 26 start - Time: 0m 36s
-Epoch 26 end - Time: 0m 38s
-Epoch 26 - Loss: 0.0005180895328521729
-Epoch 27 start - Time: 0m 38s
-Epoch 27 end - Time: 0m 39s
-Epoch 27 - Loss: 0.00046988483518362045
-Epoch 28 start - Time: 0m 39s
-Epoch 28 end - Time: 0m 41s
-Epoch 28 - Loss: 0.00042675146833062174
-Epoch 29 start - Time: 0m 41s
-Epoch 29 end - Time: 0m 42s
-Epoch 29 - Loss: 0.00038807690143585207
-Epoch 30 start - Time: 0m 42s
-Epoch 30 end - Time: 0m 44s
-Epoch 30 - Loss: 0.0003534018993377686
-Start inner submission - Time: 0m 0s
-Finish inner submission - Time: 0m 3s
-Start dev submission - Time: 0m 3s
-Finish dev submission - Time: 0m 7s
+Imported and collected training set - Time: 0m 30s
+Imported and collected test set - Time: 0m 32s
+Imported and collected test dev set - Time: 0m 33s
+Batched trainig set - Time: 0m 33s
+W2vec completed - Time: 0m 59s
+Epoch 1 start - Time: 0m 15s
+Epoch 1 end - Time: 0m 31s
+Epoch 1 - Loss: 0.13110588034375242
+Epoch 2 start - Time: 0m 31s
+Epoch 2 end - Time: 0m 46s
+Epoch 2 - Loss: 0.0018121114305055623
+Epoch 3 start - Time: 0m 46s

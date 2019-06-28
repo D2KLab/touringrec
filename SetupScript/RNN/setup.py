@@ -237,7 +237,6 @@ print('batched_sessions len is ' + str(len(batched_sessions)))
 
 logfile.write('Batched trainig set - Time: ' + str(timeSince(start_program_time)) + '\n')
 
-
 #df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
 #df_corpus = dsm.reference_to_str(df_corpus)
 corpus = train_corpus + test_corpus + test_dev_corpus
