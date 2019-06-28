@@ -360,9 +360,9 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
       df_sub.to_csv('./' + subname + '.csv')
 
   # Computing mrr only if test set is not the one without gt
-  if dev:
-    mrr = 0
-  else:
+  #if dev:
+    #mrr = 0
+  #else:
     #mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
   return 0
