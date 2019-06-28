@@ -18,7 +18,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler   
 #import graphviz
     
-TRAINING_COLS = ['position','recent_index', 'score_mf', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_gru', 'score_knn', 'score_rule']
+TRAINING_COLS = ['position','recent_index', 'score_mf', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_rule']
 
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
@@ -158,31 +158,30 @@ def get_RNN_features(df, filename):
 def get_FR_xgboost(df):
     print('DF INIZIALE: ' + str(df.shape[0]))
     MERGE_COLS = ['user_id', 'session_id', 'hotel_id', 'timestamp', 'step']
-    df_gru = pd.read_csv('GRU_test_dev.csv')
-    df_knn = pd.read_csv('KNN_test_dev.csv')
-    df_rule = pd.read_csv('Rule_based_test_dev.csv')
-    df_gru = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
-    df_gru = (df_gru.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
-    df_gru = clean_FR_dataset(df_gru)    
+    #df_gru = pd.read_csv('GRU_test_dev.csv')
+    #df_knn = pd.read_csv('KNN_test_dev.csv')
+    df_final = pd.read_csv('Rule_based_test_dev.csv')
+    #df_final = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
+    #df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
-    df = (df.merge(df_gru, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
+    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
     df.fillna(0)
     print('DF FINALE: ' + str(df.shape[0]))
     print(df.head())
     return df
 
-
 def get_FR_final(df):
     print('DF INIZIALE: ' + str(df.shape[0]))
     MERGE_COLS = ['user_id', 'session_id', 'hotel_id', 'timestamp', 'step']
-    df_gru = pd.read_csv('GRU_confirmation.csv')
-    df_knn = pd.read_csv('KNN_confirmation.csv')
-    df_rule = pd.read_csv('Rule_based_confirmation.csv')
-    df_gru = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
-    df_gru = (df_gru.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
-    df_gru = clean_FR_dataset(df_gru)    
+    #df_gru = pd.read_csv('GRU_confirmation.csv')
+    #df_knn = pd.read_csv('KNN_confirmation.csv')
+    df_final = pd.read_csv('Rule_based_confirmation.csv')
+    #df_final = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
+    #df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
-    df = (df.merge(df_gru, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
+    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
     df.fillna(0)
     print('DF FINALE: ' + str(df.shape[0]))
     print(df.head())
@@ -274,8 +273,9 @@ def xg_boost_training_single_click(train):
         num_boost_round=300,
     )
 
-    #xgb.plot_importance(model)
+    xgb.plot_importance(model)
     #xgb.plot_tree(model)
+    plt.savefig('importance_xgboost.png')
     #plt.show()
     return model
 
