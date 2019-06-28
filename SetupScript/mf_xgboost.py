@@ -81,6 +81,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_test_xg = (df_test_xg.merge(test_interactions, left_on=['session_id'], right_on=['session_id'], how="left"))
     df_test_xg['recent_index'] = df_test_xg.apply(lambda x : recent_index(x), axis=1)
     del df_test_xg['all_interactions']
+    df_test_xg = get_FR_final(df_test_xg)
     #df_test_xg = get_RNN_features(df_test_xg, 'rnn_test_sub_xgb_dev.csv')
     #df_test_xg['popularity'] = df_test_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
     #df_train_xg = get_most_popular_ranking(df_train_xg, sub_filename='submission_basesolution_nation.csv')
