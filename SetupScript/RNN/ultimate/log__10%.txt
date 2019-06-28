@@ -1,160 +1,100 @@
 Started _10% execution
-Imported and collected training set - Time: 0m 2s
+Imported and collected training set - Time: 0m 3s
 Imported and collected test set - Time: 0m 3s
 Imported and collected test dev set - Time: 0m 3s
 Batched trainig set - Time: 0m 3s
 W2vec completed - Time: 0m 5s
-Epoch 1 start - Time: 0m 24s
-Epoch 1 end - Time: 0m 25s
-Epoch 1 - Loss: 9.862326222658158
-Epoch 2 start - Time: 0m 25s
-Epoch 2 end - Time: 0m 27s
-Epoch 2 - Loss: 8.91790537238121
-Epoch 3 start - Time: 0m 27s
-Epoch 3 end - Time: 0m 28s
-Epoch 3 - Loss: 8.72773916721344
-Epoch 4 start - Time: 0m 28s
-Epoch 4 end - Time: 0m 30s
-Epoch 4 - Loss: 8.664088639616967
-Epoch 5 start - Time: 0m 30s
-Epoch 5 end - Time: 0m 32s
-Epoch 5 - Loss: 8.58414843082428
-Epoch 6 start - Time: 0m 32s
-Epoch 6 end - Time: 0m 33s
-Epoch 6 - Loss: 8.569862949848176
-Epoch 7 start - Time: 0m 33s
-Epoch 7 end - Time: 0m 35s
-Epoch 7 - Loss: 8.57039321064949
-Epoch 8 start - Time: 0m 35s
-Epoch 8 end - Time: 0m 36s
-Epoch 8 - Loss: 8.56902780532837
-Epoch 9 start - Time: 0m 36s
-Epoch 9 end - Time: 0m 38s
-Epoch 9 - Loss: 8.559446495771407
-Epoch 10 start - Time: 0m 38s
-Epoch 10 end - Time: 0m 40s
-Epoch 10 - Loss: 8.550212633609771
-Epoch 11 start - Time: 0m 40s
-Epoch 11 end - Time: 0m 42s
-Epoch 11 - Loss: 8.5376430362463
-Epoch 12 start - Time: 0m 42s
-Epoch 12 end - Time: 0m 43s
-Epoch 12 - Loss: 8.533801230788232
-Epoch 13 start - Time: 0m 43s
-Epoch 13 end - Time: 0m 45s
-Epoch 13 - Loss: 8.506530037522316
-Epoch 14 start - Time: 0m 45s
-Epoch 14 end - Time: 0m 47s
-Epoch 14 - Loss: 8.493896701931954
-Epoch 15 start - Time: 0m 47s
-Epoch 15 end - Time: 0m 48s
-Epoch 15 - Loss: 8.491872426867484
-Epoch 16 start - Time: 0m 48s
-Epoch 16 end - Time: 0m 50s
-Epoch 16 - Loss: 8.511957797408105
-Epoch 17 start - Time: 0m 50s
-Epoch 17 end - Time: 0m 52s
-Epoch 17 - Loss: 8.499431189894675
-Epoch 18 start - Time: 0m 52s
-Epoch 18 end - Time: 0m 54s
-Epoch 18 - Loss: 8.477793917059898
-Epoch 19 start - Time: 0m 54s
-Epoch 19 end - Time: 0m 55s
-Epoch 19 - Loss: 8.46502789258957
-Epoch 20 start - Time: 0m 55s
-Epoch 20 end - Time: 0m 57s
-Epoch 20 - Loss: 8.446411982178688
-Epoch 21 start - Time: 0m 57s
-Epoch 21 end - Time: 0m 59s
-Epoch 21 - Loss: 8.42482361793518
-Epoch 22 start - Time: 0m 59s
-Epoch 22 end - Time: 1m 1s
-Epoch 22 - Loss: 8.40361690223217
-Epoch 23 start - Time: 1m 1s
-Epoch 23 end - Time: 1m 3s
-Epoch 23 - Loss: 8.381550717353822
-Epoch 24 start - Time: 1m 3s
-Epoch 24 end - Time: 1m 4s
-Epoch 24 - Loss: 8.357438006997109
-Epoch 25 start - Time: 1m 4s
-Epoch 25 end - Time: 1m 6s
-Epoch 25 - Loss: 8.333706665039063
-Epoch 26 start - Time: 1m 6s
-Epoch 26 end - Time: 1m 8s
-Epoch 26 - Loss: 8.308508357405662
-Epoch 27 start - Time: 1m 8s
-Epoch 27 end - Time: 1m 10s
-Epoch 27 - Loss: 8.283395490050316
-Epoch 28 start - Time: 1m 10s
-Epoch 28 end - Time: 1m 11s
-Epoch 28 - Loss: 8.258722335100174
-Epoch 29 start - Time: 1m 11s
-Epoch 29 end - Time: 1m 13s
-Epoch 29 - Loss: 8.233102545142174
-Epoch 30 start - Time: 1m 13s
-Epoch 30 end - Time: 1m 15s
-Epoch 30 - Loss: 8.20304453074932
-Epoch 31 start - Time: 1m 15s
-Epoch 31 end - Time: 1m 17s
-Epoch 31 - Loss: 8.169781464338303
-Epoch 32 start - Time: 1m 17s
-Epoch 32 end - Time: 1m 19s
-Epoch 32 - Loss: 8.135324010252953
-Epoch 33 start - Time: 1m 19s
-Epoch 33 end - Time: 1m 21s
-Epoch 33 - Loss: 8.100756952166558
-Epoch 34 start - Time: 1m 21s
-Epoch 34 end - Time: 1m 23s
-Epoch 34 - Loss: 8.069207271933555
-Epoch 35 start - Time: 1m 23s
-Epoch 35 end - Time: 1m 24s
-Epoch 35 - Loss: 8.04064936041832
-Epoch 36 start - Time: 1m 24s
-Epoch 36 end - Time: 1m 26s
-Epoch 36 - Loss: 8.013131976127625
-Epoch 37 start - Time: 1m 26s
-Epoch 37 end - Time: 1m 28s
-Epoch 37 - Loss: 7.983184123039246
-Epoch 38 start - Time: 1m 28s
-Epoch 38 end - Time: 1m 29s
-Epoch 38 - Loss: 7.953452521562577
-Epoch 39 start - Time: 1m 29s
-Epoch 39 end - Time: 1m 31s
-Epoch 39 - Loss: 7.926852104067803
-Epoch 40 start - Time: 1m 31s
-Epoch 40 end - Time: 1m 33s
-Epoch 40 - Loss: 7.895276275277138
-Epoch 41 start - Time: 1m 33s
-Epoch 41 end - Time: 1m 35s
-Epoch 41 - Loss: 7.8713623970747
-Epoch 42 start - Time: 1m 35s
-Epoch 42 end - Time: 1m 36s
-Epoch 42 - Loss: 7.8433910489082335
-Epoch 43 start - Time: 1m 36s
-Epoch 43 end - Time: 1m 38s
-Epoch 43 - Loss: 7.8163883030414585
-Epoch 44 start - Time: 1m 38s
-Epoch 44 end - Time: 1m 40s
-Epoch 44 - Loss: 7.778353464603424
-Epoch 45 start - Time: 1m 40s
-Epoch 45 end - Time: 1m 42s
-Epoch 45 - Loss: 7.765557172894478
-Epoch 46 start - Time: 1m 42s
-Epoch 46 end - Time: 1m 43s
-Epoch 46 - Loss: 7.748201224207878
-Epoch 47 start - Time: 1m 43s
-Epoch 47 end - Time: 1m 45s
-Epoch 47 - Loss: 7.718097367882729
-Epoch 48 start - Time: 1m 45s
-Epoch 48 end - Time: 1m 47s
-Epoch 48 - Loss: 7.707454144954681
-Epoch 49 start - Time: 1m 47s
-Epoch 49 end - Time: 1m 49s
-Epoch 49 - Loss: 7.661814129352569
-Epoch 50 start - Time: 1m 49s
-Epoch 50 end - Time: 1m 55s
-Epoch 50 - Loss: 7.6636743485927585
+Epoch 1 start - Time: 0m 1s
+Epoch 1 end - Time: 0m 3s
+Epoch 1 - Loss: 1.120930085796863
+Epoch 2 start - Time: 0m 3s
+Epoch 2 end - Time: 0m 4s
+Epoch 2 - Loss: 0.10433634440414608
+Epoch 3 start - Time: 0m 4s
+Epoch 3 end - Time: 0m 5s
+Epoch 3 - Loss: 0.03979549010982737
+Epoch 4 start - Time: 0m 5s
+Epoch 4 end - Time: 0m 7s
+Epoch 4 - Loss: 0.0222722290083766
+Epoch 5 start - Time: 0m 7s
+Epoch 5 end - Time: 0m 8s
+Epoch 5 - Loss: 0.014555001613916829
+Epoch 6 start - Time: 0m 8s
+Epoch 6 end - Time: 0m 10s
+Epoch 6 - Loss: 0.010361948469653725
+Epoch 7 start - Time: 0m 10s
+Epoch 7 end - Time: 0m 11s
+Epoch 7 - Loss: 0.007790528936311603
+Epoch 8 start - Time: 0m 11s
+Epoch 8 end - Time: 0m 12s
+Epoch 8 - Loss: 0.006083145458251238
+Epoch 9 start - Time: 0m 12s
+Epoch 9 end - Time: 0m 14s
+Epoch 9 - Loss: 0.004883586056530475
+Epoch 10 start - Time: 0m 14s
+Epoch 10 end - Time: 0m 15s
+Epoch 10 - Loss: 0.004004512540996074
+Epoch 11 start - Time: 0m 15s
+Epoch 11 end - Time: 0m 16s
+Epoch 11 - Loss: 0.0033389309421181677
+Epoch 12 start - Time: 0m 16s
+Epoch 12 end - Time: 0m 18s
+Epoch 12 - Loss: 0.0028216578997671605
+Epoch 13 start - Time: 0m 18s
+Epoch 13 end - Time: 0m 19s
+Epoch 13 - Loss: 0.0024109584279358386
+Epoch 14 start - Time: 0m 19s
+Epoch 14 end - Time: 0m 21s
+Epoch 14 - Loss: 0.0020791211165487765
+Epoch 15 start - Time: 0m 21s
+Epoch 15 end - Time: 0m 22s
+Epoch 15 - Loss: 0.0018068915233016014
+Epoch 16 start - Time: 0m 22s
+Epoch 16 end - Time: 0m 23s
+Epoch 16 - Loss: 0.0015807759948074818
+Epoch 17 start - Time: 0m 23s
+Epoch 17 end - Time: 0m 25s
+Epoch 17 - Loss: 0.0013908714056015015
+Epoch 18 start - Time: 0m 25s
+Epoch 18 end - Time: 0m 26s
+Epoch 18 - Loss: 0.0012298407964408398
+Epoch 19 start - Time: 0m 26s
+Epoch 19 end - Time: 0m 28s
+Epoch 19 - Loss: 0.0010921895503997804
+Epoch 20 start - Time: 0m 28s
+Epoch 20 end - Time: 0m 29s
+Epoch 20 - Loss: 0.0009735763072967529
+Epoch 21 start - Time: 0m 29s
+Epoch 21 end - Time: 0m 31s
+Epoch 21 - Loss: 0.0008707822300493718
+Epoch 22 start - Time: 0m 31s
+Epoch 22 end - Time: 0m 32s
+Epoch 22 - Loss: 0.0007812052965164185
+Epoch 23 start - Time: 0m 32s
+Epoch 23 end - Time: 0m 34s
+Epoch 23 - Loss: 0.0007026706822216511
+Epoch 24 start - Time: 0m 34s
+Epoch 24 end - Time: 0m 35s
+Epoch 24 - Loss: 0.0006335496902465821
+Epoch 25 start - Time: 0m 35s
+Epoch 25 end - Time: 0m 36s
+Epoch 25 - Loss: 0.0005723776295781136
+Epoch 26 start - Time: 0m 36s
+Epoch 26 end - Time: 0m 38s
+Epoch 26 - Loss: 0.0005180895328521729
+Epoch 27 start - Time: 0m 38s
+Epoch 27 end - Time: 0m 39s
+Epoch 27 - Loss: 0.00046988483518362045
+Epoch 28 start - Time: 0m 39s
+Epoch 28 end - Time: 0m 41s
+Epoch 28 - Loss: 0.00042675146833062174
+Epoch 29 start - Time: 0m 41s
+Epoch 29 end - Time: 0m 42s
+Epoch 29 - Loss: 0.00038807690143585207
+Epoch 30 start - Time: 0m 42s
+Epoch 30 end - Time: 0m 44s
+Epoch 30 - Loss: 0.0003534018993377686
 Start inner submission - Time: 0m 0s
-Finish inner submission - Time: 0m 4s
-Start dev submission - Time: 0m 4s
-Finish dev submission - Time: 0m 9s
+Finish inner submission - Time: 0m 3s
+Start dev submission - Time: 0m 3s
+Finish dev submission - Time: 0m 7s

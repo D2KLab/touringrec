@@ -293,12 +293,8 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   categories = []
 
   category_scores_dict = {}
-  for hotelw in window:
-    if hotelw in hotel_dict:
-      hotel_i = hotel_dict.index2word.index(hotelw)
-      category_scores_dict[hotelw] = output_arr[0][hotel_i]
-    else:
-      category_scores_dict[hotelw] = -9999
+  for hoteli, hotelw in enumerate(window):
+    category_scores_dict[hotelw] = output_arr[0][hoteli]
 
   category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
 
@@ -360,10 +356,10 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
       df_sub.to_csv('./' + subname + '.csv')
 
   # Computing mrr only if test set is not the one without gt
-  #if dev:
-    #mrr = 0
-  #else:
-    #mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  if dev:
+    mrr = 0
+  else:
+    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
-  return 0
+  return mrr
   

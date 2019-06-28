@@ -164,7 +164,7 @@ df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 
 # No need for gt
 df_gt_inner = []
-#df_gt_inner = pd.read_csv(param.gtinner)
+df_gt_inner = pd.read_csv(param.gtinner)
 #df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
@@ -284,6 +284,7 @@ n_features_w2vec = len(word2vec.wv['666856'])
 n_features_meta = len(meta_list)
 n_features_impression = max_window
 n_features = n_features_w2vec + n_features_meta + n_features_impression
+n_features = 25
 
 print('n_hotels is ' + str(n_hotels))
 print('n_features_w2vec is ' + str(n_features_w2vec))
@@ -298,7 +299,7 @@ STEP 4: CREATE NETWORK
 
 #DEFINE PARAMETERS
 input_dim = n_features
-output_dim = n_hotels
+output_dim = 25
 #hidden_dim = int(1/100 * (input_dim + output_dim))
 hidden_dim = param.hiddendim
 print('The model is:')
@@ -375,8 +376,8 @@ for batch in batched_sessions:
             max_session_len = len(session_dict[single_session])
         batch_category.append(category_dict[single_session])
         batch_hotel_window.append(impression_dict[single_session])
-        batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
-    batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
+        batch_category_tensor = lstm.hotels_to_category_batch(batch_category, batch_hotel_window, hotel_dict)
+    batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, batch_hotel_window, max_session_len, n_features)
 
     max_session_len_set.append(max_session_len)
     batch_category_set.append(batch_category)

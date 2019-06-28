@@ -128,24 +128,23 @@ def session_to_tensor_ultimate(session, hotel_dict, n_features, hotels_window, m
   tensor = torch.zeros(len(session), 1, n_features)
   
   for hi, hotel in enumerate(session):
-    tensor[hi][0] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+    tensor[hi][0] = hotel_to_tensor_ultimate(hotel, hotel_dict, hotels_window, n_features)
   return tensor
 
-def sessions_to_batch_tensor(session_list, session_dict, hotel_dict, max_session_len, n_features):
+def sessions_to_batch_tensor(session_list, session_dict, hotel_dict, hotels_window, max_session_len, n_features):
   batch_dim  = len(session_list)
 
   tensor = torch.zeros(max_session_len, batch_dim, n_features)
 
   for si, session in enumerate(session_list):
     for hi, hotel in enumerate(session_dict[session]):
-      tensor[hi][si] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+      tensor[hi][si] = hotel_to_tensor_ultimate(hotel, hotel_dict, hotels_window[si], n_features)
   return tensor
 
-def hotel_to_tensor_ultimate(hotel, hotel_dict, n_features):
+def hotel_to_tensor_ultimate(hotel, hotel_dict, hotels_window, n_features):
   tensor = torch.zeros(n_features)
-  
-  if hotel in hotel_dict:
-    tensor = torch.from_numpy(hotel_dict[hotel])
+  if hotel in hotels_window:
+    tensor[hotels_window.index(hotel)] = 1
     
   return tensor
 
@@ -181,12 +180,12 @@ def hotel_to_category(hotel, hotel_dict, n_features):
     tensor = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
   return tensor
 
-def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
+def hotels_to_category_batch(hotel_list, batch_hotel_window, hotel_dict):
   batch_size = len(hotel_list)
   tensor = torch.zeros(batch_size)
   for hi, hotel in enumerate(hotel_list):
-    if hotel in hotel_dict.index2word:
-      tensor[hi] = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
+    if hotel in batch_hotel_window:
+      tensor[hi] = torch.tensor([batch_hotel_window[hi].index(hotel)], dtype=torch.long)
   return tensor
 
 '''def category_from_output(output, hotel_dict):
@@ -227,12 +226,9 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
 
   for batch_i, single_session in enumerate(batch):
     category_scores_dict = {}
-    for hotelw in impression_dict[single_session]:
-      if hotelw in hotel_dict:
-        hotel_i = hotel_dict.index2word.index(hotelw)
-        category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
-      else:
-        category_scores_dict[hotelw] = -9999
+    for hoteli, hotelw in enumerate(impression_dict[single_session]):
+      category_scores_dict[hotelw] = output_arr[batch_i][hoteli]
+
     
     #print(category_scores_dict)
     category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
