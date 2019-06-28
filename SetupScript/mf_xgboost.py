@@ -23,8 +23,8 @@ TRAINING_COLS = ['position','recent_index', 'score_mf', 'user_bias', 'item_bias'
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
-    df_inner_train = pd.read_csv('train_inner_100.csv')
-    df_inner_gt = pd.read_csv('gt_inner_100.csv')
+    df_inner_train = pd.read_csv('train.csv')
+    df_inner_gt = pd.read_csv('gt.csv')
     subm_csv = 'submission_mf_xgboost.csv'
     df_train = clean_dataset_error(df_train)
     df_inner_gt = clean_dataset_error(df_inner_gt)
@@ -181,7 +181,7 @@ def get_FR_final(df):
     #df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
     df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
-    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
+    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_gru')))
     df.fillna(0)
     print('DF FINALE: ' + str(df.shape[0]))
     print(df.head())
