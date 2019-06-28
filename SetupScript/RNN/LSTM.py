@@ -4,6 +4,8 @@ import torch.nn.functional as F
 import numpy as np
 import pandas as pd
 from operator import itemgetter
+import time
+import math
 #from setup import param
 
 class LSTMModel(nn.Module):
@@ -71,6 +73,12 @@ class LSTMModel(nn.Module):
 
         return out
 
+def timeSince(since):
+    now = time.time()
+    s = now - since
+    m = math.floor(s / 60)
+    s -= m * 60
+    return '%dm %ds' % (m, s)
 
 def train(model, loss_fn, optimizer, category_tensor, line_tensor, iscuda):
     
@@ -78,13 +86,19 @@ def train(model, loss_fn, optimizer, category_tensor, line_tensor, iscuda):
     
     line_tensor = line_tensor.requires_grad_()
 
+    start = time.time()
+
     output = model(line_tensor)
     
+    #print('Train time - time for net output: ' + str(timeSince(start)))
+
     if iscuda:
       category_tensor = category_tensor.long().cuda()
 
     loss = loss_fn(output, category_tensor)
     loss.backward()
+
+    #print('Train time - time for loss computation: ' + str(timeSince(start)))
 
     optimizer.step()
     

@@ -180,13 +180,70 @@ df_test_dev_for_prepare = dsm.reference_to_str(df_test_dev.copy())
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_dev, df_gt_dev)
 
 
-df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
-df_corpus = dsm.reference_to_str(df_corpus)
+'''
+STEP 2: PREPARE NET INPUT
+'''
 
-corpus = dsm.get_corpus(df_corpus)
+#this splits the training set sessions into multiple mini-sessions
+'''
+if param.batchsize == 0:
+    sessions, categories, hotels_window = dsm.prepare_input(df_train_inner)
+else:
+    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train_inner, param.batchsize)
+'''
+
+#test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_inner, df_gt_inner)
+
+session_dict = {}
+category_dict = {}
+impression_dict = {}
+session_dict, category_dict, impression_dict, train_corpus = dsm.get_training_input(df_train_inner)
+print('num of sessions is ' + str(len(df_train_inner.groupby('session_id'))) )
+print('session_dict len is ' + str(len(session_dict)))
+print('category_dict len is ' + str(len(category_dict)))
+print('impression_dict len is ' + str(len(impression_dict)))
+logfile.write('Imported and collected training set - Time: ' + str(timeSince(start_program_time)) + '\n')
+
+test_session_dict = {}
+test_category_dict = {}
+test_impression_dict = {}
+test_session_dict, test_category_dict, test_impression_dict, test_corpus = dsm.get_test_input(df_test_for_prepare)
+print('test_session_dict len is ' + str(len(test_session_dict)))
+print('test_category_dict len is ' + str(len(test_category_dict)))
+print('test_impression_dict len is ' + str(len(test_impression_dict)))
 
 '''
-STEP 2: ENCODING TO CREATE DICTIONARY
+df_test_inner = pd.read_csv(param.testinner)
+df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
+df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
+'''
+
+logfile.write('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
+
+
+test_dev_session_dict = {}
+test_dev_category_dict = {}
+test_dev_impression_dict = {}
+test_dev_session_dict, test_dev_category_dict, test_dev_impression_dict, test_dev_corpus = dsm.get_test_input(df_test_dev_for_prepare)
+print('test_dev_session_dict len is ' + str(len(test_dev_session_dict)))
+print('test_dev_category_dict len is ' + str(len(test_dev_category_dict)))
+print('test_dev_impression_dict len is ' + str(len(test_dev_impression_dict)))
+
+logfile.write('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
+
+# Batching sessions for RNN input
+batched_sessions = dsm.get_batched_sessions(session_dict, category_dict, param.batchsize)
+print('batched_sessions len is ' + str(len(batched_sessions)))
+
+logfile.write('Batched trainig set - Time: ' + str(timeSince(start_program_time)) + '\n')
+
+
+#df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
+#df_corpus = dsm.reference_to_str(df_corpus)
+corpus = train_corpus + test_corpus + test_dev_corpus
+
+'''
+STEP 3: ENCODING TO CREATE DICTIONARY
 '''
 
 #w2vec item encoding
@@ -209,54 +266,6 @@ if param.ismeta:
     meta_list = dsm.extract_unique_meta(df_meta)
     meta_dict = dsm.get_meta_dict(df_meta, hotel_dict.index2word, meta_list)
 
-
-'''
-STEP 3: PREPARE NET INPUT
-'''
-
-#this splits the training set sessions into multiple mini-sessions
-'''
-if param.batchsize == 0:
-    sessions, categories, hotels_window = dsm.prepare_input(df_train_inner)
-else:
-    sessions, categories, hotels_window = dsm.prepare_input_batched(df_train_inner, param.batchsize)
-'''
-
-#test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_inner, df_gt_inner)
-
-session_dict = {}
-category_dict = {}
-impression_dict = {}
-session_dict, category_dict, impression_dict = dsm.get_training_input(df_train_inner)
-print('num of sessions is ' + str(len(df_train_inner.groupby('session_id'))) )
-print('session_dict len is ' + str(len(session_dict)))
-print('category_dict len is ' + str(len(category_dict)))
-print('impression_dict len is ' + str(len(impression_dict)))
-
-
-logfile.write('Imported and collected training set - Time: ' + str(timeSince(start_program_time)) + '\n')
-
-test_session_dict = {}
-test_category_dict = {}
-test_impression_dict = {}
-test_session_dict, test_category_dict, test_impression_dict = dsm.get_test_input(df_test_for_prepare)
-print('test_session_dict len is ' + str(len(test_session_dict)))
-print('test_category_dict len is ' + str(len(test_category_dict)))
-print('test_impression_dict len is ' + str(len(test_impression_dict)))
-
-'''
-df_test_inner = pd.read_csv(param.testinner)
-df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
-df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
-'''
-
-logfile.write('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
-
-# Batching sessions for RNN input
-batched_sessions = dsm.get_batched_sessions(session_dict, category_dict, param.batchsize)
-print('batched_sessions len is ' + str(len(batched_sessions)))
-
-logfile.write('Batched trainig set - Time: ' + str(timeSince(start_program_time)) + '\n')
 
 #getting maximum window size
 max_window = 0
@@ -349,6 +358,33 @@ start = time.time()
 training_results_hotels = {}
 training_results_scores = {}
 
+max_session_len_set = []
+batch_category_set = []
+batch_hotel_window_set = []
+batch_category_tensor_set = []
+batch_session_tensor_set = []
+
+for batch in batched_sessions:
+    max_session_len = 0
+    batch_category = []
+    batch_hotel_window = []
+    batch_category_tensor = []
+
+    for si, single_session in enumerate(batch):
+        if len(session_dict[single_session]) > max_session_len:
+            max_session_len = len(session_dict[single_session])
+        batch_category.append(category_dict[single_session])
+        batch_hotel_window.append(impression_dict[single_session])
+        batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
+    batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
+
+    max_session_len_set.append(max_session_len)
+    batch_category_set.append(batch_category)
+    batch_hotel_window_set.append(batch_hotel_window)
+    batch_category_tensor_set.append(batch_category_tensor)
+    batch_session_tensor_set.append(batch_session_tensor)
+
+print('Got batch infos:  ' + str(timeSince(start)))
 
 with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
@@ -364,11 +400,12 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
         count_correct = 0
         count_correct_windowed = 0
 
-        print(str(len(session_dict)) + ' sessions to be computed')
+        #print(str(len(session_dict)) + ' sessions to be computed')
         
-        for batch in batched_sessions:
+        for batch_i, batch in enumerate(batched_sessions):
             iter = iter + 1
 
+            '''
             max_session_len = 0
             batch_category = []
             batch_hotel_window = []
@@ -378,11 +415,19 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
                 batch_category.append(category_dict[single_session])
                 batch_hotel_window.append(impression_dict[single_session])
                 batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
-
+            
 
             batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
 
+            '''
+            max_session_len = max_session_len_set[batch_i]
+            batch_category = batch_category_set[batch_i]
+            batch_hotel_window = batch_hotel_window_set[batch_i]
+            batch_category_tensor = batch_category_tensor_set[batch_i]
             
+            batch_session_tensor = batch_session_tensor_set[batch_i]
+            #print('Turned session to batch : ' + str(timeSince(start)))
+
             output, loss = lstm.train(model, loss_fn, optimizer, batch_category_tensor, batch_session_tensor, param.iscuda)
 
             current_loss += loss
@@ -462,7 +507,9 @@ print("Final score for inner: " + str(mrr))
 logfile.write('Finish inner submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
 #test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
-test_session_dict, test_category_dict, test_impression_dict = dsm.get_test_input(df_test_dev_for_prepare)
+
+# Done above
+#test_session_dict, test_category_dict, test_impression_dict, test_corpus = dsm.get_test_input(df_test_dev_for_prepare)
 
 '''
 df_test_dev = pd.read_csv(param.testdev)

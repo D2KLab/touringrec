@@ -101,6 +101,10 @@ def get_corpus(df):
 
   return splitted_sessions
 
+def get_corpus_opt():
+
+  return splitted_sessions
+
 def extract_unique_meta(df_meta):
     d = []
     h_feat = df_meta['properties']
@@ -247,10 +251,14 @@ def get_training_input(df_train):
   df_train['step_max'] = df_train[df_train['action_type'] == 'clickout item'].groupby(['session_id'])['step'].transform(max)
   df_train['result'] = df_train[df_train['step'] == df_train['step_max']].apply(lambda x: get_clickout_data(x, clickout_dict, impression_dict), axis = 1)
   #df_train = df_train.drop(df_train.index[math.isnan(df_train['step_max'])])
+  df_train_corpus = df_train.groupby('session_id').apply(lambda x: get_list_session_interactions(x, session_dict)).reset_index(name = 'hotel_list')
   df_train = df_train.drop(df_train.index[(df_train['step'] == df_train['step_max']) & (df_train["action_type"] == "clickout item")])
-  df_train = df_train.groupby('session_id').apply(lambda x: get_list_session_interactions(x, session_dict)).reset_index(name = 'hotel_list')
 
-  return session_dict, clickout_dict, impression_dict
+  train_corpus = []
+  for hotel_session in df_train_corpus.hotel_list.values:
+    train_corpus.append(hotel_session.split(' '))
+
+  return session_dict, clickout_dict, impression_dict, train_corpus
 
 def get_clickout_data_test(action, clickout_dict, impression_dict):
   if math.isnan(float(action.reference)):
@@ -268,10 +276,14 @@ def get_test_input(df_test):
 
   df_test['step_max'] = df_test[df_test['action_type'] == 'clickout item'].groupby(['session_id'])['step'].transform(max)
   df_test['result'] = df_test[df_test['step'] == df_test['step_max']].apply(lambda x: get_clickout_data_test(x, test_step_clickout_dict, test_impression_dict), axis = 1)
-  df_test = df_test.drop(df_test.index[(df_test['step'] == df_test['step_max']) & (df_test["action_type"] == "clickout item")])
-  df_test = df_test.groupby('session_id').apply(lambda x: get_list_session_interactions(x, test_sessions_dict)).reset_index(name = 'hotel_list')      
+  df_test = df_test.drop(df_test.index[(df_test['step'] == df_test['step_max']) & (df_test["action_type"] == "clickout item")])   
+  df_test_corpus = df_test.groupby('session_id').apply(lambda x: get_list_session_interactions(x, test_sessions_dict)).reset_index(name = 'hotel_list')      
 
-  return test_sessions_dict, test_step_clickout_dict, test_impression_dict
+  test_corpus = []
+  for hotel_session in df_test_corpus.hotel_list.values:
+    test_corpus.append(hotel_session.split(' '))
+
+  return test_sessions_dict, test_step_clickout_dict, test_impression_dict, test_corpus
 
 def get_batched_sessions(session_dict, category_dict, batchsize):
   batched_sessions = []
