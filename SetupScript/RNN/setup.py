@@ -366,6 +366,8 @@ batch_hotel_window_set = []
 batch_category_tensor_set = []
 batch_session_tensor_set = []
 
+timeforprep = time.time()
+
 for batch in batched_sessions:
     max_session_len = 0
     batch_category = []
@@ -373,18 +375,29 @@ for batch in batched_sessions:
     batch_category_tensor = []
 
     for single_session in batch:
+        print('start max_session_len in time ' + str(timeSince(timeforprep)))
         if len(session_dict[single_session]) > max_session_len:
             max_session_len = len(session_dict[single_session])
+        print('fninsh max_session_len in time ' + str(timeSince(timeforprep)))
+        print('start batch_category in time ' + str(timeSince(timeforprep)))
         batch_category.append(category_dict[single_session])
+        print('finish batch_category in time ' + str(timeSince(timeforprep)))
         batch_hotel_window.append(impression_dict[single_session])
-        batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
+    
+    print('start batch_category_tensor in time ' + str(timeSince(timeforprep)))
+    batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
+    print('finish batch_category_tensor in time ' + str(timeSince(timeforprep)))
+
+    print('start session tensor in time ' + str(timeSince(timeforprep)))
     batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
+    print('finish session tensor in time ' + str(timeSince(timeforprep)))
 
     max_session_len_set.append(max_session_len)
     batch_category_set.append(batch_category)
     batch_hotel_window_set.append(batch_hotel_window)
     batch_category_tensor_set.append(batch_category_tensor)
     batch_session_tensor_set.append(batch_session_tensor)
+    print('Finished batch prep in time ' + str(timeSince(timeforprep)))
 
 print('Got batch infos:  ' + str(timeSince(start)))
 
