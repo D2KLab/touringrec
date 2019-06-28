@@ -150,7 +150,7 @@ def add_popularity(item, dictionary):
 def get_RNN_features(df, filename):
     df_rnn = pd.read_csv(filename)
     df_rnn = df_rnn.rename(columns={'hotel_id':'item_id'})
-    df = (df.merge(df_rnn, left_on=['session_id', 'item_id'], right_on=['session_id', 'item_id'], how="left", suffixes=('_mf', '_rnn')))
+    df = (df.merge(df_rnn, left_on=['session_id', 'item_id'], right_on=['session_id', 'item_id'], how="left", suffixes=('_mf', '_gru')))
     df.fillna(0)
     print(df.head())
     return df
@@ -165,7 +165,7 @@ def get_FR_xgboost(df):
     #df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
     df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
-    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
+    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_gru')))
     df.fillna(0)
     print('DF FINALE: ' + str(df.shape[0]))
     print(df.head())
