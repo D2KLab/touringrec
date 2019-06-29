@@ -1,22 +1,6 @@
 Started _10% execution
-Imported and collected training set - Time: 0m 23s
-Imported and collected test set - Time: 0m 25s
-Imported and collected test dev set - Time: 0m 26s
-Batched trainig set - Time: 0m 26s
-W2vec completed - Time: 6m 0s
-Epoch 1 start - Time: 0m 0s
-Epoch 1 end - Time: 0m 16s
-Epoch 1 - Loss: 12.466044056917973
-Epoch 2 start - Time: 0m 16s
-Epoch 2 end - Time: 0m 33s
-Epoch 2 - Loss: 10.710010337098804
-Epoch 3 start - Time: 0m 33s
-Epoch 3 end - Time: 0m 50s
-Epoch 3 - Loss: 10.405823584077915
-Epoch 4 start - Time: 0m 50s
-Epoch 4 end - Time: 1m 6s
-Epoch 4 - Loss: 10.433700052897136
-Epoch 5 start - Time: 1m 6s
-Epoch 5 end - Time: 29m 50s
-Epoch 5 - Loss: 10.433380148876672
-Start inner submission - Time: 0m 0s
+Imported and collected training set - Time: 0m 2s
+Imported and collected test set - Time: 0m 3s
+Imported and collected test dev set - Time: 0m 3s
+Batched trainig set - Time: 0m 3s
+W2vec completed - Time: 0m 8s

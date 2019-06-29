@@ -258,17 +258,20 @@ STEP 3: ENCODING TO CREATE DICTIONARY
 #w2vec item encoding
 from gensim.models import Word2Vec
 
-word2vec = Word2Vec(corpus, min_count=1, window=param.window, sg=1)
-del train_corpus
+word2vec = Word2Vec(corpus, size = param.ncomponents, min_count=1, window=param.window, sg=1)
+#del train_corpus
 del test_corpus
 del test_dev_corpus
-
 
 n_features = len(word2vec.wv['666856'])
 #print(type(word2vec.wv.vocab.items()))
 #hotel_dict = w2v.normalize_word2vec(word2vec.wv)
-hotel_dict = {k:torch.from_numpy(word2vec.wv[k]) for k in word2vec.wv.index2word}
+
+
+#hotel_dict = {k:torch.from_numpy(word2vec.wv[k]) for k in word2vec.wv.index2word}
+hotel_dict = {k: list(word2vec.wv[k]) for k in word2vec.wv.index2word}
 hotel_to_category_dict = {k:torch.tensor([list(hotel_dict.keys()).index(k)]) for k in hotel_dict}
+
 del word2vec
 del corpus
 
@@ -382,6 +385,16 @@ batch_session_tensor_set = []
 timeforprep = time.time()
 
 
+def list_to_padded(l):
+    l = list(map(lambda h: hotel_dict[h], l))
+    miss_n = 200 - len(l)
+    for missing in range(miss_n):
+        l.append([0] * 60)
+    return l
+
+train_corpus = list(map(lambda x: list_to_padded(x), train_corpus))
+tensor_input = torch.FloatTensor(train_corpus)
+print(tensor_input.shape())
 
 for batch in batched_sessions:
     max_session_len = 0
