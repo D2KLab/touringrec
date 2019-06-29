@@ -25,7 +25,7 @@ class LSTMModel(nn.Module):
 
         #self.lstm = nn.LSTM(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim)  
       
-        self.gru = nn.GRU(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim) # Use dropout with more than 1 layer
+        self.gru = nn.GRU(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim, batch_first = True) # Use dropout with more than 1 layer
 
         #self.hidden_fc = nn.Linear(hidden_dim, hidden_dim * 10)
 
@@ -41,9 +41,9 @@ class LSTMModel(nn.Module):
         
         # Initialize hidden state with zeros
         if self.iscuda:
-            h0 = torch.zeros(self.layer_dim, x.size(1), self.hidden_dim).cuda()
+            h0 = torch.zeros(self.layer_dim, x.size(0), self.hidden_dim).cuda()
         else:
-            h0 = torch.zeros(self.layer_dim, x.size(1), self.hidden_dim)
+            h0 = torch.zeros(self.layer_dim, x.size(0), self.hidden_dim)
 
         # Initialize cell state
         if self.iscuda:
@@ -61,7 +61,7 @@ class LSTMModel(nn.Module):
 
         #out = F.relu(self.hidden_fc(out))
 
-        out = out[-1, :, :]
+        out = out[:, -1, :]
 
         out = self.softmax(out)
 
@@ -125,11 +125,11 @@ def sessions_to_batch(session_list, hotel_dict, max_session_len, n_features, hot
   return tensor
 
 def session_to_tensor_ultimate(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
-  tensor = torch.zeros(len(session), 1, n_features)
+  tensor = torch.zeros(1, len(session), n_features)
   
   for hi, hotel in enumerate(session):
-    #tensor[hi][0] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
-    tensor[hi][0] = hotel_dict[hotel]
+    tensor[0][hi] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+    #tensor[hi][0] = hotel_dict[hotel]
   return tensor
 
 def sessions_to_batch_tensor(session_list, session_dict, hotel_dict, max_session_len, n_features):
@@ -147,9 +147,7 @@ def hotel_to_tensor_ultimate(hotel, hotel_dict, n_features):
   tensor = torch.zeros(n_features)
   
   if hotel in hotel_dict:
-    tensor = hotel_dict[hotel]
-  else:
-    tensor = torch.zeros(n_features)
+    tensor = torch.FloatTensor(hotel_dict[hotel])
     
   return tensor
 

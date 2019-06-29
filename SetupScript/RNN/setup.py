@@ -3,7 +3,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, TensorDataset
 import random
 import time
 import math
@@ -270,7 +270,7 @@ n_features = len(word2vec.wv['666856'])
 
 #hotel_dict = {k:torch.from_numpy(word2vec.wv[k]) for k in word2vec.wv.index2word}
 hotel_dict = {k: list(word2vec.wv[k]) for k in word2vec.wv.index2word}
-hotel_to_category_dict = {k:torch.tensor([list(hotel_dict.keys()).index(k)]) for k in hotel_dict}
+#hotel_to_category_dict = {k:torch.tensor([list(hotel_dict.keys()).index(k)]) for k in hotel_dict}
 
 del word2vec
 del corpus
@@ -385,18 +385,39 @@ batch_session_tensor_set = []
 timeforprep = time.time()
 
 
-def list_to_padded(l):
-    l = list(map(lambda h: hotel_dict[h], l))
-    miss_n = 200 - len(l)
-    for missing in range(miss_n):
-        l.append([0] * 60)
-    return l
+def list_to_padded(t):
+    k = t[0]
+    v = t[1]
+    if k in category_dict:
+        l = list(v)
+        l = list(map(lambda h: hotel_dict[h], l))
+        miss_n = 200 - len(l)
+        for missing in range(miss_n):
+            l.append([0] * 60)
+        return l
+    else:
+        return []
 
-train_corpus = list(map(lambda x: list_to_padded(x), train_corpus))
+train_corpus = list(map(lambda t: list_to_padded(t), session_dict.items()))
+train_corpus = [x for x in train_corpus if x != []]
 tensor_input = torch.FloatTensor(train_corpus)
-print(tensor_input.shape())
+print(tensor_input.shape)
 
-for batch in batched_sessions:
+def dict_to_cat_list(x):
+    if x in list(hotel_dict.keys()):
+        return list(hotel_dict.keys()).index(x)
+    else:
+        return 0
+
+tensor_cat_input = list(map(lambda x: dict_to_cat_list(x), list(category_dict.values())))
+tensor_cat_input = torch.FloatTensor(tensor_cat_input)
+print(tensor_cat_input.shape)
+
+dataset = TensorDataset(tensor_input, tensor_cat_input)
+
+dataloader = DataLoader(dataset = dataset, batch_size = param.batchsize)
+
+'''for batch in batched_sessions:
     max_session_len = 0
     batch_category = []
     batch_hotel_window = []
@@ -425,7 +446,7 @@ for batch in batched_sessions:
     #batch_hotel_window_set.append(batch_hotel_window)
     batch_category_tensor_set.append(batch_category_tensor)
     batch_session_tensor_set.append(batch_session_tensor)
-    #print('Finished batch prep in time ' + str(timeSince(timeforprep)))
+    #print('Finished batch prep in time ' + str(timeSince(timeforprep)))'''
 
 print('Got batch infos:  ' + str(timeSince(start)))
 
@@ -445,7 +466,7 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
 
         #print(str(len(session_dict)) + ' sessions to be computed')
         
-        for batch_i, batch in enumerate(batched_sessions):
+        for batch_i, sample in enumerate(dataloader):
             iter = iter + 1
 
             '''
@@ -466,19 +487,19 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
             #max_session_len = max_session_len_set[batch_i]
             #batch_category = batch_category_set[batch_i]
             #batch_hotel_window = batch_hotel_window_set[batch_i]
-            batch_category_tensor = batch_category_tensor_set[batch_i]
+            '''batch_category_tensor = batch_category_tensor_set[batch_i]'''
             
-            batch_session_tensor = batch_session_tensor_set[batch_i]
+            '''batch_session_tensor = batch_session_tensor_set[batch_i]'''
             #print('Turned session to batch : ' + str(timeSince(start)))
-
-            output, loss = lstm.train(model, loss_fn, optimizer, batch_category_tensor, batch_session_tensor, param.iscuda)
+            
+            output, loss = lstm.train(model, loss_fn, optimizer, sample[1], sample[0], param.iscuda)
 
             current_loss += loss
             
             if epoch == num_epochs:
-                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False)
+                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batched_sessions[batch_i], impression_dict, hotel_dict, pickfirst = False)
         
-                for batch_i, single_session in enumerate(batch):
+                for session_i, single_session in enumerate(batched_sessions[batch_i]):
                     #if guess[batch_i] == category_v:
                     #    count_correct = count_correct + 1
 
@@ -495,9 +516,9 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
                         #correct = '✓' if guess_windowed_list[batch_i][0] == category_v else '✗ (%s)' % category_v
                         #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
   
-                    for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
+                    for hotel_i, hotel in enumerate(guess_windowed_list[session_i]):
                         # Write single hotel score
-                        file_writer.writerow([str(single_session), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
+                        file_writer.writerow([str(single_session), str(hotel), str(guess_windowed_scores_list[session_i][hotel_i])])
                     
                 
         # Add current loss avg to list of losses
