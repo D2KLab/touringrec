@@ -178,7 +178,7 @@ def get_FR_xgboost(df):
     df_final = (df_gru.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
     df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
-    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
     df.fillna(0)
     print('DF FINALE: ' + str(df.shape[0]))
     print(df.head())
@@ -194,7 +194,7 @@ def get_FR_final(df):
     df_final = (df_gru.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
     df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
-    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_mf', '_rule')))
     df.fillna(0)
     print('DF FINALE: ' + str(df.shape[0]))
     print(df.head())
