@@ -267,6 +267,7 @@ n_features = len(word2vec.wv['666856'])
 #print(type(word2vec.wv.vocab.items()))
 #hotel_dict = w2v.normalize_word2vec(word2vec.wv)
 hotel_dict = {k:torch.from_numpy(word2vec.wv[k]) for k in word2vec.wv.index2word}
+hotel_to_category_dict = {k:torch.tensor([list(hotel_dict.keys()).index(k)]) for k in hotel_dict}
 del word2vec
 del corpus
 
@@ -396,7 +397,7 @@ for batch in batched_sessions:
         #batch_hotel_window.append(impression_dict[single_session])
     
     #print('start batch_category_tensor in time ' + str(timeSince(timeforprep)))
-    batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
+    batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_to_category_dict, n_hotels)
     #print('finish batch_category_tensor in time ' + str(timeSince(timeforprep)))
 
     #print('start session tensor in time ' + str(timeSince(timeforprep)))
