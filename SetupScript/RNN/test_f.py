@@ -285,18 +285,19 @@ def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clic
 
 ### FUNCTIONS FOR CLASSIFICATION TASK ###
 
-def recommendations_from_output_classification(output, hotel_dict, window, n_features):
+def recommendations_from_output_classification(output, hotel_dict, window, n_features, last_visited):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
   category_scores_dict = {}
   categories_scores = []
   categories = []
 
-  category_scores_dict = {}
+  #max_class_v, max_class_i = torch.max(output_arr)
+  max_class_i = np.where(output_arr == np.amax(output_arr))
+
   for hotelw in window:
-    if hotelw in hotel_dict:
-      hotel_i = list(hotel_dict.keys()).index(hotelw)
-      category_scores_dict[hotelw] = output_arr[0][hotel_i]
+    if (hotelw in last_visited) & (max_class_i != 0):
+      category_scores_dict[hotelw] = output_arr[0][last_visited.index(hotelw) + 1]
     else:
       category_scores_dict[hotelw] = -9999
 
@@ -313,8 +314,7 @@ def evaluate_classification(model, session, hotel_dict, n_features, hotels_windo
     line_tensor = lstm.session_to_tensor_ultimate(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
     
     output = model(line_tensor)
-        
-    output = recommendations_from_output_classification(output, hotel_dict, hotels_window, n_features)
+    output = recommendations_from_output_classification(output, hotel_dict, hotels_window, n_features, list(set(session[::-1]))[:3])
 
     return output
   
@@ -360,10 +360,10 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
       df_sub.to_csv('./' + subname + '.csv')
 
   # Computing mrr only if test set is not the one without gt
-  #if dev:
-    #mrr = 0
-  #else:
-    #mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  if dev:
+    mrr = 0
+  else:
+    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
-  return 0
+  return mrr
   

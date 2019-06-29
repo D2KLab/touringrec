@@ -163,8 +163,8 @@ df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 
 # No need for gt
-df_gt_inner = []
-#df_gt_inner = pd.read_csv(param.gtinner)
+#df_gt_inner = []
+df_gt_inner = pd.read_csv(param.gtinner)
 #df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
@@ -311,7 +311,7 @@ STEP 4: CREATE NETWORK
 
 #DEFINE PARAMETERS
 input_dim = n_features
-output_dim = n_hotels
+output_dim = 4
 #hidden_dim = int(1/100 * (input_dim + output_dim))
 hidden_dim = param.hiddendim
 print('The model is:')
@@ -396,7 +396,7 @@ for batch in batched_sessions:
         #batch_hotel_window.append(impression_dict[single_session])
     
     #print('start batch_category_tensor in time ' + str(timeSince(timeforprep)))
-    batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
+    batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels, batch, session_dict)
     #print('finish batch_category_tensor in time ' + str(timeSince(timeforprep)))
 
     #print('start session tensor in time ' + str(timeSince(timeforprep)))
@@ -459,7 +459,7 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
             current_loss += loss
             
             if epoch == num_epochs:
-                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False)
+                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, session_dict, pickfirst = False)
         
                 for batch_i, single_session in enumerate(batch):
                     #if guess[batch_i] == category_v:

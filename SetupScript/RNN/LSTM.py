@@ -183,12 +183,13 @@ def hotel_to_category(hotel, hotel_dict, n_features):
     tensor = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
   return tensor
 
-def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
+def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels, batch_session, session_dict):
   batch_size = len(hotel_list)
   tensor = torch.zeros(batch_size)
-  for hi, hotel in enumerate(hotel_list):
-    if hotel in hotel_dict:
-      tensor[hi] = torch.tensor([list(hotel_dict.keys()).index(hotel)], dtype=torch.long)
+  for bi, hotel in enumerate(hotel_list):
+    last_visited = list(set(session_dict[batch_session[bi]][::-1]))[:3]
+    if hotel in last_visited:
+      tensor[bi] = torch.tensor([last_visited.index(hotel) + 1], dtype=torch.long)
   return tensor
 
 '''def category_from_output(output, hotel_dict):
@@ -220,7 +221,7 @@ def category_from_output(output, hotel_dict):
   #print(output)
   return categories, category_i
 
-def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False):
+def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, session_dict, pickfirst = False):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
   category_scores_dict = {}
@@ -229,10 +230,14 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
 
   for batch_i, single_session in enumerate(batch):
     category_scores_dict = {}
+    last_visited = list(set(session_dict[single_session][::-1]))[:3]
+    
+    max_class_i = np.where(output_arr[batch_i] == np.amax(output_arr[batch_i]))
+    #max_class_v, max_class_i = torch.max(output_arr[batch_i])
+
     for hotelw in impression_dict[single_session]:
-      if hotelw in hotel_dict:
-        hotel_i = list(hotel_dict.keys()).index(hotelw)
-        category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
+      if (hotelw in last_visited) & (max_class_i != 0):
+        category_scores_dict[hotelw] = output_arr[batch_i][last_visited.index(hotelw) + 1]
       else:
         category_scores_dict[hotelw] = -9999
     
