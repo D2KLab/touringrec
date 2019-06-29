@@ -32,7 +32,7 @@ import argparse
 #python3 setup.py --encode ./encode_1.csv --meta ./item_metadata.csv --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --hiddendim 100 --epochs 20 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_1%_sub --numthread 2 --batchsize 16
 torch.manual_seed(1)
 
-dir = './ultimate/'
+dir = './ultimate_2class/'
 
 parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")

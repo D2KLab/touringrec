@@ -323,9 +323,9 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   
   #missed_target = 0
   if dev:
-    fname = './ultimate/rnn_test_sub_xgb_dev' + subname + '.csv'
+    fname = './ultimate_2class/rnn_test_sub_xgb_dev' + subname + '.csv'
   else:
-    fname = './ultimate/rnn_test_sub_xgb_inner' + subname + '.csv'
+    fname = './ultimate_2class/rnn_test_sub_xgb_inner' + subname + '.csv'
 
   with open(fname, mode='w') as test_xgb_sub:
     
