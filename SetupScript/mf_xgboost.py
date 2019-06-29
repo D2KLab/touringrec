@@ -68,7 +68,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, hotel_dic = hotel_dict, user_dic = user_dict)
     print('Get training set for XGBoost')
     df_train_xg = get_lightFM_features(df_inner_gt_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
-    #df_train_xg = get_FR_xgboost(df_train_xg)
+    df_train_xg = get_FR_xgboost(df_train_xg)
     #df_train_xg = get_RNN_features(df_train_xg, 'rnn_test_sub_xgb_inner.csv')
     print('LightFM Features: ')
     print(df_train_xg.head())
@@ -84,7 +84,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_test_xg = (df_test_xg.merge(test_interactions, left_on=['session_id'], right_on=['session_id'], how="left"))
     df_test_xg['recent_index'] = df_test_xg.apply(lambda x : recent_index(x), axis=1)
     del df_test_xg['all_interactions']
-    #df_test_xg = get_FR_final(df_test_xg)
+    df_test_xg = get_FR_final(df_test_xg)
     #df_test_xg = get_RNN_features(df_test_xg, 'rnn_test_sub_xgb_dev.csv')
     #df_test_xg['popularity'] = df_test_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
     #df_train_xg = get_most_popular_ranking(df_train_xg, sub_filename='submission_basesolution_nation.csv')
@@ -344,7 +344,6 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
         df_train_xg = df_train_xg[['user_id', 'session_id', 'timestamp', 'step', 'reference', 'position', 'item_id']]
     
     #df_train_xg = create_recent_index(df_train_xg)
-    print(df_train_xg.head(500))
     if(is_test == False):
         df_train_xg['label'] = df_train_xg.apply(lambda x: 1 if (str(x.item_id) == str(x.reference)) else 0, axis=1)
     df_train_xg['user_id_enc'] = df_train_xg['user_id'].map(user_dict)
