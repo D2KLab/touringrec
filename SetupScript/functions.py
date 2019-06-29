@@ -281,8 +281,8 @@ def score_submissions(subm_csv, gt_csv, objective_function):
     print(df_gt.head())
     #print(f"Reading submission data {subm_csv} ...")
     df_subm = read_into_df(subm_csv)
-    #print('Submissions')
-    #print(df_subm.head(10))
+    print('Submissions')
+    print(df_subm.head(10))
     # create dataframe containing the ground truth to target rows
     cols = ['reference', 'impressions', 'prices']
     df_key = df_gt.loc[:, cols]

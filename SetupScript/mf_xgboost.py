@@ -16,15 +16,19 @@ from lightfm.evaluation import reciprocal_rank
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler   
+from numpy import sort
+from sklearn.feature_selection import SelectFromModel
 #import graphviz
     
-TRAINING_COLS = ['position','recent_index', 'score', 'score_gru', 'score_knn']
+TRAINING_COLS = ['position','recent_index', 'score']
 
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
-    df_inner_train = pd.read_csv('train_inner_100.csv')
-    df_inner_gt = pd.read_csv('gt_inner_100.csv')
+    #df_inner_train = pd.read_csv('train_inner.csv')
+    df_inner_train = df_train
+    #df_inner_gt = pd.read_csv('gt_inner.csv')
+    df_inner_gt = get_validation_set(df_test)
     subm_csv = 'submission_mf_xgboost.csv'
     df_train = clean_dataset_error(df_train)
     df_inner_gt = clean_dataset_error(df_inner_gt)
@@ -65,7 +69,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     mf_model = train_mf_model(df_train, parameters, item_features = hotel_features, hotel_dic = hotel_dict, user_dic = user_dict)
     print('Get training set for XGBoost')
     df_train_xg = get_lightFM_features(df_inner_gt_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
-    df_train_xg = get_FR_xgboost(df_train_xg)
+    #df_train_xg = get_FR_xgboost(df_train_xg)
     #df_train_xg = get_RNN_features(df_train_xg, 'rnn_test_sub_xgb_inner.csv')
     print('LightFM Features: ')
     print(df_train_xg.head())
@@ -81,7 +85,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_test_xg = (df_test_xg.merge(test_interactions, left_on=['session_id'], right_on=['session_id'], how="left"))
     df_test_xg['recent_index'] = df_test_xg.apply(lambda x : recent_index(x), axis=1)
     del df_test_xg['all_interactions']
-    df_test_xg = get_FR_final(df_test_xg)
+    #df_test_xg = get_FR_final(df_test_xg)
     #df_test_xg = get_RNN_features(df_test_xg, 'rnn_test_sub_xgb_dev.csv')
     #df_test_xg['popularity'] = df_test_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
     #df_train_xg = get_most_popular_ranking(df_train_xg, sub_filename='submission_basesolution_nation.csv')
@@ -106,6 +110,16 @@ def get_single_click_features(df, is_test = False):
     print(df_train_xg.head())
     return df_train_xg
 
+def get_validation_set(df):
+    sessions = get_non_null_clickout(df)
+    dft = df[df['session_id'].isin(sessions)]
+    dft = dft[~dft['reference'].isnull()]
+    return dft
+
+def get_non_null_clickout(df_test):
+    print(df_test.head())
+    df_clickout = df_test[(~df_test['reference'].isnull()) & (df_test['action_type'] == 'clickout item')]
+    return df_clickout['session_id'].drop_duplicates()
 
 def create_recent_index(df_orig, grouped=False):
     # distinct_hotel = group.reference.drop_duplicates().values
@@ -192,7 +206,6 @@ def clean_FR_dataset(df):
     df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
     df = df.rename(columns={'hotel_id':'item_id'})
     return df
-
 
 
 
@@ -351,7 +364,7 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     df_train_xg_not_null.loc[:,'item_id_enc'] = df_train_xg_not_null['item_id_enc'].apply(int)
     #df_train_xg = df_train_xg.fillna('no_data')
     #df_train_xg_cleaned, df_train_xg_errors = split_no_info_hotel(df_train_xg)
-    df_train_xg_not_null.loc[:,'score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), item_features=item_f, user_features=user_f, num_threads=4)
+    df_train_xg_not_null.loc[:,'score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), item_features=item_f, num_threads=4)
     df_train_xg_null.loc[:,'score'] = -999
     #df_train_xg_not_null.loc[:,'user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
     #df_train_xg_null.loc[:,'user_bias'] = -999
