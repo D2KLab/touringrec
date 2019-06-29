@@ -128,7 +128,8 @@ def session_to_tensor_ultimate(session, hotel_dict, n_features, hotels_window, m
   tensor = torch.zeros(len(session), 1, n_features)
   
   for hi, hotel in enumerate(session):
-    tensor[hi][0] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+    #tensor[hi][0] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+    tensor[hi][0] = hotel_dict[hotel]
   return tensor
 
 def sessions_to_batch_tensor(session_list, session_dict, hotel_dict, max_session_len, n_features):
@@ -138,7 +139,8 @@ def sessions_to_batch_tensor(session_list, session_dict, hotel_dict, max_session
 
   for si, session in enumerate(session_list):
     for hi, hotel in enumerate(session_dict[session]):
-      tensor[hi][si] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+      #tensor[hi][si] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
+      tensor[hi][si] = hotel_dict[hotel]
   return tensor
 
 def hotel_to_tensor_ultimate(hotel, hotel_dict, n_features):
@@ -160,7 +162,7 @@ def hotel_to_tensor(hotel, hotel_dict, n_features, hotels_window, max_window, me
   tensor_window = torch.zeros(max_window)
   
   if hotel in hotel_dict:
-    tensor_w2vec = torch.from_numpy(hotel_dict[hotel])
+    tensor_w2vec = hotel_dict[hotel]
   
   if hotel in meta_dict:
     for mi, meta in enumerate(meta_dict[hotel]):
@@ -185,8 +187,8 @@ def hotels_to_category_batch(hotel_list, hotel_dict, n_hotels):
   batch_size = len(hotel_list)
   tensor = torch.zeros(batch_size)
   for hi, hotel in enumerate(hotel_list):
-    if hotel in hotel_dict.index2word:
-      tensor[hi] = torch.tensor([hotel_dict.index2word.index(hotel)], dtype=torch.long)
+    if hotel in hotel_dict:
+      tensor[hi] = torch.tensor([list(hotel_dict.keys()).index(hotel)], dtype=torch.long)
   return tensor
 
 '''def category_from_output(output, hotel_dict):
@@ -229,7 +231,7 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
     category_scores_dict = {}
     for hotelw in impression_dict[single_session]:
       if hotelw in hotel_dict:
-        hotel_i = hotel_dict.index2word.index(hotelw)
+        hotel_i = list(hotel_dict.keys()).index(hotelw)
         category_scores_dict[hotelw] = output_arr[batch_i][hotel_i]
       else:
         category_scores_dict[hotelw] = -9999

@@ -295,7 +295,7 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   category_scores_dict = {}
   for hotelw in window:
     if hotelw in hotel_dict:
-      hotel_i = hotel_dict.index2word.index(hotelw)
+      hotel_i = list(hotel_dict.keys()).index(hotelw)
       category_scores_dict[hotelw] = output_arr[0][hotel_i]
     else:
       category_scores_dict[hotelw] = -9999

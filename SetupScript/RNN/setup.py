@@ -198,12 +198,13 @@ session_dict = {}
 category_dict = {}
 impression_dict = {}
 session_dict, category_dict, impression_dict, train_corpus = dsm.get_training_input(df_train_inner)
-print('num of sessions is ' + str(len(df_train_inner.groupby('session_id'))) )
+print('num of sessions is ' + str(len(session_dict)) )
 print('session_dict len is ' + str(len(session_dict)))
 print('category_dict len is ' + str(len(category_dict)))
 print('impression_dict len is ' + str(len(impression_dict)))
 logfile.write('Imported and collected training set - Time: ' + str(timeSince(start_program_time)) + '\n')
 print('Imported and collected training set - Time: ' + str(timeSince(start_program_time)) + '\n')
+del df_train_inner
 
 test_session_dict = {}
 test_category_dict = {}
@@ -212,6 +213,7 @@ test_session_dict, test_category_dict, test_impression_dict, test_corpus = dsm.g
 print('test_session_dict len is ' + str(len(test_session_dict)))
 print('test_category_dict len is ' + str(len(test_category_dict)))
 print('test_impression_dict len is ' + str(len(test_impression_dict)))
+del df_test_for_prepare
 
 '''
 df_test_inner = pd.read_csv(param.testinner)
@@ -229,6 +231,10 @@ test_dev_session_dict, test_dev_category_dict, test_dev_impression_dict, test_de
 print('test_dev_session_dict len is ' + str(len(test_dev_session_dict)))
 print('test_dev_category_dict len is ' + str(len(test_dev_category_dict)))
 print('test_dev_impression_dict len is ' + str(len(test_dev_impression_dict)))
+del test_dev_session_dict
+del test_dev_category_dict
+del test_dev_impression_dict
+del df_test_dev_for_prepare
 
 logfile.write('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
 print('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
@@ -252,12 +258,17 @@ STEP 3: ENCODING TO CREATE DICTIONARY
 from gensim.models import Word2Vec
 
 word2vec = Word2Vec(corpus, min_count=1, window=param.window, sg=1)
+del train_corpus
+del test_corpus
+del test_dev_corpus
+
 
 n_features = len(word2vec.wv['666856'])
-
+#print(type(word2vec.wv.vocab.items()))
 #hotel_dict = w2v.normalize_word2vec(word2vec.wv)
-
-hotel_dict = word2vec.wv
+hotel_dict = {k:torch.from_numpy(word2vec.wv[k]) for k in word2vec.wv.index2word}
+del word2vec
+del corpus
 
 logfile.write('W2vec completed - Time: ' + str(timeSince(start_program_time)) + '\n')
 print('W2vec completed - Time: ' + str(timeSince(start_program_time)) + '\n')
@@ -266,7 +277,7 @@ meta_list = []
 meta_dict = []
 if param.ismeta:
     meta_list = dsm.extract_unique_meta(df_meta)
-    meta_dict = dsm.get_meta_dict(df_meta, hotel_dict.index2word, meta_list)
+    meta_dict = dsm.get_meta_dict(df_meta, hotel_dict, meta_list)
 
 
 #getting maximum window size
@@ -281,8 +292,8 @@ if param.isimpression:
 '''
 
 #Setting up feature numbers
-n_hotels = len(hotel_dict.index2word)
-n_features_w2vec = len(word2vec.wv['666856'])
+n_hotels = len(hotel_dict)
+n_features_w2vec = len(hotel_dict['666856'])
 n_features_meta = len(meta_list)
 n_features_impression = max_window
 n_features = n_features_w2vec + n_features_meta + n_features_impression
