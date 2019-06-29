@@ -371,8 +371,8 @@ start = time.time()
 training_results_hotels = {}
 training_results_scores = {}
 
-max_session_len_set = []
-batch_category_set = []
+#max_session_len_set = []
+#batch_category_set = []
 batch_hotel_window_set = []
 batch_category_tensor_set = []
 batch_session_tensor_set = []
@@ -393,7 +393,7 @@ for batch in batched_sessions:
         #print('start batch_category in time ' + str(timeSince(timeforprep)))
         batch_category.append(category_dict[single_session])
         #print('finish batch_category in time ' + str(timeSince(timeforprep)))
-        batch_hotel_window.append(impression_dict[single_session])
+        #batch_hotel_window.append(impression_dict[single_session])
     
     #print('start batch_category_tensor in time ' + str(timeSince(timeforprep)))
     batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
@@ -403,9 +403,9 @@ for batch in batched_sessions:
     batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
     #print('finish session tensor in time ' + str(timeSince(timeforprep)))
 
-    max_session_len_set.append(max_session_len)
-    batch_category_set.append(batch_category)
-    batch_hotel_window_set.append(batch_hotel_window)
+    #max_session_len_set.append(max_session_len)
+    #batch_category_set.append(batch_category)
+    #batch_hotel_window_set.append(batch_hotel_window)
     batch_category_tensor_set.append(batch_category_tensor)
     batch_session_tensor_set.append(batch_session_tensor)
     #print('Finished batch prep in time ' + str(timeSince(timeforprep)))
@@ -446,9 +446,9 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
             batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
 
             '''
-            max_session_len = max_session_len_set[batch_i]
-            batch_category = batch_category_set[batch_i]
-            batch_hotel_window = batch_hotel_window_set[batch_i]
+            #max_session_len = max_session_len_set[batch_i]
+            #batch_category = batch_category_set[batch_i]
+            #batch_hotel_window = batch_hotel_window_set[batch_i]
             batch_category_tensor = batch_category_tensor_set[batch_i]
             
             batch_session_tensor = batch_session_tensor_set[batch_i]
@@ -461,27 +461,26 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
             if epoch == num_epochs:
                 guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False)
         
-            for batch_i, category_v in enumerate(batch_category):
-                #if guess[batch_i] == category_v:
-                #    count_correct = count_correct + 1
+                for batch_i, single_session in enumerate(batch):
+                    #if guess[batch_i] == category_v:
+                    #    count_correct = count_correct + 1
 
-                #if iter % print_every == 0:
-                    #print('Non-Windowed results:')
-                    #correct = '✓' if guess[batch_i] == category_v else '✗ (%s)' % category_v
-                    #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess[batch_i], correct))
+                    #if iter % print_every == 0:
+                        #print('Non-Windowed results:')
+                        #correct = '✓' if guess[batch_i] == category_v else '✗ (%s)' % category_v
+                        #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess[batch_i], correct))
 
-                #if guess_windowed_list[batch_i][0] == category_v:
-                #    count_correct_windowed = count_correct_windowed + 1
+                    #if guess_windowed_list[batch_i][0] == category_v:
+                    #    count_correct_windowed = count_correct_windowed + 1
 
-                #if iter % print_every == 0:
-                    #print('Windowed results:')
-                    #correct = '✓' if guess_windowed_list[batch_i][0] == category_v else '✗ (%s)' % category_v
-                    #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
-
-                if epoch == num_epochs:   
+                    #if iter % print_every == 0:
+                        #print('Windowed results:')
+                        #correct = '✓' if guess_windowed_list[batch_i][0] == category_v else '✗ (%s)' % category_v
+                        #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
+  
                     for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
                         # Write single hotel score
-                        file_writer.writerow([str(batch[batch_i]), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
+                        file_writer.writerow([str(single_session), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
                     
                 
         # Add current loss avg to list of losses
@@ -503,6 +502,8 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
         logfile.write('Epoch ' + str(epoch) + ' - Loss: ' + str(all_losses[-1]) + '\n')
         
 
+del batch_session_tensor_set
+del batch_category_tensor_set
 
 '''
 STEP 6: PLOTTING RESULTS
