@@ -19,8 +19,7 @@ from sklearn.preprocessing import StandardScaler
 from numpy import sort
 from sklearn.feature_selection import SelectFromModel
 #import graphviz
-    
-TRAINING_COLS = ['position','recent_index', 'score']
+TRAINING_COLS = ['position','recent_index', 'user_bias' , 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_mf', 'score_gru', 'score_knn', 'score_rule']
 
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
@@ -174,9 +173,9 @@ def get_FR_xgboost(df):
     MERGE_COLS = ['user_id', 'session_id', 'hotel_id', 'timestamp', 'step']
     df_gru = pd.read_csv('GRU_test_dev.csv')
     df_knn = pd.read_csv('KNN_test_dev.csv')
-    #df_rule = pd.read_csv('Rule_based_test_dev.csv')
-    df_final = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
-    #df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df_rule = pd.read_csv('Rule_based_test_dev.csv')
+    df_gru = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
+    df_final = (df_gru.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
     df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
     df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
@@ -190,9 +189,9 @@ def get_FR_final(df):
     MERGE_COLS = ['user_id', 'session_id', 'hotel_id', 'timestamp', 'step']
     df_gru = pd.read_csv('GRU_confirmation.csv')
     df_knn = pd.read_csv('KNN_confirmation.csv')
-    #df_rule = pd.read_csv('Rule_based_confirmation.csv')
-    df_final = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
-    #df_final = (df_final.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
+    df_rule = pd.read_csv('Rule_based_confirmation.csv')
+    df_gru = (df_gru.merge(df_knn, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left", suffixes=('_gru', '_knn')))
+    df_final = (df_gru.merge(df_rule, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
     df_final = clean_FR_dataset(df_final)    
     MERGE_COLS = ['user_id', 'session_id', 'item_id', 'timestamp', 'step']
     df = (df.merge(df_final, left_on=MERGE_COLS, right_on=MERGE_COLS, how="left"))
@@ -366,16 +365,16 @@ def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, use
     #df_train_xg_cleaned, df_train_xg_errors = split_no_info_hotel(df_train_xg)
     df_train_xg_not_null.loc[:,'score'] = mf_model.predict(np.array(df_train_xg_not_null['user_id_enc']), np.array(df_train_xg_not_null['item_id_enc']), item_features=item_f, num_threads=4)
     df_train_xg_null.loc[:,'score'] = -999
-    #df_train_xg_not_null.loc[:,'user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
-    #df_train_xg_null.loc[:,'user_bias'] = -999
-    #df_train_xg_not_null.loc[:,'item_bias'] = mf_model.item_biases[df_train_xg_not_null['item_id_enc']]
-    #df_train_xg_null.loc[:,'item_bias'] = -999
-    #user_embeddings = mf_model.user_embeddings[df_train_xg_not_null.user_id_enc]
-    #item_embeddings = mf_model.item_embeddings[df_train_xg_not_null.item_id_enc]
-    #df_train_xg_not_null.loc[:,'lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
-    #df_train_xg_null.loc[:,'lightfm_dot_product'] = -999
-    #df_train_xg_not_null.loc[:,'lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
-    #df_train_xg_null.loc[:,'lightfm_prediction'] = -999
+    df_train_xg_not_null.loc[:,'user_bias'] = mf_model.user_biases[df_train_xg_not_null['user_id_enc']]
+    df_train_xg_null.loc[:,'user_bias'] = -999
+    df_train_xg_not_null.loc[:,'item_bias'] = mf_model.item_biases[df_train_xg_not_null['item_id_enc']]
+    df_train_xg_null.loc[:,'item_bias'] = -999
+    user_embeddings = mf_model.user_embeddings[df_train_xg_not_null.user_id_enc]
+    item_embeddings = mf_model.item_embeddings[df_train_xg_not_null.item_id_enc]
+    df_train_xg_not_null.loc[:,'lightfm_dot_product'] = (user_embeddings * item_embeddings).sum(axis=1)
+    df_train_xg_null.loc[:,'lightfm_dot_product'] = -999
+    df_train_xg_not_null.loc[:,'lightfm_prediction'] = df_train_xg_not_null['lightfm_dot_product'] + df_train_xg_not_null['user_bias'] + df_train_xg_not_null['item_bias']
+    df_train_xg_null.loc[:,'lightfm_prediction'] = -999
     df_train_xg = pd.concat([df_train_xg_not_null, df_train_xg_null], ignore_index=True, sort=False)
     df_train_xg = df_train_xg.sort_values(by=['user_id', 'session_id', 'timestamp', 'step'], ascending=False)
     cols = ['reference', 'user_id_enc', 'item_id_enc']
