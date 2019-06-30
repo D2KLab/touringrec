@@ -140,7 +140,8 @@ def sessions_to_batch_tensor(session_list, session_dict, hotel_dict, max_session
   for si, session in enumerate(session_list):
     for hi, hotel in enumerate(session_dict[session]):
       #tensor[hi][si] = hotel_to_tensor_ultimate(hotel, hotel_dict, n_features)
-      tensor[hi][si] = hotel_dict[hotel]
+      if hotel in hotel_dict:
+        tensor[hi][si] = hotel_dict[hotel]
   return tensor
 
 def hotel_to_tensor_ultimate(hotel, hotel_dict, n_features):

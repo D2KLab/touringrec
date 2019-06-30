@@ -409,7 +409,6 @@ for batch in batched_sessions:
     batch_category_tensor_set.append(batch_category_tensor)
     batch_session_tensor_set.append(batch_session_tensor)
     #print('Finished batch prep in time ' + str(timeSince(timeforprep)))
-
 print('Got batch infos:  ' + str(timeSince(start)))
 
 with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:

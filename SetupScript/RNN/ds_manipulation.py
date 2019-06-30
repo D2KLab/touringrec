@@ -240,7 +240,7 @@ def get_clickout_data(action, clickout_dict, impression_dict):
   return action.reference
 
 def get_list_session_interactions(group, session_dict):
-  session_dict[group.session_id.values[0]] = list(group.reference.values)[-150:]
+  session_dict[group.session_id.values[0]] = list(group.reference.values)[-200:]
 
   return " ".join(list(group.reference.values))
 
@@ -249,16 +249,24 @@ def get_training_input(df_train):
   impression_dict = {}
   session_dict = {}
 
+  single_sessions = (df_train.groupby('session_id').size() == 1)
+  df_train.drop(df_train.index[df_train['session_id']] in single_sessions)
+  print(len(df_train))
   df_train['step_max'] = df_train[df_train['action_type'] == 'clickout item'].groupby(['session_id'])['step'].transform(max)
   df_train['result'] = df_train[df_train['step'] == df_train['step_max']].apply(lambda x: get_clickout_data(x, clickout_dict, impression_dict), axis = 1)
   #df_train = df_train.drop(df_train.index[math.isnan(df_train['step_max'])])
   df_train_corpus = df_train.groupby('session_id').apply(lambda x: get_list_session_interactions(x, session_dict)).reset_index(name = 'hotel_list')
   df_train = df_train.drop(df_train.index[(df_train['step'] == df_train['step_max']) & (df_train["action_type"] == "clickout item")])
-
+  #print(len(session_dict))
   train_corpus = list(session_dict.values())
-  
+  session_dict = {}
+  df_train_corpus = df_train.groupby('session_id').apply(lambda x: get_list_session_interactions(x, session_dict)).reset_index(name = 'hotel_list')
+  #print(len(session_dict))
+  del df_train_corpus
   #for hotel_session in df_train_corpus.hotel_list.values:
   #  train_corpus.append(hotel_session.split(' '))
+
+  #print(len(train_corpus))
 
   return session_dict, clickout_dict, impression_dict, train_corpus
 
