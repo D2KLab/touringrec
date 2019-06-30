@@ -163,8 +163,8 @@ df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 
 # No need for gt
-#df_gt_inner = []
-df_gt_inner = pd.read_csv(param.gtinner)
+df_gt_inner = []
+#df_gt_inner = pd.read_csv(param.gtinner)
 #df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
