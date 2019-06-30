@@ -257,7 +257,7 @@ STEP 3: ENCODING TO CREATE DICTIONARY
 #w2vec item encoding
 from gensim.models import Word2Vec
 
-word2vec = Word2Vec(corpus, min_count=1, window=param.window, sg=1)
+word2vec = Word2Vec(corpus, size = param.ncomponents, min_count=1, window=param.window, sg=1)
 del train_corpus
 del test_corpus
 del test_dev_corpus

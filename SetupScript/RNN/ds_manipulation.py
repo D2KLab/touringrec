@@ -240,7 +240,7 @@ def get_clickout_data(action, clickout_dict, impression_dict):
   return action.reference
 
 def get_list_session_interactions(group, session_dict):
-  session_dict[group.session_id.values[0]] = list(group.reference.values)
+  session_dict[group.session_id.values[0]] = list(group.reference.values)[-150:]
 
   return " ".join(list(group.reference.values))
 
