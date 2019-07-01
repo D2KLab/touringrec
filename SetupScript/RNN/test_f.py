@@ -5,6 +5,7 @@ import functions as f
 import LSTM as lstm
 import math as math
 from operator import itemgetter
+from collections import OrderedDict
 
 
 def list_to_space_string(l):
@@ -295,18 +296,16 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   #max_class_v, max_class_i = torch.max(output_arr)
   max_class_i = np.where(output_arr == np.amax(output_arr))
 
-  for hotelw in window:
-    if (hotelw in last_visited) & (max_class_i != 0):
-      category_scores_dict[hotelw] = output_arr[0][last_visited.index(hotelw) + 1]
-    else:
-      category_scores_dict[hotelw] = -9999
+  if max_class_i == 0:
+    categories = window
+    categories_scores = [-999] * len(window)
+    
+  else:
+    category_scores_dict = {k: output_arr[0][k_i + 1] for k_i, k in enumerate(last_visited)}    
+    category_scores_ordered = OrderedDict(sorted(category_scores_dict.items(), key=lambda x: x[1], reverse = True))
+    categories = list(set(list(category_scores_ordered.keys()) + window))
+    categories_scores = list(category_scores_ordered.values()) + [-999] * (len(categories) - len(list(category_scores_ordered.values())))
 
-  category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
-
-  for tup in category_scores_tuples:
-    categories.append(tup[0])
-    categories_scores.append(tup[1])
-  
   return categories, categories_scores
 
 # Just return an output given a line
@@ -360,10 +359,10 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
       df_sub.to_csv('./' + subname + '.csv')
 
   # Computing mrr only if test set is not the one without gt
-  #if dev:
-    #mrr = 0
-  #else:
-    #mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  if dev:
+    mrr = 0
+  else:
+    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
-  return 0
+  return mrr
   
