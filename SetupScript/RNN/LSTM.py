@@ -225,6 +225,34 @@ def category_from_output(output, hotel_dict):
 def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, session_dict, pickfirst = False):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
+  categories_scores_batched = []
+  categories_batched = []
+
+  for batch_i, single_session in enumerate(batch):
+    categories_scores = []
+    categories = []
+    last_visited = list(set(session_dict[single_session][::-1]))[:3])
+    window = impression_dict[single_session]
+
+    max_class_i = np.where(output_arr[batch_i] == np.amax(output_arr[batch_i]))
+
+    if max_class_i == 0:
+      categories = window
+      categories_scores = [-999] * len(window)
+      
+    else:
+      category_scores_dict = {k: output_arr[batch_i][k_i + 1] for k_i, k in enumerate(last_visited)}    
+      category_scores_ordered = OrderedDict(sorted(category_scores_dict.items(), key=lambda x: x[1], reverse = True))
+      window_mask = list(map(lambda x: x not in last_visited, window))
+      window = np.array(window)
+      window = window[window_mask].tolist()
+      categories = list(category_scores_ordered.keys()) + window
+      categories_scores = list(category_scores_ordered.values()) + [-999] * (len(categories) - len(list(category_scores_ordered.values())))
+
+    categories_batched.append(categories)
+    categories_scores_batched.append(categories_scores)
+
+  '''
   category_scores_dict = {}
   categories_scores = []
   categories = []
@@ -258,5 +286,6 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
       
     categories.append(temp_categories)
     categories_scores.append(temp_scores)
+  '''
   
   return categories, categories_scores

@@ -303,7 +303,10 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   else:
     category_scores_dict = {k: output_arr[0][k_i + 1] for k_i, k in enumerate(last_visited)}    
     category_scores_ordered = OrderedDict(sorted(category_scores_dict.items(), key=lambda x: x[1], reverse = True))
-    categories = list(set(list(category_scores_ordered.keys()) + window))
+    window_mask = list(map(lambda x: x not in last_visited, window))
+    window = np.array(window)
+    window = window[window_mask].tolist()
+    categories = list(category_scores_ordered.keys()) + window
     categories_scores = list(category_scores_ordered.values()) + [-999] * (len(categories) - len(list(category_scores_ordered.values())))
 
   return categories, categories_scores
