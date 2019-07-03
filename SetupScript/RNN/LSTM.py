@@ -288,4 +288,4 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
     categories_scores.append(temp_scores)
   '''
   
-  return categories, categories_scores
+  return categories_batched, categories_scores_batched
