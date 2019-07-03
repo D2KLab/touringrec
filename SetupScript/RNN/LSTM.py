@@ -229,6 +229,22 @@ def category_from_output(output, hotel_dict):
 def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
+  categories_batched = []
+  categories_scores_batched = []
+  hotel_list = list(hotel_dict.keys())
+
+  for batch_i, single_session in enumerate(batch):
+    window_indexes = map(lambda x: hotel_list.index(x), window)
+    filtered_output = np.isin(output_arr[batch_i], window_indexes)
+    categories = [k for k, v in sorted(zip(window_indexes, filtered_output), key=operator.itemgetter(1), reverse = True)]
+    categories = map(lambda i: hotel_list[i], categories)
+    categories_scores = sorted(filtered_output, reverse = True)
+
+    categories_batched.append(categories)
+    categories_scores_batched.append(categories_scores)
+  
+
+  '''
   category_scores_dict = {}
   categories_scores = []
   categories = []
@@ -258,5 +274,6 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
       
     categories.append(temp_categories)
     categories_scores.append(temp_scores)
+    '''
   
-  return categories, categories_scores
+  return categories_batched, categories_scores_batched
