@@ -4,6 +4,7 @@ import pandas as pd
 import functions as f
 import LSTM as lstm
 import math as math
+import operator
 from operator import itemgetter
 
 
@@ -288,10 +289,20 @@ def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clic
 def recommendations_from_output_classification(output, hotel_dict, window, n_features):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
-  category_scores_dict = {}
+  #category_scores_dict = {}
   categories_scores = []
   categories = []
+  hotel_list = list(hotel_dict.keys())
 
+  window_indexes = map(lambda x: hotel_list.index(x), window)
+  filtered_output = np.isin(output_arr, window_indexes)
+  categories = [k for k, v in sorted(zip(window_indexes, filtered_output), key=operator.itemgetter(1), reverse = True)]
+  categories = map(lambda i: hotel_list[i], categories)
+  categories_scores = sorted(filtered_output, reverse = True)
+
+  '''
+  filtered = np.isin(output_arr)
+  
   category_scores_dict = {}
   for hotelw in window:
     if hotelw in hotel_dict:
@@ -305,6 +316,7 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   for tup in category_scores_tuples:
     categories.append(tup[0])
     categories_scores.append(tup[1])
+  '''
   
   return categories, categories_scores
 
