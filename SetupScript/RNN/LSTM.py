@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import numpy as np
 import pandas as pd
 from operator import itemgetter
+import operator
 import time
 import math
 #from setup import param
@@ -226,6 +227,20 @@ def category_from_output(output, hotel_dict):
   #print(output)
   return categories, category_i
 
+
+def assign_score(hotel, output_arr, hotel_list):
+  if hotel not in hotel_list:
+    return (hotel, -999)
+  else:
+    return (hotel, output_arr[hotel_list.index(hotel)])
+
+def timeSince(since):
+    now = time.time()
+    s = now - since
+    m = math.floor(s / 60)
+    s -= m * 60
+    return '%dm %ds' % (m, s)
+
 def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
@@ -233,16 +248,46 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
   categories_scores_batched = []
   hotel_list = list(hotel_dict.keys())
 
+  start = time.time()
+
   for batch_i, single_session in enumerate(batch):
-    window_indexes = map(lambda x: hotel_list.index(x), window)
+    window = impression_dict[single_session]
+    '''
+    window_arr = np.array(window)
+
+    # Getting only encoded impressions
+    window_mask = list(map(lambda x: x in hotel_list, window))
+    window_encoded = window_arr[window_mask].tolist()
+    
+    # Getting not encoded impressions
+    window_not_encoded_mask = list(map(lambda x: not x, window_mask))
+    window_not_encoded = window_arr[window_not_encoded_mask].tolist()
+
+    # Getting ordered hotels + scores
+    window_indexes = map(lambda x: hotel_list.index(x), window_encoded)
     filtered_output = np.isin(output_arr[batch_i], window_indexes)
     categories = [k for k, v in sorted(zip(window_indexes, filtered_output), key=operator.itemgetter(1), reverse = True)]
-    categories = map(lambda i: hotel_list[i], categories)
+    categories = list(map(lambda i: hotel_list[i], categories))
     categories_scores = sorted(filtered_output, reverse = True)
+
+    # Append remaining of impression list with arbitrary score
+    categories = categories + window_encoded
+    categories_scores = categories_scores + [-999] * (len(window_not_encoded))
 
     categories_batched.append(categories)
     categories_scores_batched.append(categories_scores)
-  
+    '''
+
+    category_tuples = list(map(lambda x: assign_score(x, output_arr[batch_i], hotel_list), window))
+    category_tuples = sorted(category_tuples, key=lambda tup: tup[1])
+
+    # Converting to 2 lists
+    category_dlist = list(map(list, zip(*category_tuples)))
+
+    categories_batched.append(category_dlist[0])
+    categories_scores_batched.append(category_dlist[1])
+
+  print(timeSince(start))
 
   '''
   category_scores_dict = {}
