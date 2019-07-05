@@ -286,13 +286,13 @@ def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clic
 
 ### FUNCTIONS FOR CLASSIFICATION TASK ###
 
-def assign_score(hotel, output_arr, hotel_list):
-  if hotel not in hotel_list:
-    return [hotel, -999]
+def assign_score(hotel, output_arr, hotel_to_index_dict):
+  if hotel not in hotel_to_index_dict:
+    return (hotel, -999)
   else:
-    return [hotel, output_arr[hotel_list.index(hotel)]]
+    return (hotel, output_arr[hotel_to_index_dict[hotel]])
 
-def recommendations_from_output_classification(output, hotel_dict, window, n_features):
+def recommendations_from_output_classification(output, hotel_to_index_dict, window, n_features):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
   '''
@@ -309,8 +309,8 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   '''
 
   ###
-  hotel_list = list(hotel_dict.keys())
-  categories = list(map(lambda x: assign_score(x, output_arr, hotel_list), window))
+  #hotel_list = list(hotel_dict.keys())
+  #categories = list(map(lambda x: assign_score(x, output_arr, hotel_list), window))
   #category_tuples = sorted(category_tuples, key=lambda tup: tup[1])
 
   # Converting to 2 lists
@@ -318,6 +318,15 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
 
   #categories_batched.append(category_dlist[0])
   #categories_scores_batched.append(category_dlist[1])
+
+  category_tuples = list(map(lambda x: assign_score(x, output_arr[0], hotel_to_index_dict), window))
+  category_tuples = sorted(category_tuples, key=lambda tup: tup[1], reverse = True)
+
+  # Converting to 2 lists
+  category_dlist = list(map(list, zip(*category_tuples)))
+
+  categories = category_dlist[0]
+  categories_scores = category_dlist[1]
 
   '''
   filtered = np.isin(output_arr)
@@ -337,19 +346,19 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
     categories_scores.append(tup[1])
   '''
   
-  return categories
+  return categories, categories_scores
 
 # Just return an output given a line
-def evaluate_classification(model, session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
+def evaluate_classification(model, session, hotel_dict, hotel_to_index_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
     line_tensor = lstm.session_to_tensor_ultimate(session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list)
     
     output = model(line_tensor)
         
-    output = recommendations_from_output_classification(output, hotel_dict, hotels_window, n_features)
+    output = recommendations_from_output_classification(output, hotel_to_index_dict, hotels_window, n_features)
 
     return output
   
-def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, clickout_dict, impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False, dev = False):
+def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, clickout_dict, impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False, dev = False):
   """Return the score obtained by the net on the test dataframe"""
   
   #missed_target = 0
@@ -365,7 +374,7 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
     
     for session, hotel_list in session_dict.items():
       if session in clickout_dict:
-        categories, categories_scores = evaluate_classification(model, hotel_list, hotel_dict, n_features, impression_dict[session], max_window, meta_dict, meta_list)
+        categories, categories_scores = evaluate_classification(model, hotel_list, hotel_dict, hotel_to_index_dict, n_features, impression_dict[session], max_window, meta_dict, meta_list)
         df_test.loc[(df_test['session_id'] == session) & (df_test['step'] == clickout_dict[session]), 'item_recommendations'] = list_to_space_string(categories)
 
         for hotel_i, hotel in enumerate(categories):
@@ -391,10 +400,10 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
       df_sub.to_csv('./' + subname + '.csv')
 
   # Computing mrr only if test set is not the one without gt
-  #if dev:
-    #mrr = 0
-  #else:
-    #mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  if dev:
+    mrr = 0
+  else:
+    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
-  return 0
+  return mrr
   

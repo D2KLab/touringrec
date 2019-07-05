@@ -163,8 +163,8 @@ df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 
 # No need for gt
-df_gt_inner = []
-#df_gt_inner = pd.read_csv(param.gtinner)
+#df_gt_inner = []
+df_gt_inner = pd.read_csv(param.gtinner)
 #df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
@@ -266,8 +266,35 @@ del test_dev_corpus
 n_features = len(word2vec.wv['666856'])
 #print(type(word2vec.wv.vocab.items()))
 #hotel_dict = w2v.normalize_word2vec(word2vec.wv)
+
+hotel_dict = {}
+hotel_to_index_dict = {}
+hotel_to_category_dict = {}
+
+'''
+def populate_dict(k, word2vec, hotel_to_index_dict, hotel_to_category_dict):
+    global hotel_dict
+    hotel_dict[k] = torch.from_numpy(word2vec.wv[k])
+    hotel_to_index_dict[k] = word2vec.wv.index2word.index(k)
+    hotel_to_category_dict[k] = torch.tensor([word2vec.wv.index2word.index(k)])
+    return
+
+map(lambda k: populate_dict(k, word2vec, hotel_to_index_dict, hotel_to_category_dict), word2vec.wv.index2word)
+'''
+
+for k in word2vec.wv.index2word:
+    hotel_dict[k] = torch.from_numpy(word2vec.wv[k])
+    hotel_to_index_dict[k] = word2vec.wv.index2word.index(k)
+    hotel_to_category_dict[k] = torch.tensor([word2vec.wv.index2word.index(k)])
+
+
+#print(hotel_dict)
+
+'''
 hotel_dict = {k:torch.from_numpy(word2vec.wv[k]) for k in word2vec.wv.index2word}
+hotel_to_index_dict = {k: list(hotel_dict.keys()).index(k) for k in hotel_dict}
 hotel_to_category_dict = {k:torch.tensor([list(hotel_dict.keys()).index(k)]) for k in hotel_dict}
+'''
 del word2vec
 del corpus
 
@@ -413,104 +440,105 @@ for batch in batched_sessions:
 
 print('Got batch infos:  ' + str(timeSince(start)))
 
-#with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
-#file_writer = csv.writer(rnn_train_sub_xgb)
-#file_writer.writerow(['session_id', 'hotel_id', 'score'])
+with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
+    file_writer = csv.writer(rnn_train_sub_xgb)
+    file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
-df_train_inner_sub = pd.DataFrame(columns = ['session_id', 'hotel_id', 'score'])
+    df_train_inner_sub_list = []
 
-for epoch in range(1, num_epochs + 1):
+    for epoch in range(1, num_epochs + 1):
 
-    logfile.write('Epoch ' + str(epoch) + ' start - Time: ' + str(timeSince(start)) + '\n')
+        logfile.write('Epoch ' + str(epoch) + ' start - Time: ' + str(timeSince(start)) + '\n')
 
-    #model.train()
-    iter = 0
-    
-    count_correct = 0
-    count_correct_windowed = 0
-
-    #print(str(len(session_dict)) + ' sessions to be computed')
-    
-    for batch_i, batch in enumerate(batched_sessions):
-        iter = iter + 1
-
-        '''
-        max_session_len = 0
-        batch_category = []
-        batch_hotel_window = []
-        for si, single_session in enumerate(batch):
-            if len(session_dict[single_session]) > max_session_len:
-                max_session_len = len(session_dict[single_session])
-            batch_category.append(category_dict[single_session])
-            batch_hotel_window.append(impression_dict[single_session])
-            batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
+        #model.train()
+        iter = 0
         
+        count_correct = 0
+        count_correct_windowed = 0
 
-        batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
-
-        '''
-        #max_session_len = max_session_len_set[batch_i]
-        #batch_category = batch_category_set[batch_i]
-        #batch_hotel_window = batch_hotel_window_set[batch_i]
-        batch_category_tensor = batch_category_tensor_set[batch_i]
+        #print(str(len(session_dict)) + ' sessions to be computed')
         
-        batch_session_tensor = batch_session_tensor_set[batch_i]
-        #print('Turned session to batch : ' + str(timeSince(start)))
+        for batch_i, batch in enumerate(batched_sessions):
+            iter = iter + 1
 
-        output, loss = lstm.train(model, loss_fn, optimizer, batch_category_tensor, batch_session_tensor, param.iscuda)
-
-        current_loss += loss
-        
-        if epoch == num_epochs:
-            guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, df_train_inner_sub, pickfirst = False)
-    
-            #for batch_i, single_session in enumerate(batch):
-                #if guess[batch_i] == category_v:
-                #    count_correct = count_correct + 1
-
-                #if iter % print_every == 0:
-                    #print('Non-Windowed results:')
-                    #correct = '✓' if guess[batch_i] == category_v else '✗ (%s)' % category_v
-                    #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess[batch_i], correct))
-
-                #if guess_windowed_list[batch_i][0] == category_v:
-                #    count_correct_windowed = count_correct_windowed + 1
-
-                #if iter % print_every == 0:
-                    #print('Windowed results:')
-                    #correct = '✓' if guess_windowed_list[batch_i][0] == category_v else '✗ (%s)' % category_v
-                    #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
-
-                #for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
-                    # Write single hotel score
-                    #file_writer.writerow([str(single_session), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
-                
+            '''
+            max_session_len = 0
+            batch_category = []
+            batch_hotel_window = []
+            for si, single_session in enumerate(batch):
+                if len(session_dict[single_session]) > max_session_len:
+                    max_session_len = len(session_dict[single_session])
+                batch_category.append(category_dict[single_session])
+                batch_hotel_window.append(impression_dict[single_session])
+                batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels)
             
-    # Add current loss avg to list of losses
-    if epoch % plot_every == 0:
-        all_losses.append(current_loss / (plot_every * len(batched_sessions)))
-        print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(batched_sessions))))
-        print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
-        #print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
-        #print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
-        #acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
-        #print("Score: " + str(acc))
-        #all_acc.append(acc)
-        current_loss = 0
 
-    if epoch % 10 == 0:
-        torch.save(model.state_dict(), dir + 'model_epoch_' + str(epoch) + param.subname)
+            batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
 
-    logfile.write('Epoch ' + str(epoch) + ' end - Time: ' + str(timeSince(start)) + '\n')
-    logfile.write('Epoch ' + str(epoch) + ' - Loss: ' + str(all_losses[-1]) + '\n')
+            '''
+            #max_session_len = max_session_len_set[batch_i]
+            #batch_category = batch_category_set[batch_i]
+            #batch_hotel_window = batch_hotel_window_set[batch_i]
+            batch_category_tensor = batch_category_tensor_set[batch_i]
+            
+            batch_session_tensor = batch_session_tensor_set[batch_i]
+            #print('Turned session to batch : ' + str(timeSince(start)))
+
+            output, loss = lstm.train(model, loss_fn, optimizer, batch_category_tensor, batch_session_tensor, param.iscuda)
+
+            current_loss += loss
+            
+            if epoch == num_epochs:
+                guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, hotel_to_index_dict, df_train_inner_sub_list, pickfirst = False)
+        
+                for batch_i, single_session in enumerate(batch):
+                    #if guess[batch_i] == category_v:
+                    #    count_correct = count_correct + 1
+
+                    #if iter % print_every == 0:
+                        #print('Non-Windowed results:')
+                        #correct = '✓' if guess[batch_i] == category_v else '✗ (%s)' % category_v
+                        #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess[batch_i], correct))
+
+                    #if guess_windowed_list[batch_i][0] == category_v:
+                    #    count_correct_windowed = count_correct_windowed + 1
+
+                    #if iter % print_every == 0:
+                        #print('Windowed results:')
+                        #correct = '✓' if guess_windowed_list[batch_i][0] == category_v else '✗ (%s)' % category_v
+                        #print('(%s) %.4f %s / %s %s' % (timeSince(start), loss, session[batch_i][0]['session_id'], guess_windowed_list[batch_i][0], correct))
+
+                    for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
+                        # Write single hotel score
+                        file_writer.writerow([str(single_session), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
+                    
+                
+        # Add current loss avg to list of losses
+        if epoch % plot_every == 0:
+            all_losses.append(current_loss / (plot_every * len(batched_sessions)))
+            print('Epoch: ' + str(epoch) + ' Loss: ' + str(current_loss / (plot_every * len(batched_sessions))))
+            print('%d %d%% (%s)' % (epoch, epoch / num_epochs * 100, timeSince(start)))
+            #print('Found ' + str(count_correct) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
+            #print('Windowed - Found ' + str(count_correct_windowed) + ' correct clickouts among ' + str(len(sessions) * param.batchsize) + ' sessions.')
+            #acc = tst.test_accuracy_optimized(model, df_test_inner, df_gt_inner, test_sessions, test_hotels_window, test_clickout_index, hotel_dict, n_features, max_window, meta_dict, meta_list)
+            #print("Score: " + str(acc))
+            #all_acc.append(acc)
+            current_loss = 0
+
+        if epoch % 10 == 0:
+            torch.save(model.state_dict(), dir + 'model_epoch_' + str(epoch) + param.subname)
+
+        logfile.write('Epoch ' + str(epoch) + ' end - Time: ' + str(timeSince(start)) + '\n')
+        logfile.write('Epoch ' + str(epoch) + ' - Loss: ' + str(all_losses[-1]) + '\n')
         
 
 del batch_session_tensor_set
 del batch_category_tensor_set
 
 # Print df_train_inner
-df_train_inner_sub = df_train_inner_sub.groupby('session_id').apply(lambda x: x.sort_values(['score'], ascending = False))
-df_train_inner_sub.to_csv(dir + 'rnn_train_inner_sub' + param.subname + '.csv')
+#df_train_inner_sub = pd.DataFrame(df_train_inner_sub_list, columns = ['session_id', 'hotel_id', 'score'])
+#df_train_inner_sub = df_train_inner_sub.groupby('session_id').apply(lambda x: x.sort_values(['score'], ascending = False))
+#df_train_inner_sub.to_csv(dir + 'rnn_train_inner_sub' + param.subname + '.csv')
 
 
 '''
@@ -536,8 +564,9 @@ start_test_time = time.time()
 logfile.write('Start inner submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
 print("Final score for inner: " + str(mrr))
+print(timeSince(start_test_time))
 
 logfile.write('Finish inner submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
@@ -554,8 +583,9 @@ df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 
 logfile.write('Start dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
-mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
 #print("Final score for dev: " + str(mrr))
+print(timeSince(start_test_time))
 
 logfile.write('Finish dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 

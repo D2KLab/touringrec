@@ -6,7 +6,11 @@ Batched trainig set - Time: 0m 3s
 W2vec completed - Time: 0m 7s
 Epoch 1 start - Time: 0m 0s
 Epoch 1 end - Time: 0m 1s
-Epoch 1 - Loss: 9.836963045597077
+Epoch 1 - Loss: 9.840603506565094
 Epoch 2 start - Time: 0m 1s
-Epoch 2 end - Time: 0m 28s
-Epoch 2 - Loss: 8.943318665027618
+Epoch 2 end - Time: 0m 4s
+Epoch 2 - Loss: 8.934180769324303
+Start inner submission - Time: 0m 0s
+Finish inner submission - Time: 0m 3s
+Start dev submission - Time: 0m 3s
+Finish dev submission - Time: 0m 6s
