@@ -250,6 +250,8 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
 
   start = time.time()
 
+  map(lambda x: single_session, batch)
+
   for batch_i, single_session in enumerate(batch):
     window = impression_dict[single_session]
     '''

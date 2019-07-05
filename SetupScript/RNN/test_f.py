@@ -286,9 +286,16 @@ def test_accuracy_optimized(model, df_test, df_gt, sessions, hotels_window, clic
 
 ### FUNCTIONS FOR CLASSIFICATION TASK ###
 
+def assign_score(hotel, output_arr, hotel_list):
+  if hotel not in hotel_list:
+    return [hotel, -999]
+  else:
+    return [hotel, output_arr[hotel_list.index(hotel)]]
+
 def recommendations_from_output_classification(output, hotel_dict, window, n_features):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
+  '''
   #category_scores_dict = {}
   categories_scores = []
   categories = []
@@ -299,6 +306,17 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   categories = [k for k, v in sorted(zip(window_indexes, filtered_output), key=operator.itemgetter(1), reverse = True)]
   categories = map(lambda i: hotel_list[i], categories)
   categories_scores = sorted(filtered_output, reverse = True)
+  '''
+
+  ###
+  categories = list(map(lambda x: assign_score(x, output_arr, hotel_list), window))
+  #category_tuples = sorted(category_tuples, key=lambda tup: tup[1])
+
+  # Converting to 2 lists
+  #category_dlist = list(map(list, zip(*category_tuples)))
+
+  #categories_batched.append(category_dlist[0])
+  #categories_scores_batched.append(category_dlist[1])
 
   '''
   filtered = np.isin(output_arr)
