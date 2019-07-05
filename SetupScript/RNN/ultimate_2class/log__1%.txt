@@ -1,0 +1,70 @@
+Started _1% execution
+Imported and collected training set - Time: 0m 2s
+Imported and collected test set - Time: 0m 2s
+Imported and collected test dev set - Time: 0m 3s
+Batched trainig set - Time: 0m 3s
+W2vec completed - Time: 0m 7s
+Epoch 1 start - Time: 0m 0s
+Epoch 1 end - Time: 0m 1s
+Epoch 1 - Loss: 1.0657172616571189
+Epoch 2 start - Time: 0m 1s
+Epoch 2 end - Time: 0m 2s
+Epoch 2 - Loss: 1.0026575736701488
+Epoch 3 start - Time: 0m 2s
+Epoch 3 end - Time: 0m 4s
+Epoch 3 - Loss: 0.9825977403670549
+Epoch 4 start - Time: 0m 4s
+Epoch 4 end - Time: 0m 5s
+Epoch 4 - Loss: 0.9844112001359463
+Epoch 5 start - Time: 0m 5s
+Epoch 5 end - Time: 0m 6s
+Epoch 5 - Loss: 0.9408904235810042
+Epoch 6 start - Time: 0m 6s
+Epoch 6 end - Time: 0m 7s
+Epoch 6 - Loss: 0.9104511059820652
+Epoch 7 start - Time: 0m 7s
+Epoch 7 end - Time: 0m 8s
+Epoch 7 - Loss: 0.8848446939140558
+Epoch 8 start - Time: 0m 8s
+Epoch 8 end - Time: 0m 10s
+Epoch 8 - Loss: 0.8924975000321865
+Epoch 9 start - Time: 0m 10s
+Epoch 9 end - Time: 0m 11s
+Epoch 9 - Loss: 0.8297669995576143
+Epoch 10 start - Time: 0m 11s
+Epoch 10 end - Time: 0m 12s
+Epoch 10 - Loss: 0.8082885485142469
+Epoch 11 start - Time: 0m 12s
+Epoch 11 end - Time: 0m 13s
+Epoch 11 - Loss: 0.8426890932023525
+Epoch 12 start - Time: 0m 13s
+Epoch 12 end - Time: 0m 14s
+Epoch 12 - Loss: 0.8269920807331801
+Epoch 13 start - Time: 0m 14s
+Epoch 13 end - Time: 0m 15s
+Epoch 13 - Loss: 0.7980783928185702
+Epoch 14 start - Time: 0m 15s
+Epoch 14 end - Time: 0m 17s
+Epoch 14 - Loss: 0.7780076030641794
+Epoch 15 start - Time: 0m 17s
+Epoch 15 end - Time: 0m 18s
+Epoch 15 - Loss: 0.7566463964059948
+Epoch 16 start - Time: 0m 18s
+Epoch 16 end - Time: 0m 19s
+Epoch 16 - Loss: 0.7547653116285801
+Epoch 17 start - Time: 0m 19s
+Epoch 17 end - Time: 0m 20s
+Epoch 17 - Loss: 0.7580929227173329
+Epoch 18 start - Time: 0m 20s
+Epoch 18 end - Time: 0m 21s
+Epoch 18 - Loss: 0.7471638049930334
+Epoch 19 start - Time: 0m 21s
+Epoch 19 end - Time: 0m 22s
+Epoch 19 - Loss: 0.7374675936996937
+Epoch 20 start - Time: 0m 22s
+Epoch 20 end - Time: 0m 24s
+Epoch 20 - Loss: 0.7366214284673334
+Start inner submission - Time: 0m 0s
+Finish inner submission - Time: 0m 3s
+Start dev submission - Time: 0m 3s
+Finish dev submission - Time: 0m 6s
