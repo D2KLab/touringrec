@@ -227,12 +227,19 @@ def category_from_output(output, hotel_dict):
   #print(output)
   return categories, category_i
 
-
+''''
 def assign_score(hotel, output_arr, hotel_list):
   if hotel not in hotel_list:
     return (hotel, -999)
   else:
     return (hotel, output_arr[hotel_list.index(hotel)])
+'''
+
+def assign_score(hotel, output_arr, hotel_list, session_id):
+  if hotel not in hotel_list:
+    return [session_id, hotel, -999]
+  else:
+    return [session_id, hotel, output_arr[hotel_list.index(hotel)]]
 
 def timeSince(since):
     now = time.time()
@@ -241,7 +248,7 @@ def timeSince(since):
     s -= m * 60
     return '%dm %ds' % (m, s)
 
-def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, pickfirst = False):
+def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, df_train_inner_sub, pickfirst = False):
   output_arr = np.asarray(output.cpu().detach().numpy())
   
   categories_batched = []
@@ -280,6 +287,7 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
     categories_scores_batched.append(categories_scores)
     '''
 
+    ''' best finora
     category_tuples = list(map(lambda x: assign_score(x, output_arr[batch_i], hotel_list), window))
     category_tuples = sorted(category_tuples, key=lambda tup: tup[1])
 
@@ -288,8 +296,12 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
 
     categories_batched.append(category_dlist[0])
     categories_scores_batched.append(category_dlist[1])
+    '''
 
-  print(timeSince(start))
+    categories = list(map(lambda x: assign_score(x, output_arr[batch_i], hotel_list, single_session), window))
+    df_train_inner_sub.append(pd.DataFrame(categories, columns = ['session_id', 'hotel_id', 'score']))
+
+  #print(timeSince(start))
 
   '''
   category_scores_dict = {}

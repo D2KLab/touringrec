@@ -309,6 +309,7 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
   '''
 
   ###
+  hotel_list = list(hotel_dict.keys())
   categories = list(map(lambda x: assign_score(x, output_arr, hotel_list), window))
   #category_tuples = sorted(category_tuples, key=lambda tup: tup[1])
 
@@ -336,7 +337,7 @@ def recommendations_from_output_classification(output, hotel_dict, window, n_fea
     categories_scores.append(tup[1])
   '''
   
-  return categories, categories_scores
+  return categories
 
 # Just return an output given a line
 def evaluate_classification(model, session, hotel_dict, n_features, hotels_window, max_window, meta_dict, meta_list):
