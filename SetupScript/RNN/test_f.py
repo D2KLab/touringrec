@@ -6,6 +6,7 @@ import LSTM as lstm
 import math as math
 import operator
 from operator import itemgetter
+from collections import OrderedDict
 
 
 def list_to_space_string(l):
@@ -339,7 +340,18 @@ def recommendations_from_output_classification(output, hotel_to_index_dict, wind
     else:
       category_scores_dict[hotelw] = -9999
 
-  category_scores_tuples = sorted(category_scores_dict.items(), key=itemgetter(1), reverse = True)
+  if max_class_i == 0:
+    categories = window
+    categories_scores = [-999] * len(window)
+    
+  else:
+    category_scores_dict = {k: output_arr[0][k_i + 1] for k_i, k in enumerate(last_visited)}    
+    category_scores_ordered = OrderedDict(sorted(category_scores_dict.items(), key=lambda x: x[1], reverse = True))
+    window_mask = list(map(lambda x: x not in last_visited, window))
+    window = np.array(window)
+    window = window[window_mask].tolist()
+    categories = list(category_scores_ordered.keys()) + window
+    categories_scores = list(category_scores_ordered.values()) + [-999] * (len(categories) - len(list(category_scores_ordered.values())))
 
   for tup in category_scores_tuples:
     categories.append(tup[0])
@@ -363,9 +375,9 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   
   #missed_target = 0
   if dev:
-    fname = './ultimate/rnn_test_sub_xgb_dev' + subname + '.csv'
+    fname = './ultimate_2class/rnn_test_sub_xgb_dev' + subname + '.csv'
   else:
-    fname = './ultimate/rnn_test_sub_xgb_inner' + subname + '.csv'
+    fname = './ultimate_2class/rnn_test_sub_xgb_inner' + subname + '.csv'
 
   with open(fname, mode='w') as test_xgb_sub:
     
@@ -405,5 +417,5 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   #else:
   #  mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
-  return 0
+  return mrr
   

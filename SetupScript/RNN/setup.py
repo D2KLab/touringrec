@@ -32,7 +32,7 @@ import argparse
 #python3 setup.py --encode ./encode_1.csv --meta ./item_metadata.csv --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --hiddendim 100 --epochs 20 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_1%_sub --numthread 2 --batchsize 16
 torch.manual_seed(1)
 
-dir = './ultimate/'
+dir = './ultimate_2class/'
 
 parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
@@ -163,8 +163,8 @@ df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 
 # No need for gt
-df_gt_inner = []
-#df_gt_inner = pd.read_csv(param.gtinner)
+#df_gt_inner = []
+df_gt_inner = pd.read_csv(param.gtinner)
 #df_gt_inner = dsm.remove_single_clickout_actions(df_gt_inner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
@@ -339,7 +339,7 @@ STEP 4: CREATE NETWORK
 
 #DEFINE PARAMETERS
 input_dim = n_features
-output_dim = n_hotels
+output_dim = 4
 #hidden_dim = int(1/100 * (input_dim + output_dim))
 hidden_dim = param.hiddendim
 print('The model is:')
@@ -424,7 +424,7 @@ for batch in batched_sessions:
         #batch_hotel_window.append(impression_dict[single_session])
     
     #print('start batch_category_tensor in time ' + str(timeSince(timeforprep)))
-    batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_to_category_dict, n_hotels)
+    batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_dict, n_hotels, batch, session_dict)
     #print('finish batch_category_tensor in time ' + str(timeSince(timeforprep)))
 
     #print('start session tensor in time ' + str(timeSince(timeforprep)))
@@ -437,7 +437,6 @@ for batch in batched_sessions:
     batch_category_tensor_set.append(batch_category_tensor)
     batch_session_tensor_set.append(batch_session_tensor)
     #print('Finished batch prep in time ' + str(timeSince(timeforprep)))
-
 print('Got batch infos:  ' + str(timeSince(start)))
 
 with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
