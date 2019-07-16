@@ -1,13 +1,70 @@
 Started _10% execution
-Imported and collected training set - Time: 0m 2s
-Imported and collected test set - Time: 0m 3s
-Imported and collected test dev set - Time: 0m 3s
-Batched trainig set - Time: 0m 3s
-W2vec completed - Time: 0m 4s
-Epoch 1 start - Time: 0m 0s
-Epoch 1 end - Time: 0m 1s
-Epoch 1 - Loss: 1.065947211533785
-Epoch 2 start - Time: 0m 1s
-Epoch 2 end - Time: 0m 2s
-Epoch 2 - Loss: 1.0341277722269298
+Imported and collected training set - Time: 0m 25s
+Imported and collected test set - Time: 0m 26s
+Imported and collected test dev set - Time: 0m 28s
+Batched trainig set - Time: 0m 28s
+W2vec completed - Time: 4m 55s
+Epoch 1 start - Time: 0m 5s
+Epoch 1 end - Time: 0m 14s
+Epoch 1 - Loss: 1.0759517614868865
+Epoch 2 start - Time: 0m 14s
+Epoch 2 end - Time: 0m 24s
+Epoch 2 - Loss: 0.9706993029492111
+Epoch 3 start - Time: 0m 24s
+Epoch 3 end - Time: 0m 33s
+Epoch 3 - Loss: 0.9774808231898194
+Epoch 4 start - Time: 0m 33s
+Epoch 4 end - Time: 0m 43s
+Epoch 4 - Loss: 0.9402616417727708
+Epoch 5 start - Time: 0m 43s
+Epoch 5 end - Time: 0m 52s
+Epoch 5 - Loss: 0.9315927895777983
+Epoch 6 start - Time: 0m 52s
+Epoch 6 end - Time: 1m 1s
+Epoch 6 - Loss: 0.9081775769420054
+Epoch 7 start - Time: 1m 1s
+Epoch 7 end - Time: 1m 10s
+Epoch 7 - Loss: 0.8819341835391019
+Epoch 8 start - Time: 1m 10s
+Epoch 8 end - Time: 1m 20s
+Epoch 8 - Loss: 0.8586407406576748
+Epoch 9 start - Time: 1m 20s
+Epoch 9 end - Time: 1m 29s
+Epoch 9 - Loss: 0.8372250869356352
+Epoch 10 start - Time: 1m 29s
+Epoch 10 end - Time: 1m 39s
+Epoch 10 - Loss: 0.8628309770562183
+Epoch 11 start - Time: 1m 39s
+Epoch 11 end - Time: 1m 48s
+Epoch 11 - Loss: 0.8742171011665315
+Epoch 12 start - Time: 1m 48s
+Epoch 12 end - Time: 1m 58s
+Epoch 12 - Loss: 0.8676624172035305
+Epoch 13 start - Time: 1m 58s
+Epoch 13 end - Time: 2m 7s
+Epoch 13 - Loss: 0.8638826823097536
+Epoch 14 start - Time: 2m 7s
+Epoch 14 end - Time: 2m 17s
+Epoch 14 - Loss: 0.861433352273086
+Epoch 15 start - Time: 2m 17s
+Epoch 15 end - Time: 2m 27s
+Epoch 15 - Loss: 0.8598011242932286
+Epoch 16 start - Time: 2m 27s
+Epoch 16 end - Time: 2m 36s
+Epoch 16 - Loss: 0.8587988633762375
+Epoch 17 start - Time: 2m 36s
+Epoch 17 end - Time: 2m 46s
+Epoch 17 - Loss: 0.85814501211561
+Epoch 18 start - Time: 2m 46s
+Epoch 18 end - Time: 2m 55s
+Epoch 18 - Loss: 0.857979999465504
+Epoch 19 start - Time: 2m 55s
+Epoch 19 end - Time: 3m 5s
+Epoch 19 - Loss: 0.8565135773571059
+Epoch 20 start - Time: 3m 5s
+Epoch 20 end - Time: 3m 17s
+Epoch 20 - Loss: 0.8625717816910068
 Start inner submission - Time: 0m 0s
+Finish inner submission - Time: 2m 1s
+Start dev submission - Time: 2m 1s
+Finish dev submission - Time: 4m 45s

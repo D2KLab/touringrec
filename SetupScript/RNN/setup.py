@@ -160,6 +160,7 @@ df_test_inner = pd.read_csv(param.testinner)
 df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
 #df_test_inner = dsm.remove_single_actions_opt(df_test_inner)
 df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
+df_test_inner = df_test_inner.drop(df_test_inner.index[(df_test_inner['session_id'] == '4ce773be75e64') & (df_test_inner['step'] == 6)])
 df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 
 # No need for gt
@@ -173,6 +174,7 @@ df_test_dev = pd.read_csv(param.testdev)
 df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
+df_test_dev = df_test_dev.drop(df_test_dev.index[(df_test_dev['session_id'] == '4ce773be75e64') & (df_test_dev['step'] == 6)])
 df_test_dev_for_prepare = dsm.reference_to_str(df_test_dev.copy())
 
 #df_gt_dev = pd.read_csv('./gt_10.csv')

@@ -285,7 +285,7 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
     categories_scores_batched.append(categories_scores)
     '''
 
-
+    '''
     category_tuples = list(map(lambda x: assign_score(x, output_arr[batch_i], list(set(session_dict[single_session][::-1]))[:3]), window))
     category_tuples = sorted(category_tuples, key=lambda tup: tup[1], reverse = True)
 
@@ -294,6 +294,32 @@ def categories_from_output_windowed_opt(output, batch, impression_dict, hotel_di
 
     categories_batched.append(category_dlist[0])
     categories_scores_batched.append(category_dlist[1])
+    '''
+
+    last_visited = list(set(session_dict[single_session][::-1]))[:3]
+    ordered = sorted(range(len(output_arr[batch_i])), key=lambda k: output_arr[batch_i][k], reverse = True)
+
+    categories = []
+    categories_scores = []
+
+    if ordered[0] == 0:
+      categories = window
+      categories_scores = [-999] * len(window) 
+    else:
+      if last_visited != []:
+        if len(last_visited) < ordered[0]:
+          categories.append(last_visited[0])
+          categories_scores.append(output_arr[batch_i][ordered[0]])
+        else:
+          categories.append(last_visited[ordered[0] - 1])
+          categories_scores.append(output_arr[batch_i][ordered[0]])
+      for hotel in window:
+        if hotel not in categories:
+          categories.append(hotel)
+          categories_scores.append(-999)
+
+    categories_batched.append(categories)
+    categories_scores_batched.append(categories_scores)
 
 
     '''

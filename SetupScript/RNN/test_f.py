@@ -320,6 +320,28 @@ def recommendations_from_output_classification(output, last_visited, window, n_f
   #categories_batched.append(category_dlist[0])
   #categories_scores_batched.append(category_dlist[1])
 
+  ordered = sorted(range(len(output_arr[0])), key=lambda k: output_arr[0][k], reverse = True)
+
+  categories = []
+  categories_scores = []
+
+  if ordered[0] == 0:
+    categories = window
+    categories_scores = [-999] * len(window) 
+  else:
+    if last_visited != []:
+      if len(last_visited) < ordered[0]:
+        categories.append(last_visited[0])
+        categories_scores.append(output_arr[0][ordered[0]])
+      else:
+        categories.append(last_visited[ordered[0] - 1])
+        categories_scores.append(output_arr[0][ordered[0]])
+    for hotel in window:
+      if hotel not in categories:
+        categories.append(hotel)
+        categories_scores.append(-999)
+
+  '''
   category_tuples = list(map(lambda x: assign_score(x, output_arr[0], last_visited), window))
   category_tuples = sorted(category_tuples, key=lambda tup: tup[1], reverse = True)
 
@@ -328,6 +350,7 @@ def recommendations_from_output_classification(output, last_visited, window, n_f
 
   categories = category_dlist[0]
   categories_scores = category_dlist[1]
+  '''
 
   '''
   filtered = np.isin(output_arr)
