@@ -278,7 +278,8 @@ def get_test_input(df_test):
 
   df_test['step_max'] = df_test[df_test['action_type'] == 'clickout item'].groupby(['session_id'])['step'].transform(max)
   df_test['result'] = df_test[df_test['step'] == df_test['step_max']].apply(lambda x: get_clickout_data_test(x, test_step_clickout_dict, test_impression_dict), axis = 1)
-  df_test = df_test.drop(df_test.index[(df_test['step'] == df_test['step_max']) & (df_test["action_type"] == "clickout item")])   
+  df_test = df_test.drop(df_test.index[(df_test['step'] == df_test['step_max']) & (df_test["action_type"] == "clickout item")]) 
+  df_test = df_test.drop(df_test.index[df_test['reference'] == ''])   
   df_test_corpus = df_test.groupby('session_id').apply(lambda x: get_list_session_interactions(x, test_sessions_dict)).reset_index(name = 'hotel_list')      
 
   test_corpus = list(test_sessions_dict.values())
