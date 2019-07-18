@@ -24,9 +24,9 @@ TRAINING_COLS = ['position','recent_index', 'user_bias', 'item_bias', 'lightfm_d
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
     hotel_prices_file = kwargs.get('file_metadata', None)
-    #df_inner_train = pd.read_csv('train_inner.csv')
-    df_inner_train = df_train
-    #df_inner_gt = pd.read_csv('gt_inner.csv')
+    df_inner_train = pd.read_csv('train_inner_100.csv')
+    #df_inner_train = df_train
+    df_inner_gt = pd.read_csv('gt_inner_100.csv')
     df_inner_gt = get_validation_set(df_test)
     subm_csv = 'submission_mf_xgboost.csv'
     df_train = clean_dataset_error(df_train)
