@@ -19,7 +19,7 @@ from sklearn.preprocessing import StandardScaler
 from numpy import sort
 from sklearn.feature_selection import SelectFromModel
 #import graphviz
-TRAINING_COLS = ['position','recent_index', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score']
+TRAINING_COLS = ['position','recent_index', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score_mf', 'score_rnn']
 
 def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
 
@@ -69,7 +69,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     print('Get training set for XGBoost')
     df_train_xg = get_lightFM_features(df_inner_gt_clickout, mf_model, user_dict, hotel_dict, item_f=hotel_features)
     #df_train_xg = get_FR_xgboost(df_train_xg)
-    #df_train_xg = get_RNN_features(df_train_xg, 'rnn_test_sub_xgb_inner.csv')
+    df_train_xg = get_RNN_features(df_train_xg, 'rnn_test_sub_xgb_inner_100%_vanilla_opt_0,001lr.csv')
     print('LightFM Features: ')
     print(df_train_xg.head())
     #df_train_xg['popularity'] = df_train_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
@@ -85,7 +85,7 @@ def get_rec_matrix(df_train, df_test, parameters = None, **kwargs):
     df_test_xg['recent_index'] = df_test_xg.apply(lambda x : recent_index(x), axis=1)
     del df_test_xg['all_interactions']
     #df_test_xg = get_FR_final(df_test_xg)
-    #df_test_xg = get_RNN_features(df_test_xg, 'rnn_test_sub_xgb_dev.csv')
+    df_test_xg = get_RNN_features(df_test_xg, 'rnn_test_sub_xgb_dev_100%_vanilla_opt_0,001lr.csv')
     #df_test_xg['popularity'] = df_test_xg.apply(lambda x : add_popularity(x.item_id, dic_pop), axis=1)
     #df_train_xg = get_most_popular_ranking(df_train_xg, sub_filename='submission_basesolution_nation.csv')
     print(df_test_xg.head())
@@ -163,7 +163,7 @@ def add_popularity(item, dictionary):
 def get_RNN_features(df, filename):
     df_rnn = pd.read_csv(filename)
     df_rnn = df_rnn.rename(columns={'hotel_id':'item_id'})
-    df = (df.merge(df_rnn, left_on=['session_id', 'item_id'], right_on=['session_id', 'item_id'], how="left", suffixes=('_mf', '_gru')))
+    df = (df.merge(df_rnn, left_on=['session_id', 'item_id'], right_on=['session_id', 'item_id'], how="left", suffixes=('_mf', '_rnn')))
     df.fillna(0)
     print(df.head())
     return df
