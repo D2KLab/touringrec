@@ -363,9 +363,11 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   
   #missed_target = 0
   if dev:
-    fname = './ultimate/rnn_test_sub_xgb_dev' + subname + '.csv'
+    fname = './ultimate/' + subname + 'test_sub_xgb_dev.csv'
+    rec_name = './ultimate/' + subname + 'rec_dev.csv'
   else:
-    fname = './ultimate/rnn_test_sub_xgb_inner' + subname + '.csv'
+    fname = './ultimate/' + subname + 'test_sub_xgb_inner.csv'
+    rec_name = './ultimate/' + subname + 'rec_inner.csv'
 
   with open(fname, mode='w') as test_xgb_sub:
     
@@ -397,7 +399,7 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
 
   # Saving df_sub
   if isprint:
-      df_sub.to_csv('./' + subname + '.csv')
+      df_sub.to_csv(rec_name)
 
   # Computing mrr only if test set is not the one without gt
   if dev:
