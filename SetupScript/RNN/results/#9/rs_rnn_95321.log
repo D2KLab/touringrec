@@ -1,0 +1,134 @@
+INFO: localdir at /scratch/95321.gcrepaldi
+INFO: your job will run on local system.
+Using GPU: cuda:0
+Using num thread = 2
+n_hotels is 92091
+n_features_w2vec is 100
+n_features_meta is 0
+n_features_impression is 25
+n_features is 125
+The model is:
+input_dim is:125
+hidden_dim is: 200
+output_dim is:92091
+3191 sessions to be computed
+Epoch: 1 Loss: 11.608740822718234
+1 3% (24m 34s)
+Score: 0.2614905933604388
+3191 sessions to be computed
+Epoch: 2 Loss: 9.075567562876731
+2 6% (59m 18s)
+Score: 0.25929364825522916
+3191 sessions to be computed
+Epoch: 3 Loss: 8.184524058697926
+3 10% (94m 0s)
+Score: 0.25699943129276903
+3191 sessions to be computed
+Epoch: 4 Loss: 7.785472056814138
+4 13% (128m 19s)
+Score: 0.25919688689048026
+3191 sessions to be computed
+Epoch: 5 Loss: 7.606186701563301
+5 16% (162m 25s)
+Score: 0.2600416391006632
+3191 sessions to be computed
+Epoch: 6 Loss: 7.326931909945496
+6 20% (197m 21s)
+Score: 0.26113038049527615
+3191 sessions to be computed
+Epoch: 7 Loss: 7.1718973556083405
+7 23% (232m 41s)
+Score: 0.2620664335989181
+3191 sessions to be computed
+Epoch: 8 Loss: 7.078874579868657
+8 26% (268m 1s)
+Score: 0.26222826928267556
+3191 sessions to be computed
+Epoch: 9 Loss: 6.928892737681198
+9 30% (303m 10s)
+Score: 0.2695409250722439
+3191 sessions to be computed
+Epoch: 10 Loss: 6.834652931852349
+10 33% (338m 26s)
+Score: 0.2745430059360498
+3191 sessions to be computed
+Epoch: 11 Loss: 6.89119934437978
+11 36% (372m 34s)
+Score: 0.2669895319374733
+3191 sessions to be computed
+Epoch: 12 Loss: 6.982148920395127
+12 40% (406m 46s)
+Score: 0.2789456842484968
+3191 sessions to be computed
+Epoch: 13 Loss: 6.762557896802658
+13 43% (441m 0s)
+Score: 0.2808812529301965
+3191 sessions to be computed
+Epoch: 14 Loss: 6.601261946221797
+14 46% (475m 41s)
+Score: 0.2735735218049565
+3191 sessions to be computed
+Epoch: 15 Loss: 7.160723804643034
+15 50% (509m 27s)
+Score: 0.28383638158492136
+3191 sessions to be computed
+Epoch: 16 Loss: 6.9837637268910395
+16 53% (543m 11s)
+Score: 0.28220663503497934
+3191 sessions to be computed
+Epoch: 17 Loss: 6.669199874729095
+17 56% (576m 53s)
+Score: 0.2771601854120394
+3191 sessions to be computed
+Epoch: 18 Loss: 6.504151911617483
+18 60% (610m 44s)
+Score: 0.2770871556512733
+3191 sessions to be computed
+Epoch: 19 Loss: 7.076054093756298
+19 63% (644m 58s)
+Score: 0.28555333154924867
+3191 sessions to be computed
+Epoch: 20 Loss: 7.209442494469203
+20 66% (677m 51s)
+Score: 0.28323770172316526
+3191 sessions to be computed
+Epoch: 21 Loss: 6.927796374365514
+21 70% (713m 19s)
+Score: 0.279062033092662
+3191 sessions to be computed
+Epoch: 22 Loss: 6.40659814858205
+22 73% (754m 42s)
+Score: 0.28353761024196716
+3191 sessions to be computed
+Epoch: 23 Loss: 6.368349621565653
+23 76% (794m 18s)
+Score: 0.28219347453584404
+3191 sessions to be computed
+Epoch: 24 Loss: 6.242338374131005
+24 80% (833m 6s)
+Score: 0.28159823080312385
+3191 sessions to be computed
+Epoch: 25 Loss: 6.659686354550774
+25 83% (872m 52s)
+Score: 0.27493669837475104
+3191 sessions to be computed
+Epoch: 26 Loss: 6.476017505014552
+26 86% (912m 8s)
+Score: 0.2825964554908787
+3191 sessions to be computed
+Epoch: 27 Loss: 6.1706887779845525
+27 90% (951m 38s)
+Score: 0.2816600856622951
+3191 sessions to be computed
+Epoch: 28 Loss: 6.0362721814962805
+28 93% (992m 2s)
+Score: 0.28054991572655597
+3191 sessions to be computed
+Epoch: 29 Loss: 6.207217129372908
+29 96% (1033m 30s)
+Score: 0.26842588133680817
+3191 sessions to be computed
+Epoch: 30 Loss: 6.117659748852048
+30 100% (1074m 53s)
+Score: 0.27581741706384877
+Final score: 0.2736142782122912

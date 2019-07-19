@@ -1,0 +1,8 @@
+# cat requirements.txt
+torch
+matplotlib
+numpy
+pandas
+sklearn
+gensim
+
