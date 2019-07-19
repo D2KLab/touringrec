@@ -173,6 +173,9 @@ def main():
     parser.add_argument('--path_to_read', type=str, default='../data/')
     parser.add_argument('--path_to_save', type=str, default='../data/')
 
+    args = parser.parse_args()
+    print(args)
+    
     # Load the data
     df_test_dev_split = load_data(args.path_to_read)
 
