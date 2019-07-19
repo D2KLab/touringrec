@@ -13,8 +13,12 @@ def remove_null_clickout(df):
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--percentage', action="store", type=int, help="Define the percentage of the dataset that you want to split")
+parser.add_argument('--input', action="store", type=str, help="Input file", default='train_off.csv')
+
 args = parser.parse_args()
 percentage = args.percentage
+filename_input = args.input
+
 if percentage == None:
     percentage_s=""
     percentage = 1
@@ -23,7 +27,7 @@ else:
     percentage = percentage / 100
 
 print('Reading the training set')
-df_train = pd.read_csv('train_off.csv')
+df_train = pd.read_csv(filename_input)
 df_train = f.get_df_percentage(df_train, percentage)
 
 session_train, session_test = f.split_group_random(df_train, 0.8, 'session_id')
