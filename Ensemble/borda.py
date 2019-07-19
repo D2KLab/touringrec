@@ -106,10 +106,11 @@ def calculate_borda(mf_rec, rnn_rec):
     result = " ".join(list_items)
     return result
 
-df_mf = pd.read_csv('submission_matrixfactorization_1.csv')
-df_rnn = pd.read_csv('submission_rnn_1.csv')
+df_mf = pd.read_csv('submission_mf_xgboost_new_validation.csv')
+df_rnn = pd.read_csv('rule_based_FR_reconstruct.csv')
 gt_file = 'gt.csv'
-submission_file = 'submission_ensemble.csv'
+submission_file = 'submission_ensemble_eurecom_borda.csv'
+df_rnn = df_rnn.loc[:, ~df_rnn.columns.str.contains('^Unnamed')]
 
 
 df_merged = (
@@ -119,12 +120,13 @@ df_merged = (
            right_on=MERGE_COLS,
            how="left")
     )
-#print(df_merged)
+print(df_merged.head())
 df_merged = df_merged.fillna('')
 #print(df_merged)
 df_merged['item_recommendations'] = df_merged.apply(lambda x: calculate_borda(x.item_recommendations_mf, x.item_recommendations_rnn), axis=1)
 df_merged = df_merged[MERGE_COLS + ['item_recommendations']]
+print(df_merged.head())
 df_merged.to_csv(submission_file)
-mrr =score_submissions(submission_file, gt_file, get_reciprocal_ranks)
+#mrr =score_submissions(submission_file, gt_file, get_reciprocal_ranks)
 #print(df_merged.head())
-print('Score: ' + str(mrr))
+#print('Score: ' + str(mrr))
