@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 import operator
+import argparse
 import math
 
 
@@ -105,28 +106,32 @@ def calculate_borda(mf_rec, rnn_rec):
     list_items = sum_and_sort_dictionaries(mf_rec_dic, rnn_rec_dic)
     result = " ".join(list_items)
     return result
+parser = argparse.ArgumentParser()
+parser.add_argument('--submissionmf', action="store", type=str, help="Choose the solution provided by the Matrix Factorization algorithm", default='submission_mfxgboost.csv')
+parser.add_argument('--submissionrb', action="store", type=str, help="Choose the solution provided by the Rule Based algorithm", default='submission_rulebased.csv')
+parser.add_argument('--outputfile', action="store", type=str, help="Choose the output file", default='submission_ensemble_polinks.csv')
 
-df_mf = pd.read_csv('submission_mf_xgboost_new_validation.csv')
-df_rnn = pd.read_csv('rule_based_FR_reconstruct.csv')
-gt_file = 'gt.csv'
-submission_file = 'submission_ensemble_eurecom_borda.csv'
-df_rnn = df_rnn.loc[:, ~df_rnn.columns.str.contains('^Unnamed')]
+args = parser.parse_args()
+subm_mf = args.submissionmf
+subm_rb = args.submissionrb
+submission_file = args.outputfile
+
+df_mf = pd.read_csv(subm_mf)
+df_rb = pd.read_csv(subm_rb)
+
+df_rb = df_rb.loc[:, ~df_rb.columns.str.contains('^Unnamed')]
 
 
 df_merged = (
     df_mf
-    .merge(df_rnn,suffixes=('_mf', '_rnn'),
+    .merge(df_rb,suffixes=('_mf', '_rb'),
            left_on=MERGE_COLS,
            right_on=MERGE_COLS,
            how="left")
     )
 print(df_merged.head())
 df_merged = df_merged.fillna('')
-#print(df_merged)
-df_merged['item_recommendations'] = df_merged.apply(lambda x: calculate_borda(x.item_recommendations_mf, x.item_recommendations_rnn), axis=1)
+df_merged['item_recommendations'] = df_merged.apply(lambda x: calculate_borda(x.item_recommendations_mf, x.item_recommendations_rb), axis=1)
 df_merged = df_merged[MERGE_COLS + ['item_recommendations']]
 print(df_merged.head())
 df_merged.to_csv(submission_file)
-#mrr =score_submissions(submission_file, gt_file, get_reciprocal_ranks)
-#print(df_merged.head())
-#print('Score: ' + str(mrr))
