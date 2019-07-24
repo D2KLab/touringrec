@@ -1,7 +1,0 @@
-Started _10%execution
-W2vec completed - Time: 2m 28s
-Started _10%execution
-W2vec completed - Time: 2m 25s
-Imported and collected training set - Time: 2m 30s
-Imported and collected test set - Time: 2m 31s
-Batched trainig set - Time: 2m 31s
