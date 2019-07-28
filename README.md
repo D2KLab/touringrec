@@ -68,7 +68,7 @@ To reproduce the final submission in mandatory to move the submission generated 
 
 The command to generate the submission is the following:
 
-```bash
+'''bash
 python3 ./Ensemble/borda.py --submissionmf "submission_mfxgboost.csv" --submissionrb "submission_rulebased.csv" --outputfile "submission_ensemble_polinks.csv"
-```
+'''
 
