@@ -52,13 +52,12 @@ and select a different configuration by passing the desired parameters.
 
 To run the Rule Based part of out algorithm, copy the test.csv dataset to be predicted in the desired folder(by default we consider code and csv files to be in the SetupScript folder) and run the command below:
 
-'''bash
+```bash
 python3 ./SetupScript/Setup.py --path_to_read ./SetupScript/test.csv --path_to_write ./SetupScript/
-'''
+```
 
 The output file name is 'Rule_based_Test_Dev.csv' and is placed in the specified directory.
 There are no parameters to be set in this part of the solution.
-
 
 ## Ensemble the results
 
@@ -68,7 +67,7 @@ To reproduce the final submission in mandatory to move the submission generated 
 
 The command to generate the submission is the following:
 
-'''bash
+```bash
 python3 ./Ensemble/borda.py --submissionmf "submission_mfxgboost.csv" --submissionrb "submission_rulebased.csv" --outputfile "submission_ensemble_polinks.csv"
-'''
+```
 
