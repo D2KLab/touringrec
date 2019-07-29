@@ -12,7 +12,7 @@ def remove_null_clickout(df):
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--percentage', action="store", type=int, help="Define the percentage of the dataset that you want to split")
+parser.add_argument('--percentage', action="store", type=int, help="Define the percentage of the dataset that you want to split", default=100)
 parser.add_argument('--input', action="store", type=str, help="Input file", default='train_off.csv')
 
 args = parser.parse_args()
@@ -20,7 +20,7 @@ percentage = args.percentage
 filename_input = args.input
 
 if percentage == None:
-    percentage_s=""
+    percentage_s="100"
     percentage = 1
 else:
     percentage_s = str(percentage)
