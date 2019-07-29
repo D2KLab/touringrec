@@ -8,11 +8,12 @@ import operator
 import collections as cl
 from scipy.sparse import csr_matrix
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import train_test_split
 import time
 import xgboost as xgb
 from numpy import sort
 
-TRAINING_COLS = ['position','recent_index', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score', 'score']
+TRAINING_COLS = ['position','recent_index', 'user_bias', 'item_bias', 'lightfm_dot_product', 'lightfm_prediction', 'score']
 
 def get_rec_matrix(df_train, df_test, inner_train, inner_gt, subm_csv, parameters = None, **kwargs):
 
@@ -153,9 +154,6 @@ def xg_boost_training(train):
         evals=[(xgtrain, 'train'), (xgval, 'test')],
         num_boost_round=300,
     )
-
-    xgb.plot_importance(model)
-    plt.savefig('importance_xgboost.png')
     return model
 
 def get_lightFM_features(df, mf_model, user_dict, hotel_dict, item_f = None, user_f=None, is_test = False):
