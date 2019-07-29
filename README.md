@@ -66,7 +66,7 @@ python3 ./SetupScript/Setup.py --help
 To run the Rule Based part of out algorithm, copy the test.csv dataset to be predicted in the desired folder(by default we consider code and csv files to be in the SetupScript folder) and run the command below:
 
 ```bash
-python3 ./SetupScript/Setup.py --path_to_read ./SetupScript/test.csv --path_to_write ./SetupScript/
+python3 ./SetupScript/rule_based.py --path_to_read ./SetupScript/ --path_to_save ./SetupScript/
 ```
 
 The output file name is 'Rule_based_Test_Dev.csv' and is placed in the specified directory.

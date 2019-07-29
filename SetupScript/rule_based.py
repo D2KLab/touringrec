@@ -30,11 +30,10 @@ def preprocess_data(df_test_dev_split):
     ## Creating dictionnary in order to retrieve past actions of same session
     dict_test = dict()
     for el in matrix_test_dev:
-        dict_test[str(el[0])+str(el[1])+str(el[2])] = str(el[3]) + ';' + str(el[4]) + ';' + str(el[5]) + 
-        ';' + str(el[6]) + ';' + str(el[7]) + ';' + str(el[8]) + ';' + str(el[9]) + ';' + str(el[10])
+        dict_test[str(el[0])+str(el[1])+str(el[2])] = str(el[3]) + ';' + str(el[4]) + ';' + str(el[5]) + ';' + str(el[6]) + ';' + str(el[7]) + ';' + str(el[8]) + ';' + str(el[9]) + ';' + str(el[10])
     return dict_test, User_Session_test_dev, matrix_test_dev_eval
     
-def rule_based_algo(matrix_test_dev_eval, User_Session_test_dev): 
+def rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test): 
     ###########################
     # Rule-based algorithm
     list_impressions = list();list_user_id = list();list_session_id = list();list_hotel_id = list();list_timestamp = list()
@@ -183,7 +182,7 @@ def main():
     dict_test, User_Session_test_dev, matrix_test_dev_eval = preprocess_data(df_test_dev_split)
 
     # Run rule-based algorithm
-    df_data = rule_based_algo(matrix_test_dev_eval, User_Session_test_dev)
+    df_data = rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test)
 
     ## Save rule-based scores
     df_to_submit = pd.DataFrame.from_dict(df_data)
