@@ -1,7 +1,6 @@
 import csv
 import numpy as np
 import pandas as pd
-import functions as f
 import LSTM as lstm
 import math as math
 import operator

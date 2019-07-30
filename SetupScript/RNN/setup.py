@@ -116,7 +116,10 @@ df_test_inner = dsm.remove_single_clickout_actions(df_test_inner)
 df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 
-df_gt_inner = pd.read_csv(param.gtinner)
+if param.gtinner != '':
+    df_gt_inner = pd.read_csv(param.gtinner)
+else:
+    df_gt_inner = pd.DataFrame()
 
 '''' ONLY IF WE WANT 2 TEST'''
 #df_test_dev = pd.read_csv(param.testdev)
@@ -291,7 +294,6 @@ for batch in batched_sessions:
         batch_category.append(category_dict[single_session])
     
     batch_category_tensor = lstm.hotels_to_category_batch(batch_category, hotel_to_category_dict, n_hotels)
-
     batch_session_tensor = lstm.sessions_to_batch_tensor(batch, session_dict, hotel_dict, max_session_len, n_features)
 
     batch_category_tensor_set.append(batch_category_tensor)
