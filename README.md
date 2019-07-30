@@ -49,7 +49,7 @@ and select a different configuration by passing the desired parameters.
 To run the RNN solution move the train.csv and test.csv files in the ./SetupScript/RNN/ directory and run the following command:
 
 ```bash
-python3 ./SetupScript/RNN/setup.py --traininner ./SetupScript/RNN/train.csv --testinner ./SetupScript/RNN/test.csv --subname rnn_sub
+python3 ./SetupScript/RNN/setup.py --traininner ./SetupScript/RNN/train.csv --testinner ./SetupScript/RNN/test.csv --subname rnn_sub --iscuda
 ```
 
 The solution file will be created named by the parameter --subname.

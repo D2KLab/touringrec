@@ -119,7 +119,7 @@ df_test_for_prepare = dsm.reference_to_str(df_test_inner.copy())
 if param.gtinner != '':
     df_gt_inner = pd.read_csv(param.gtinner)
 else:
-    df_gt_inner = pd.DataFrame()
+    df_gt_inner = ''
 
 '''' ONLY IF WE WANT 2 TEST'''
 #df_test_dev = pd.read_csv(param.testdev)
