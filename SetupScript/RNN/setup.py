@@ -30,7 +30,7 @@ import argparse
 
 torch.manual_seed(1)
 
-dir = './'
+dir = './off/'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--encode', action="store", type=str, help="--train encode.csv")
@@ -372,7 +372,7 @@ start_test_time = time.time()
 
 logfile.write('Start inner submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
-mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, param.subname, isprint=True, dev = False)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, dir, param.subname, isprint=True, dev = False)
 print("Final score for inner: " + str(mrr))
 print(timeSince(start_test_time))
 
