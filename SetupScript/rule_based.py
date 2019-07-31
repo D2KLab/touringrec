@@ -187,6 +187,28 @@ def rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test, dict
 
     return df_data
 
+def output_format(df_to_submit):
+    
+    ## Regrouping scores
+    pd_ = df_to_submit.groupby(['user_id', 'session_id', 'timestamp', 'step'])['score'].apply(list).reset_index()
+    ## Regrouping hotels
+    pd_2 = df_to_submit.groupby(['user_id', 'session_id', 'timestamp', 'step'])['hotel_id'].apply(list).reset_index()
+    ## Regrouping scores and hotels
+    pd_final = pd.concat([pd_,pd_2.hotel_id], axis=1)
+    ## Reordering the accommodation list
+    list_impressions = list()
+    matrix_final = pd_final.values
+    for elts in matrix_final:
+        impressions = elts[5]
+        score = elts[4]
+        args_desc = [x for x,y in sorted(enumerate(score), key = lambda x: x[1], reverse=True)]
+        new_order_impressions = [impressions[i] for i in args_desc]
+        list_impressions.append(" ".join(new_order_impressions))
+    pd_final['item_recommendations'] = list_impressions
+    df_challenge_format = pd_final[['user_id', 'session_id', 'timestamp', 'step', 'item_recommendations']]
+    
+    return df_challenge_format
+
 def main():
 
     # Rule-based arguments
@@ -212,6 +234,10 @@ def main():
     ## Save rule-based scores
     df_to_submit = pd.DataFrame.from_dict(df_data)
     df_to_submit.to_csv(args.path_to_save + 'Rule_based_Test_Dev.csv')
+
+    ## Format the dataframe as expected in the Challenge submission system
+    df_challenge_format = output_format(df_to_submit)
+    df_challenge_format.to_csv(args.path_to_save + 'Rule_based_Challenge_output.csv')
 
 if __name__ == '__main__':
     main()    
