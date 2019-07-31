@@ -76,7 +76,8 @@ def rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test, dict
         impressions_test = matrix_eval[i,4].split('|')
         current_step = matrix_eval[i,2]
         # Retrieve the action in the main test df
-        EL = dict_test[User_Session_Step_eval[i]].split(';')    
+        EL = dict_test[User_Session_Step_eval[i]].split(';')
+        clickouts = []    
         if user_id in dict_click_user: 
             clickouts = list(set(dict_click_user[user_id]))
         if current_step < 2:
