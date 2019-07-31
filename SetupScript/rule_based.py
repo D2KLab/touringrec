@@ -7,8 +7,9 @@ P_list = [0.485, 0.441, 0.342, 0.327, 0.324, 0.27]
 P_pr_sess = 0.2
 ## Loading the data
 def load_data(path):
+    df_train_dev_split = pd.read_csv(path + 'train_dev.csv')
     df_test_dev_split = pd.read_csv(path + 'test_dev.csv')
-    return df_test_dev_split
+    return df_train_dev_split, df_test_dev_split
 
 #### Data Preprocessing
 def preprocess_data(df_test_dev_split):
@@ -32,8 +33,30 @@ def preprocess_data(df_test_dev_split):
     for el in matrix_test_dev:
         dict_test[str(el[0])+str(el[1])+str(el[2])] = str(el[3]) + ';' + str(el[4]) + ';' + str(el[5]) + ';' + str(el[6]) + ';' + str(el[7]) + ';' + str(el[8]) + ';' + str(el[9]) + ';' + str(el[10])
     return dict_test, User_Session_test_dev, matrix_test_dev_eval
+
+def click_user_past_sessions(df_train_dev_split):
     
-def rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test): 
+    dict_click_user = dict()
+
+    bool_ = df_train_dev_split['action_type'].isin(['clickout item'])
+    df_tot_user_ref = df_train_dev_split[bool_].sort_values('timestamp')
+        
+    matrix_tot_user_ref = df_tot_user_ref[['user_id', 'reference']].values
+    for i in range(len(matrix_tot_user_ref)):
+        user_id = matrix_tot_user_ref[i,0]
+        ref = matrix_tot_user_ref[i,1]
+        if ref != 'NAN':
+            if user_id in dict_click_user:
+                appended_list = dict_click_user[user_id]
+                #if not(ref in appended_list):
+                appended_list.append(ref)
+                dict_click_user[user_id] = appended_list
+            else:
+                dict_click_user[user_id] = [ref]
+    
+    return dict_click_user
+
+def rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test, dict_click_user): 
     ###########################
     # Rule-based algorithm
     list_impressions = list();list_user_id = list();list_session_id = list();list_hotel_id = list();list_timestamp = list()
@@ -73,7 +96,6 @@ def rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test):
             user_session = User_Session_Step_eval[i][0:len(User_Session_Step_eval[i])-len(str(current_step))]
             EL_Moins_1 = dict_test[str(user_session) + str(step_moins_1)].split(';')
             action_type_Moins_1 = EL_Moins_1[2]   
-            case_poi += 1 
             if EL_Moins_1[3] in impressions_test:
                 for j, hotel_id in enumerate(impressions_test):
                     list_user_id.append(user_id)
@@ -176,13 +198,16 @@ def main():
     print(args)
     
     # Load the data
-    df_test_dev_split = load_data(args.path_to_read)
+    df_train_dev_split, df_test_dev_split = load_data(args.path_to_read)
+
+    # Retrieve past users interactions (same users in past sessions)
+    dict_click_user = click_user_past_sessions(df_train_dev_split)
 
     # Preprocess the data for the rule-based algo
     dict_test, User_Session_test_dev, matrix_test_dev_eval = preprocess_data(df_test_dev_split)
 
     # Run rule-based algorithm
-    df_data = rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test)
+    df_data = rule_based_algo(matrix_test_dev_eval, User_Session_test_dev, dict_test, dict_click_user)
 
     ## Save rule-based scores
     df_to_submit = pd.DataFrame.from_dict(df_data)
