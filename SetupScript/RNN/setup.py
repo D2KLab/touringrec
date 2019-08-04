@@ -30,7 +30,7 @@ import argparse
 
 torch.manual_seed(1)
 
-dir = './off/'
+dir = './'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--encode', action="store", type=str, help="--train encode.csv")
