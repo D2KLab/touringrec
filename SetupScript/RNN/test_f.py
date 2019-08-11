@@ -186,9 +186,9 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   
   #missed_target = 0
   if dev:
-    fname = dir + 'rnn_test_sub_xgb_dev' + subname + '.csv'
+    fname = dir + subname + '_rnn_test_xgb_sub' + '.csv'
   else:
-    fname = dir + 'rnn_test_sub_xgb_inner' + subname + '.csv'
+    fname = dir + subname + '_rnn_test_xgb_sub' + '.csv'
 
   with open(fname, mode='w') as test_xgb_sub:
     
@@ -217,7 +217,7 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
 
   # Saving df_sub
   if isprint:
-      df_sub.to_csv(dir + subname + '.csv')
+      df_sub.to_csv(dir + subname + '_sub' + '.csv')
 
   # Computing mrr only if test set is not the one without gt
   #if df_gt == '':

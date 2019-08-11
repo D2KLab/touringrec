@@ -90,7 +90,7 @@ torch.set_num_threads(args.numthread)
 number_of_threads = torch.get_num_threads()
 print('Using num thread = ' + str(number_of_threads))
 
-logfile = open(dir + 'log_' + param.subname + '.txt', 'w')
+logfile = open(dir + param.subname + '_log' + '.txt', 'w')
 logfile.write('Started ' + param.subname + ' execution\n')
 
 def timeSince(since):
@@ -301,7 +301,7 @@ for batch in batched_sessions:
 
 print('Got batch infos:  ' + str(timeSince(start)))
 
-with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
+with open(dir + param.subname + 'rnn_train_inner_sub' + '.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
@@ -326,6 +326,7 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
 
             current_loss += loss
             
+            '''
             if epoch == num_epochs:
                 guess_windowed_list, guess_windowed_scores_list = lstm.categories_from_output_windowed_opt(output, batch, impression_dict, hotel_dict, hotel_to_index_dict, df_train_inner_sub_list, pickfirst = False)
         
@@ -333,7 +334,7 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
                     for hotel_i, hotel in enumerate(guess_windowed_list[batch_i]):
                         # Write single hotel score
                         file_writer.writerow([str(single_session), str(hotel), str(guess_windowed_scores_list[batch_i][hotel_i])])
-                    
+            '''
                 
         # Add current loss avg to list of losses
         if epoch % plot_every == 0:
@@ -343,7 +344,7 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
             current_loss = 0
 
         if epoch == num_epochs + 1:
-            torch.save(model.state_dict(), dir + 'model_epoch_' + str(epoch) + param.subname)
+            torch.save(model.state_dict(), dir + param.subname + '_model_epoch_' + str(epoch))
 
         logfile.write('Epoch ' + str(epoch) + ' end - Time: ' + str(timeSince(start)) + '\n')
         logfile.write('Epoch ' + str(epoch) + ' - Loss: ' + str(all_losses[-1]) + '\n')
@@ -370,13 +371,13 @@ STEP 7: Save Test Results
 
 start_test_time = time.time()
 
-logfile.write('Start inner submission - Time: ' + str(timeSince(start_test_time)) + '\n')
+logfile.write('Start submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
 mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, dir, param.subname, isprint=True, dev = False)
-print("Final score for inner: " + str(mrr))
+print("Final score: " + str(mrr))
 print(timeSince(start_test_time))
 
-logfile.write('Finish inner submission - Time: ' + str(timeSince(start_test_time)) + '\n')
+logfile.write('Finish submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
 ''' Only if we want 2 tests'''
 #logfile.write('Start dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
