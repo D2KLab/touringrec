@@ -10,7 +10,7 @@ import math
 #from setup import param
 
 class LSTMModel(nn.Module):
-    def __init__(self, input_dim, hidden_dim, layer_dim, output_dim, iscuda, bias=True):
+    def __init__(self, input_dim, hidden_dim, layer_dim, output_dim, isbidir, iscuda, bias=True):
         super(LSTMModel, self).__init__()
 
         # Cuda flag
@@ -22,7 +22,7 @@ class LSTMModel(nn.Module):
         # Number of hidden layers
         self.layer_dim = layer_dim
 
-        self.gru = nn.GRU(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim) # Use dropout with more than 1 layer
+        self.gru = nn.GRU(input_size = input_dim, hidden_size = hidden_dim, num_layers = layer_dim, bidirectional = isbidir) # Use dropout with more than 1 layer
 
         self.fc = nn.Linear(hidden_dim, output_dim)
     

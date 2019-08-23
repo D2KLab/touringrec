@@ -47,6 +47,7 @@ parser.add_argument('--epochs', action="store", type=int, help="Define the numbe
 parser.add_argument('--ncomponents', action='store', type=int, help='item2vec: number of components',  default = 60)
 parser.add_argument('--window', action='store', type=int, help='item2vec: window length',  default = 5)
 parser.add_argument('--learnrate', action='store', type=float, help='learning rate for the model', default = 0.001)
+parser.add_argument('--isbidir', action='store_true', help='1 -> Use bidirectional')
 parser.add_argument('--iscuda', action='store_true', help='1 -> Use GPU, 0 -> use CPU')
 parser.add_argument('--subname', action='store', type=str, help='sub file name', default='submission')
 parser.add_argument('--numthread', action='store', type=int, help='sub file name', default = 1)
@@ -71,6 +72,7 @@ param = LSTMParam.LSTMParameters(   args.encode,
                                     args.ncomponents,
                                     args.window,
                                     args.learnrate,
+                                    args.isbidir,
                                     args.iscuda,
                                     args.subname,
                                     args.numthread,
@@ -238,7 +240,7 @@ print('output_dim is:' + str(output_dim))
 layer_dim = 1
 
 #NET CREATION
-model = lstm.LSTMModel(input_dim, hidden_dim, layer_dim, output_dim, param.iscuda)
+model = lstm.LSTMModel(input_dim, hidden_dim, layer_dim, output_dim, param.isbidir, param.iscuda)
 
 if param.iscuda:
     model = model.cuda()
