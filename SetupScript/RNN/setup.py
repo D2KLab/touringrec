@@ -32,7 +32,7 @@ import argparse
 #python3 setup.py --encode ./encode_1.csv --meta ./item_metadata.csv --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --hiddendim 100 --epochs 20 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_1%_sub --numthread 2 --batchsize 16
 torch.manual_seed(1)
 
-dir = './ultimate/'
+dir = './'
 
 parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
@@ -564,7 +564,7 @@ start_test_time = time.time()
 logfile.write('Start inner submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
 #mrr = tst.test_accuracy(model, df_test, df_gt, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True)
-mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = False)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_inner, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, dir, param.subname, isprint=True, dev = False)
 print("Final score for inner: " + str(mrr))
 print(timeSince(start_test_time))
 
@@ -583,7 +583,7 @@ df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 
 logfile.write('Start dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
-mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
+mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, dir, param.subname, isprint=True, dev = True)
 #print("Final score for dev: " + str(mrr))
 print(timeSince(start_test_time))
 

@@ -363,11 +363,11 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   
   #missed_target = 0
   if dev:
-    fname = './ultimate/' + subname + 'test_sub_xgb_dev.csv'
-    rec_name = './ultimate/' + subname + 'rec_dev.csv'
+    fname = './' + dir + subname + 'test_sub_xgb_dev.csv'
+    rec_name = './' + dir + subname + 'rec_dev.csv'
   else:
-    fname = './ultimate/' + subname + 'test_sub_xgb_inner.csv'
-    rec_name = './ultimate/' + subname + 'rec_inner.csv'
+    fname = './' + dir + subname + 'test_sub_xgb_inner.csv'
+    rec_name = './' + dir + subname + 'rec_inner.csv'
 
   with open(fname, mode='w') as test_xgb_sub:
     
