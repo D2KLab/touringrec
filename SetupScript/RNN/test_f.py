@@ -358,7 +358,7 @@ def evaluate_classification(model, session, hotel_dict, hotel_to_index_dict, n_f
 
     return output
   
-def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, clickout_dict, impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, subname="submission_default_name", isprint=False, dev = False):
+def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, clickout_dict, impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, dir, subname="submission_default_name", isprint=False, dev = False):
   """Return the score obtained by the net on the test dataframe"""
   
   #missed_target = 0
@@ -402,10 +402,10 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
       df_sub.to_csv(dir + subname + '.csv')
 
   # Computing mrr only if test set is not the one without gt
-  if dev:
-    mrr = 0
-  else:
-    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  #if dev:
+  #  mrr = 0
+  #else:
+  mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
   return mrr
   
