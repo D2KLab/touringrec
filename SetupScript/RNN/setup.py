@@ -103,7 +103,8 @@ torch.set_num_threads(args.numthread)
 number_of_threads = torch.get_num_threads()
 print('Using num thread = ' + str(number_of_threads))
 
-logfile = open(dir + 'log_' + param.subname + '.txt', 'w')
+
+logfile = open(dir + param.subname + '_log' + '.txt', 'w')
 logfile.write('Started ' + param.subname + ' execution\n')
 
 def timeSince(since):
