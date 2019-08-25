@@ -399,7 +399,7 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
 
   # Saving df_sub
   if isprint:
-      df_sub.to_csv(dir + subname + '.csv')
+      df_sub.to_csv(dir + subname + '_sub' + '.csv')
 
   # Computing mrr only if test set is not the one without gt
   #if dev:
