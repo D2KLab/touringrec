@@ -582,6 +582,7 @@ df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 '''
 
+'''
 logfile.write('Start dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
 mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, hotel_to_index_dict, n_features, max_window, meta_dict, meta_list, dir, param.subname, isprint=True, dev = True)
@@ -589,6 +590,7 @@ mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner
 print(timeSince(start_test_time))
 
 logfile.write('Finish dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
+'''
 
 '''
 STEP 8: SAVING SUBMISSION
