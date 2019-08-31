@@ -170,11 +170,13 @@ df_gt_inner = pd.read_csv(param.gtinner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
+'''
 df_test_dev = pd.read_csv(param.testdev)
 df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 df_test_dev_for_prepare = dsm.reference_to_str(df_test_dev.copy())
+'''
 
 #df_gt_dev = pd.read_csv('./gt_10.csv')
 
@@ -225,6 +227,7 @@ df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 logfile.write('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
 print('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
 
+'''
 test_dev_session_dict = {}
 test_dev_category_dict = {}
 test_dev_impression_dict = {}
@@ -236,6 +239,7 @@ del test_dev_session_dict
 del test_dev_category_dict
 del test_dev_impression_dict
 del df_test_dev_for_prepare
+'''
 
 logfile.write('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
 print('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
@@ -441,7 +445,7 @@ for batch in batched_sessions:
 
 print('Got batch infos:  ' + str(timeSince(start)))
 
-with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
+with open(dir + param.subname + 'rnn_train_inner_sub' + '.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
@@ -527,7 +531,7 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
             current_loss = 0
 
         if epoch % 10 == 0:
-            torch.save(model.state_dict(), dir + 'model_epoch_' + str(epoch) + param.subname)
+            torch.save(model.state_dict(), dir + param.subname + 'model_epoch_' + str(epoch))
 
         logfile.write('Epoch ' + str(epoch) + ' end - Time: ' + str(timeSince(start)) + '\n')
         logfile.write('Epoch ' + str(epoch) + ' - Loss: ' + str(all_losses[-1]) + '\n')
