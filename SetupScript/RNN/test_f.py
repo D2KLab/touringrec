@@ -397,10 +397,10 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
   """Return the score obtained by the net on the test dataframe"""
   
   #missed_target = 0
-  if dev:
-    fname = './ultimate_2class/rnn_test_sub_xgb_dev' + subname + '.csv'
-  else:
-    fname = './ultimate_2class/rnn_test_sub_xgb_inner' + subname + '.csv'
+  #if dev:
+  #  fname = './' + subname + 'rnn_test_sub_xgb_dev' + '.csv'
+  #else:
+  fname = './' + subname + 'rnn_test_sub_xgb' + '.csv'
 
   with open(fname, mode='w') as test_xgb_sub:
     
@@ -435,10 +435,10 @@ def test_accuracy_optimized_classification(model, df_test, df_gt, session_dict, 
       df_sub.to_csv('./' + subname + '.csv')
 
   # Computing mrr only if test set is not the one without gt
-  if dev:
-    mrr = 0
-  else:
-    mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
+  #if dev:
+    #mrr = 0
+  #else:
+  mrr = score_submissions_no_csv(df_sub, df_gt, get_reciprocal_ranks)
 
   return mrr
   

@@ -32,7 +32,7 @@ import argparse
 #python3 setup.py --encode ./encode_1.csv --meta ./item_metadata.csv --train ./train_1.csv --test ./test_1.csv --gt ./gt_1.csv --hiddendim 100 --epochs 20 --ncomponents 100 --window 5 --learnrate 0.001 --iscuda --subname rnn_1%_sub --numthread 2 --batchsize 16
 torch.manual_seed(1)
 
-dir = './ultimate_2class/'
+dir = './'
 
 parser = argparse.ArgumentParser()
 #parser.add_argument('--algorithm', action="store", type=str, help="Choose the algorithm that you want to use")
@@ -103,7 +103,7 @@ torch.set_num_threads(args.numthread)
 number_of_threads = torch.get_num_threads()
 print('Using num thread = ' + str(number_of_threads))
 
-logfile = open(dir + 'log_' + param.subname + '.txt', 'w')
+logfile = open(dir + param.subname + 'log' + '.txt', 'w')
 logfile.write('Started ' + param.subname + ' execution\n')
 
 def timeSince(since):
@@ -170,12 +170,14 @@ df_gt_inner = pd.read_csv(param.gtinner)
 
 #df_test_inner, df_gt_inner = dsm.remove_test_single_actions(df_test_inner, df_gt_inner)
 
+'''
 df_test_dev = pd.read_csv(param.testdev)
 df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
 #df_test_dev = dsm.remove_single_actions_opt(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 df_test_dev = df_test_dev.drop(df_test_dev.index[(df_test_dev['session_id'] == '4ce773be75e64') & (df_test_dev['step'] == 6)])
 df_test_dev_for_prepare = dsm.reference_to_str(df_test_dev.copy())
+'''
 
 #df_gt_dev = pd.read_csv('./gt_10.csv')
 
@@ -226,6 +228,7 @@ df_test_inner = dsm.remove_nonitem_actions(df_test_inner)
 logfile.write('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
 print('Imported and collected test set - Time: ' + str(timeSince(start_program_time)) + '\n')
 
+'''
 test_dev_session_dict = {}
 test_dev_category_dict = {}
 test_dev_impression_dict = {}
@@ -240,6 +243,7 @@ del df_test_dev_for_prepare
 
 logfile.write('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
 print('Imported and collected test dev set - Time: ' + str(timeSince(start_program_time)) + '\n')
+'''
 
 # Batching sessions for RNN input
 batched_sessions = dsm.get_batched_sessions(session_dict, category_dict, param.batchsize)
@@ -250,7 +254,8 @@ print(('Batched trainig set - Time: ' + str(timeSince(start_program_time)) + '\n
 
 #df_corpus = pd.concat([df_train_inner, df_test_inner, df_test_dev], ignore_index=True)
 #df_corpus = dsm.reference_to_str(df_corpus)
-corpus = train_corpus + test_corpus + test_dev_corpus
+#corpus = train_corpus + test_corpus + test_dev_corpus
+corpus = train_corpus + test_corpus
 
 '''
 STEP 3: ENCODING TO CREATE DICTIONARY
@@ -262,7 +267,7 @@ from gensim.models import Word2Vec
 word2vec = Word2Vec(corpus, size = param.ncomponents, min_count=1, window=param.window, sg=1)
 del train_corpus
 del test_corpus
-del test_dev_corpus
+#del test_dev_corpus
 
 
 n_features = len(word2vec.wv['666856'])
@@ -441,7 +446,7 @@ for batch in batched_sessions:
     #print('Finished batch prep in time ' + str(timeSince(timeforprep)))
 print('Got batch infos:  ' + str(timeSince(start)))
 
-with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn_train_sub_xgb:
+with open(dir + param.subname + 'rnn_train_inner_sub' + '.csv', mode='w') as rnn_train_sub_xgb:
     file_writer = csv.writer(rnn_train_sub_xgb)
     file_writer.writerow(['session_id', 'hotel_id', 'score'])
 
@@ -526,8 +531,8 @@ with open(dir + 'rnn_train_inner_sub' + param.subname + '.csv', mode='w') as rnn
             #all_acc.append(acc)
             current_loss = 0
 
-        if epoch % 10 == 0:
-            torch.save(model.state_dict(), dir + 'model_epoch_' + str(epoch) + param.subname)
+        if epoch % n_epochs == 0:
+            torch.save(model.state_dict(), dir + param.subname + 'model_epoch_' + str(epoch))
 
         logfile.write('Epoch ' + str(epoch) + ' end - Time: ' + str(timeSince(start)) + '\n')
         logfile.write('Epoch ' + str(epoch) + ' - Loss: ' + str(all_losses[-1]) + '\n')
@@ -570,6 +575,7 @@ print("Final score for inner: " + str(mrr))
 print(timeSince(start_test_time))
 
 logfile.write('Finish inner submission - Time: ' + str(timeSince(start_test_time)) + '\n')
+logfile.write('Final score: ' + str(mrr) + '\n')
 
 #test_sessions, test_hotels_window, test_clickout_index = tst.prepare_test(df_test_dev, df_gt_dev)
 
@@ -582,6 +588,7 @@ df_test_dev = dsm.remove_single_clickout_actions(df_test_dev)
 df_test_dev = dsm.remove_nonitem_actions(df_test_dev)
 '''
 
+'''
 logfile.write('Start dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
 
 mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner, test_session_dict, test_category_dict, test_impression_dict, hotel_dict, n_features, max_window, meta_dict, meta_list, param.subname, isprint=True, dev = True)
@@ -589,6 +596,7 @@ mrr = tst.test_accuracy_optimized_classification(model, df_test_dev, df_gt_inner
 print(timeSince(start_test_time))
 
 logfile.write('Finish dev submission - Time: ' + str(timeSince(start_test_time)) + '\n')
+'''
 
 '''
 STEP 8: SAVING SUBMISSION
