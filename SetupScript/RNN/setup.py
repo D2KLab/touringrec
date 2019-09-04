@@ -531,7 +531,7 @@ with open(dir + param.subname + 'rnn_train_inner_sub' + '.csv', mode='w') as rnn
             #all_acc.append(acc)
             current_loss = 0
 
-        if epoch % n_epochs == 0:
+        if epoch % num_epochs == 0:
             torch.save(model.state_dict(), dir + param.subname + 'model_epoch_' + str(epoch))
 
         logfile.write('Epoch ' + str(epoch) + ' end - Time: ' + str(timeSince(start)) + '\n')
